@@ -1,0 +1,76 @@
+.page {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/background.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 100px; /* عدل حسب حجم اللوجو */
+}
+
+.main-card {
+  width: 773px;
+  height: 658px;
+  background: #fff;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.inner-card {
+  display: flex;
+  gap: 64px;
+  width: 656px;
+  height: 512px;
+}
+
+.mini-card {
+  width: 296px;
+  height: 512px;
+  border: 1px solid #e1e1e1;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.mini-card-header {
+  width: 246px;
+  height: 69px;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.mini-card-body {
+  width: 246px;
+  height: 457px;
+  /* هنا تحط محتوى الصور والنصوص */
+}
+
+.start-button {
+  width: 656px;
+  height: 42px;
+  margin-top: 15px;
+  background: #07126b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
