@@ -1,0 +1,120 @@
+/* الخط */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+/* غلاف كامل الشاشة */
+.otp-wrapper {
+  width: 100vw;
+  height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* طبقة التعتيم */
+  background-color: rgba(7, 18, 107, 0.6);
+  background-blend-mode: overlay;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Cairo", sans-serif;
+  padding: 20px;
+}
+
+/* اللوجو */
+.otp-logo {
+  width: 150px;
+  margin-bottom: 25px;
+}
+
+/* الكارد */
+.otp-card {
+  width: 521px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* عنوان */
+.otp-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+/* النص: "أدخل رمز التحقق (OTP)" */
+.otp-subtext {
+  background: #2E3238;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+/* مربعات OTP */
+.otp-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.otp-box {
+  width: 50px;
+  height: 55px;
+  font-size: 22px;
+  text-align: center;
+
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+
+  transition: 0.25s;
+}
+
+.otp-box:focus {
+  border-color: #07126B;
+  box-shadow: 0 0 6px rgba(7, 18, 107, 0.4);
+}
+
+/* المؤقت */
+.otp-timer {
+  font-size: 16px;
+  color: #333;
+}
+
+.otp-timer span {
+  font-weight: 700;
+  color: #07126B;
+}
+
+/* زر */
+.otp-btn {
+  width: 100%;
+  padding: 14px 0;
+
+  background: #07126B;
+  border: none;
+  border-radius: 12px;
+
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.otp-btn:hover {
+  opacity: 0.85;
+}

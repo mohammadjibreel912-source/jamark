@@ -1,0 +1,131 @@
+/* الخط */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+/* الغلاف الكامل */
+.login-wrapper {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* طبقة التعتيم */
+  background-color: rgba(7, 18, 107, 0.6);
+  background-blend-mode: overlay;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Cairo", sans-serif;
+  padding: 20px;
+}
+
+/* اللوجو */
+.login-logo {
+  width: 150px;
+  margin-bottom: 25px;
+}
+
+/* الكارد */
+.login-card {
+  width: 521px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* العنوان */
+.login-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* الحقول */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 15px;
+}
+
+.form-group input {
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  transition: 0.25s;
+}
+
+.form-group input:focus {
+  border-color: #07126B;
+  box-shadow: 0 0 5px rgba(7, 18, 107, 0.4);
+}
+
+/* الحقل مع العين */
+.password-group .password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* الزر */
+.login-btn {
+  width: 100%;
+  padding: 14px 0;
+  background: #07126B;
+  border: none;
+  border-radius: 12px;
+
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.login-btn:hover {
+  opacity: 0.85;
+}
+
+/* النص السفلي */
+.bottom-text {
+  font-size: 15px;
+  text-align: center;
+}
+
+.register-link {
+  color: #07126B;
+  margin-right: 6px;
+}
+
+/* نجمة مطلوبة */
+.required-star {
+  color: red;
+  margin-left: 3px;
+}
