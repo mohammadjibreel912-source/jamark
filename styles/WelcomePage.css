@@ -1,0 +1,242 @@
+/* Reset overflow */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Cairo', sans-serif;
+}
+
+/* Page Wrapper */
+.page-wrapper {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-image: url('../assets/background.jpg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.page-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 18, 107, 0.6);
+  z-index: 0;
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  top: 20px;
+  right: 125px;
+  width: 120px;
+  height: auto;
+  z-index: 2;
+}
+
+/* Card Container */
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+  border-radius: 20px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  background: white;
+  max-width: 1200px;
+}
+
+/* MiniCards Wrapper */
+.mini-cards-wrapper {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Mini Card */
+.mini-card {
+  width: 296px;
+  min-height: 512px;
+  border-radius: 20px;
+  border: 1px solid #E1E1E1;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: white;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.mini-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  direction: rtl;
+}
+
+.icon {
+  object-fit: contain;
+  border-radius: 10px;
+  padding: 22px;
+  background: #05BAA3;
+  width: 50px;
+  height: 50px;
+}
+
+/* Title & SubTitle */
+.title {
+  font-weight: 600;
+  font-size: 20px;
+  color: #07126B;
+  margin: 0;
+}
+
+.sub-title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: #8E8E8E;
+}
+
+/* Section */
+.section {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.section ul {
+  padding-left: 20px;
+  margin-top: 5px;
+  direction: rtl;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  text-align: right;
+  color: #9a9a9a;
+  margin-bottom: 8px;
+}
+
+/* Button */
+.button {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 624px;
+  padding: 15px;
+  background-color: #07126B;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background-color: #050a4a;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .card-container {
+    padding: 30px;
+  }
+
+  .logo {
+    width: 100px;
+    right: 50px;
+  }
+
+  .mini-card {
+    width: 250px;
+    min-height: 480px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    padding: 20px;
+  }
+
+  .mini-cards-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .logo {
+    top: 15px;
+    right: 110px;
+    width: 90px;
+  }
+
+  .icon {
+    width: 40px;
+    height: 40px;
+    padding: 12px;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 18px;
+  }
+
+  .sub-title {
+    font-size: 14px;
+  }
+
+  .mini-card {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .card-container {
+    padding: 15px;
+  }
+}
+
+.button-link {
+  display: inline-block; /* مهم لتطبيق padding و width */
+  margin-top: 20px;
+  width: 100%;
+  max-width: 624px;
+  padding: 15px;
+  background-color: #07126B;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center; /* لكتابة النص بالمنتصف */
+  text-decoration: none; /* إزالة underline */
+  transition: background 0.3s;
+}
+
+.button-link:hover {
+  background-color: #050a4a;
+}
