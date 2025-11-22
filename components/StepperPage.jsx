@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import {
-  PageWrapper, Sidebar, Logo, StatusText, ContentWrapper,
-  StepperWrapper, Step, CardsWrapper, Row, CardWrapper, CardImage,
-  CardTitle, CardSubTitle, ButtonsWrapper, Button
-} from "./StepperStyles";
-
+import "../styles/StepperStyles.css";
+import logoImg from "../src/assets/logo.png";
+import sidebarBg from "../src/assets/background.jpg";
 import iraqiIcon from "../src/assets/iraqi.png";
 import foreignIcon from "../src/assets/foreign.png";
-import companyIcon from "../src/assets/company.png";
-import factoryIcon from "../src/assets/factory.png";
-import logoImg from "../src/assets/logo.png";
 import building from "../src/assets/building.png";
 import industry from "../src/assets/industry.png";
 
@@ -31,56 +25,68 @@ const StepperPage = () => {
     }
   };
 
-  // نص Sidebar ديناميكي
   let status = "اختر نوع المنشأة";
   if(bottomSelected.includes(0)) status = "تسجيل شركة جديدة";
   if(bottomSelected.includes(1)) status = "تسجيل مصنع جديد";
 
   return (
-    <PageWrapper>
-      <ContentWrapper>
-        <StepperWrapper>
-          {[1,2,3,4,5].map(s => <Step key={s} active={s===step}>{s}</Step>)}
-        </StepperWrapper>
+    <div className="page-wrapper">
+      {/* Content */}
+      <div className="content-wrapper">
+       <div className="stepper-wrapper">
+  {[1,2,3,4,5].map(s => (
+    <div 
+      key={s} 
+      className={`step ${s===step ? 'active' : ''} ${s<step ? 'completed' : ''}`}
+    >
+      <span>{s}</span> {/* ضفنا span حول الرقم */}
+    </div>
+  ))}
+  <div className="stepper-progress" style={{width: `${((step-1)/4)*100}%`}}></div>
+</div>
 
-        <CardsWrapper>
-          <Row>
-            <CardWrapper selected={topSelected.includes(0)} onClick={()=>handleSelect("top",0)}>
-              <CardImage src={iraqiIcon} alt="منشأة عراقية"/>
-              <CardTitle>منشأة عراقية</CardTitle>
-            </CardWrapper>
-            <CardWrapper selected={topSelected.includes(1)} onClick={()=>handleSelect("top",1)}>
-              <CardImage src={foreignIcon} alt="منشأة أجنبية"/>
-              <CardTitle>منشأة أجنبية</CardTitle>
-            </CardWrapper>
-          </Row>
 
-          <Row>
-             <CardWrapper selected={bottomSelected.includes(1)} onClick={()=>handleSelect("bottom",1)}>
-              <CardImage src={industry} alt="منشأة صناعية"/>
-              <CardTitle>منشأة صناعية</CardTitle>
-              <CardSubTitle>(مصنع)</CardSubTitle>
-            </CardWrapper>
-            <CardWrapper selected={bottomSelected.includes(0)} onClick={()=>handleSelect("bottom",0)}>
-              <CardImage src={building} alt="منشأة غير صناعية"/>
-              <CardTitle>منشأة غير صناعية</CardTitle>
-              <CardSubTitle>(شركة)</CardSubTitle>
-            </CardWrapper>
+        <div className="cards-wrapper">
+          <div className="row">
+             <div className={`card-wrapper ${topSelected.includes(1) ? 'selected' : ''}`} onClick={()=>handleSelect("top",1)}>
+              <img src={foreignIcon} alt="منشأة أجنبية" className="card-image"/>
+              <div className="card-title">منشأة أجنبية</div>
+            </div>
+            <div className={`card-wrapper ${topSelected.includes(0) ? 'selected' : ''}`} onClick={()=>handleSelect("top",0)}>
+              <img src={iraqiIcon} alt="منشأة عراقية" className="card-image"/>
+              <div className="card-title">منشأة عراقية</div>
+            </div>
            
-          </Row>
-        </CardsWrapper>
+          </div>
 
-        <ButtonsWrapper>
-          <Button onClick={handlePrev} disabled={step===1}>السابق</Button>
-          <Button onClick={handleNext} disabled={step===5}>التالي</Button>
-        </ButtonsWrapper>
-      </ContentWrapper>
+          <div className="row">
+            <div className={`card-wrapper ${bottomSelected.includes(1) ? 'selected' : ''}`} onClick={()=>handleSelect("bottom",1)}>
+              <img src={industry} alt="منشأة صناعية" className="card-image"/>
+              <div className="card-title">منشأة صناعية</div>
+              <div className="card-subtitle">(مصنع)</div>
+            </div>
+            <div className={`card-wrapper ${bottomSelected.includes(0) ? 'selected' : ''}`} onClick={()=>handleSelect("bottom",0)}>
+              <img src={building} alt="منشأة غير صناعية" className="card-image"/>
+              <div className="card-title">منشأة غير صناعية</div>
+              <div className="card-subtitle">(شركة)</div>
+            </div>
+          </div>
+        </div>
 
-      <Sidebar>
-        <Logo src={logoImg} alt="Logo"/>
-        <StatusText>{status}</StatusText>
-      </Sidebar>
-    </PageWrapper>
+        <div className="buttons-wrapper">
+          <button onClick={handleNext} disabled={step===5}>التالي</button>
+          <button onClick={handlePrev} disabled={step===1}>السابق</button>
+        </div>
+      </div>
+
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="sidebar-content">
+          <img src={logoImg} alt="Logo" className="logo"/>
+          <div className="status-text">{status}</div>
+        </div>
+      </div>
+    </div>
   );
 };
 
