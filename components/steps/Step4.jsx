@@ -1,171 +1,198 @@
-import React, { useState, useContext } from "react";
-import DatePicker from "react-datepicker";
-import { FaUpload } from "react-icons/fa";
-import Select from "react-select";
+import React, { useEffect, useState, useContext } from "react";
 import calendarIcon from "../../src/assets/calendarIcon.png";
 import mapIcon from "../../src/assets/mapIcon.png";
+import uploadIcon from "../../src/assets/uploadIcon.png";
+import plusIcon from "../../src/assets/plusIcon.png";
+import "../../styles/step4.css";
+import { LookupsService } from "../../services/LookupsService";
+
+
 import { LanguageContext } from "../../context/LanguageContext";
 
-const Step4 = ({ currencies = [] }) => {
-  const { translations } = useContext(LanguageContext);
+const Step4 = ({ step }) => {
+  const { translations } = useContext(LanguageContext); // get current translations
+  const t = translations.step4; // all step4 keys should be in LanguageContext
 
-  const [showAddressPopup, setShowAddressPopup] = useState(false);
-  const [addressData, setAddressData] = useState({
-    title: "",
-    country: "",
-    city: "",
-    region: "",
-    street: "",
-    buildingNumber: "",
-    floor: "",
-    officeNumber: "",
-    otherDetails: "",
-    poBox: "",
-    email: "",
-    phone: "",
-    fax: "",
-    mobile1: "",
-    mobile2: "",
-    mapLink: "",
-    registrationFile: null,
-    specialtyFiles: [],
-    foundingYear: null,
-    capital: "",
-    currency: "",
+  const [currencies, setCurrencies] = useState([]);
+  const [formData, setFormData] = useState({
+    factoryName: "",
+    factoryLocation: "",
+    certificate: null,
+    specialtyCertificates: [],
+    foundationYear: 1999,
+    capital: 10000,
+    currency: "USD",
     notes: "",
   });
 
+  // Fetch currencies from API
+  useEffect(() => {
+      const fetchCurrencies = async () => {
+        try {
+          const currencyList = await LookupsService.getCurrencies();
+          setCurrencies(currencyList.map((c) => c.code) || []);
+          console.log(currencyList);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      fetchCurrencies();
+    
+  }, [step]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAddressData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e, field) => {
-    const files = field === "specialtyFiles" ? Array.from(e.target.files) : e.target.files[0];
-    setAddressData((prev) => ({ ...prev, [field]: files }));
+    const files =
+      field === "specialtyCertificates"
+        ? Array.from(e.target.files)
+        : e.target.files[0];
+    setFormData((prev) => ({ ...prev, [field]: files }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    alert(t.formSubmitted);
   };
 
   return (
-    <div className="main-section" dir={translations.dir} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-      <h2 style={{ textAlign: translations.align }}>{translations.step4.companyDocumentation}</h2>
-
-      {/* عنوان الشركة */}
-      <div className="form-row" style={{ position: "relative", marginBottom: "10px" }}>
-        <label>{translations.step4.companyAddress} <span className="required-star">*</span></label>
-        <input
-          type="text"
-          name="title"
-          className="custom-input"
-          placeholder={translations.step4.companyAddressPlaceholder}
-          value={addressData.title}
-          onChange={handleChange}
-        />
-        <button className="custom-add-btn" type="button" onClick={() => setShowAddressPopup(true)}>+</button>
-      </div>
-
-      {/* موقع الشركة */}
-      <div style={{ position: "relative", marginBottom: "10px" }}>
-        <img src={mapIcon} alt="map" className="input-icon" />
-        <input
-          type="text"
-          name="mapLink"
-          value={addressData.mapLink}
-          onChange={handleChange}
-          placeholder={translations.step4.mapLinkPlaceholder}
-          className="custom-input-with-icon"
-        />
-      </div>
-
-      {/* شهادة تسجيل الشركة */}
-      <div className="form-row file-row" style={{ marginBottom: "10px", display: "flex", alignItems: "center", gap: "10px" }}>
-        <label>{translations.step4.registrationCertificate} <span className="required-star">*</span></label>
-        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          <FaUpload style={{ color: "#28a745", fontSize: "20px" }} />
-          <input type="file" onChange={(e) => handleFileChange(e, "registrationFile")} />
-          {addressData.registrationFile && <span className="file-name">{addressData.registrationFile.name}</span>}
-        </div>
-      </div>
-
-      {/* الشهادات الاختصاصية */}
-      <div className="form-row file-row" style={{ marginBottom: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
-        <label>{translations.step4.specialtyCertificates} <span className="required-star">*</span></label>
-        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          <button className="custom-add-btn" type="button">+</button>
-          <input type="file" multiple onChange={(e) => handleFileChange(e, "specialtyFiles")} />
-        </div>
-        {addressData.specialtyFiles.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginTop: "5px" }}>
-            {addressData.specialtyFiles.map((f, i) => (
-              <div key={i} className="file-chip">{f.name} ✅</div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* سنة التأسيس */}
-      <div className="form-row" style={{ position: "relative", marginBottom: "10px" }}>
-        <label>{translations.step4.foundingYear} <span className="required-star">*</span></label>
-        <DatePicker
-          selected={addressData.foundingYear}
-          onChange={(date) => setAddressData({ ...addressData, foundingYear: date })}
-          showYearPicker
-          dateFormat="yyyy"
-          placeholderText={translations.step4.foundingYearPlaceholder}
-          className="custom-input"
-          name="foundingYear"
-        />
-        <img src={calendarIcon} alt="calendar" className="input-icon" />
-      </div>
-
-      {/* رأس المال + العملة */}
-      <div className="capital-row">
-        <input
-          type="number"
-          name="capital"
-          className="capital-input"
-          placeholder={translations.step4.capitalPlaceholder}
-          value={addressData.capital}
-          onChange={handleChange}
-        />
-        <Select
-          options={currencies.map(c => ({ value: c.code, label: c.code }))}
-          value={currencies.find(c => c.code === addressData.currency) && { value: addressData.currency, label: addressData.currency }}
-          onChange={(selected) => setAddressData({ ...addressData, currency: selected.value })}
-          className="currency-dropdown"
-        />
-      </div>
-
-      {/* ملاحظات */}
-      <div className="form-row" style={{ marginTop: "10px" }}>
-        <label>{translations.step4.notes}</label>
-        <textarea
-          name="notes"
-          value={addressData.notes}
-          onChange={handleChange}
-          placeholder={translations.step4.notesPlaceholder}
-          className="custom-input"
-          style={{ minHeight: "80px" }}
-        />
-      </div>
-
-      {/* Popup */}
-      {showAddressPopup && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <h3>{translations.step4.addressDetails}</h3>
-            <div className="popup-row">
-              <input placeholder={translations.step4.companyAddress} name="title" value={addressData.title} onChange={handleChange} />
-              <input placeholder={translations.step4.country} name="country" value={addressData.country} onChange={handleChange} />
-              <input placeholder={translations.step4.city} name="city" value={addressData.city} onChange={handleChange} />
-              <input placeholder={translations.step4.region} name="region" value={addressData.region} onChange={handleChange} />
-            </div>
-            <div className="popup-buttons">
-              <button onClick={() => setShowAddressPopup(false)}>{translations.close}</button>
-              <button onClick={() => setShowAddressPopup(false)}>{translations.save}</button>
-            </div>
+    <div className="factory-form-container">
+      <h2 className="form-title">{t.factoryDocumentation}</h2>
+      <form onSubmit={handleSubmit}>
+        {/* Factory Name */}
+        <div className="form-field">
+          <label>{t.factoryName} *</label>
+          <div className="input-with-icon-container">
+            <input
+              type="text"
+              name="factoryName"
+              placeholder={t.factoryNamePlaceholder}
+              value={formData.factoryName}
+              onChange={handleChange}
+            />
+            <img alt="plusIcon" className="input-icon" src={plusIcon} />
           </div>
         </div>
-      )}
+
+        {/* Factory Location */}
+        <div className="form-field">
+          <label>{t.factoryLocation} *</label>
+          <div className="input-with-icon-container">
+            <img src={mapIcon} alt="map" className="input-icon" />
+            <input
+              type="url"
+              name="factoryLocation"
+              placeholder={t.factoryLocationPlaceholder}
+              value={formData.factoryLocation}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        {/* Registration Certificate */}
+        <div className="form-field">
+          <label>{t.registrationCertificate} *</label>
+          <div className="input-with-icon-container">
+            <img alt="upload" className="input-icon" src={uploadIcon} />
+            <input
+              type="file"
+              onChange={(e) => handleFileChange(e, "certificate")}
+            />
+            {formData.certificate && <span>{formData.certificate.name}</span>}
+          </div>
+        </div>
+
+        {/* Specialty Certificates */}
+        <div className="form-field">
+          <label>{t.specialtyCertificates} *</label>
+          <div className="input-with-icon-container">
+            <input
+              type="file"
+              multiple
+              onChange={(e) => handleFileChange(e, "specialtyCertificates")}
+            />
+            <img alt="plusIcon" className="input-icon" src={plusIcon} />
+          </div>
+          {formData.specialtyCertificates.length > 0 && (
+            <div className="specialty-files-list">
+              {formData.specialtyCertificates.map((file, idx) => (
+                <span key={idx} className="file-chip">
+                  {file.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Foundation Year */}
+        <div className="form-field">
+          <label>{t.foundationYear} *</label>
+          <div className="input-with-icon-container">
+            <img src={calendarIcon} alt="calendar" className="input-icon" />
+            <input
+              type="number"
+              name="foundationYear"
+              value={formData.foundationYear}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        {/* Capital + Currency */}
+       {/* Capital + Currency */}
+<div className="form-field">
+  <label>{t.capital} *</label>
+  <div className="capital-currency-container">
+    <input
+      type="number"
+      name="capital"
+      value={formData.capital}
+      onChange={handleChange}
+      className="capital-input"
+      placeholder="0"
+    />
+    <select
+      name="currency"
+      value={formData.currency}
+      onChange={handleChange}
+      className="currency-select"
+    >
+      {currencies.map((cur) => (
+        <option key={cur.code} value={cur.code}>
+          {/* عرض أيقونة + الكود */}
+          {cur.icon && (
+            <img
+              src={baseImageUrl + cur.icon}
+              alt={cur.code}
+              style={{ width: 20, height: 14, marginRight: 5 }}
+            />
+          )}
+          {cur.code}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
+
+
+        {/* Notes */}
+        <div className="form-field">
+          <label>{t.notes}</label>
+          <textarea
+            name="notes"
+            placeholder={t.notesPlaceholder}
+            value={formData.notes}
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* Submit Button */}
+       
+      </form>
     </div>
   );
 };

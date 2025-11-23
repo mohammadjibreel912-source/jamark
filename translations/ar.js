@@ -109,5 +109,20 @@ export default {
       "الشهادات الإختصاصية",
       "شهادات تسجيل الشركة"
     ]
-  }
+  },
+   step4: {
+    factoryDocumentation: "توثيق المصنع",
+    factoryName: "عنوان المصنع",
+    factoryNamePlaceholder: "بغداد - العراق - شارع الوحدة",
+    factoryLocation: "موقع المصنع",
+    factoryLocationPlaceholder: "https://maps.app.goo.gl/...",
+    registrationCertificate: "شهادة تسجيل المصنع",
+    specialtyCertificates: "الشهادات الإختصاصية",
+    foundationYear: "سنة التأسيس",
+    capital: "رأس المال",
+    notes: "ملاحظات وتعليقات إضافية",
+    notesPlaceholder: "اكتب هنا أي ملاحظات أو تعليقات",
+    save: "حفظ",
+    formSubmitted: "تم إرسال البيانات بنجاح!",
+  },
 };

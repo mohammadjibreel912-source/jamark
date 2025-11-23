@@ -109,5 +109,20 @@ export default {
       "Specialized Certificates",
       "Company Registration Certificates"
     ]
-  }
+  },
+    step4: {
+    factoryDocumentation: "Factory Documentation",
+    factoryName: "Factory Name",
+    factoryNamePlaceholder: "Baghdad - Iraq - Al Wahda St.",
+    factoryLocation: "Factory Location",
+    factoryLocationPlaceholder: "https://maps.app.goo.gl/...",
+    registrationCertificate: "Registration Certificate",
+    specialtyCertificates: "Specialty Certificates",
+    foundationYear: "Foundation Year",
+    capital: "Capital",
+    notes: "Notes / Additional Comments",
+    notesPlaceholder: "Write any notes or comments here",
+    save: "Save",
+    formSubmitted: "Form submitted successfully!",
+  },
 };
