@@ -6,6 +6,7 @@
   width: 100vw;
   height: 100vh;
 
+  background-image: url('../src/assets/7d9b9ef5-7dca-4d13-861a-57702efa2f45.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -27,11 +28,13 @@
 .otp-logo {
   width: 150px;
   margin-bottom: 25px;
+  align-self: center;
 }
 
 /* الكارد */
 .otp-card {
   width: 521px;
+  max-width: 95%;
   background: #fff;
   border-radius: 20px;
   padding: 40px;
@@ -42,6 +45,15 @@
   gap: 25px;
 
   box-shadow: 0 8px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* دعم اللغة */
+.otp-wrapper[dir="rtl"] .otp-card {
+  text-align: right;
+}
+
+.otp-wrapper[dir="ltr"] .otp-card {
+  text-align: left;
 }
 
 /* عنوان */
@@ -68,6 +80,14 @@
   display: flex;
   justify-content: center;
   gap: 10px;
+}
+
+.otp-wrapper[dir="rtl"] .otp-inputs {
+  direction: rtl;
+}
+
+.otp-wrapper[dir="ltr"] .otp-inputs {
+  direction: ltr;
 }
 
 .otp-box {
@@ -117,4 +137,30 @@
 
 .otp-btn:hover {
   opacity: 0.85;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .otp-card {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .otp-title {
+    font-size: 22px;
+  }
+
+  .otp-subtext {
+    font-size: 14px;
+  }
+
+  .otp-box {
+    width: 40px;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  .otp-btn {
+    font-size: 16px;
+  }
 }

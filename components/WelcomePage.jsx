@@ -1,85 +1,90 @@
-import React from "react";
-import "../styles/WelcomePage.css"
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import "../styles/WelcomePage.css";
 import factoryIcon from "../src/assets/factory.png";
 import companyIcon from "../src/assets/company.png";
 import logoImg from "../src/assets/logo.png";
 import backgroundImg from "../src/assets/7d9b9ef5-7dca-4d13-861a-57702efa2f45.jpg";
-import { Link } from "react-router-dom";
+import { LanguageContext } from "../context/LanguageContext";
 
 const WelcomePage = () => {
+  const { translations, language } = useContext(LanguageContext);
+  const dir = language === "ar" ? "rtl" : "ltr";
+
   return (
-    <div className="page-wrapper" style={{ backgroundImage: `url(${backgroundImg})` }}>
-      <img src={logoImg} alt="Logo" className="logo" />
+    <>
+          <img src={logoImg} alt="Logo" className="logo" />
+
+   
+    <div className="page-wrapper" dir={dir} style={{ backgroundImage: `url(${backgroundImg})` }}>
 
       <div className="card-container">
         <div className="mini-cards-wrapper">
+          {/* Industrial Card */}
           <div className="mini-card">
             <div className="header">
               <img src={factoryIcon} alt="Factory Icon" className="icon" />
               <div className="title-container">
-                <h3 className="title">منشأة صناعية</h3>
-                <div className="sub-title">(مصنع)</div>
+                <h3 className="title">{translations.welcome.industrial}</h3>
+                <div className="sub-title">{translations.welcome.industrialSub}</div>
               </div>
             </div>
 
             <div className="section">
-              <div className="section-title">معلومات المصنع</div>
+              <div className="section-title">{translations.welcome.industrialInfo}</div>
               <ul>
-                <li>إسم المصنع</li>
-                <li>موقع وعنوان المصنع</li>
-                <li>سنة التأسيس</li>
-                <li>رأس المال</li>
-                <li>المنتجات التي يقدمها المصنع</li>
+                {translations.welcome.factoryItems.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
 
             <div className="section">
-              <div className="section-title">الوثائق المطلوبة</div>
+              <div className="section-title">{translations.welcome.industrialDocs}</div>
               <ul>
-                <li>الشهادات الإختصاصية</li>
-                <li>شهادة تسجيل المصنع</li>
+                {translations.welcome.factoryDocs.map((doc, idx) => (
+                  <li key={idx}>{doc}</li>
+                ))}
               </ul>
             </div>
           </div>
 
+          {/* Non-Industrial Card */}
           <div className="mini-card">
             <div className="header">
               <img src={companyIcon} alt="Company Icon" className="icon" />
               <div className="title-container">
-                <h3 className="title">منشأة غير صناعية</h3>
-                <div className="sub-title">(شركة)</div>
+                <h3 className="title">{translations.welcome.nonIndustrial}</h3>
+                <div className="sub-title">{translations.welcome.nonIndustrialSub}</div>
               </div>
             </div>
 
             <div className="section">
-              <div className="section-title">معلومات الشركة</div>
+              <div className="section-title">{translations.welcome.nonIndustrialInfo}</div>
               <ul>
-                <li>إسم الشركة</li>
-                <li>موقع وعنوان الشركة</li>
-                <li>سنة التأسيس</li>
-                <li>رأس المال</li>
-                <li>نوع الشركة</li>
-                <li>شكل الشركة</li>
-                <li>طريقة إدارة الشركة</li>
-                <li>إسم المدير المفوض</li>
+                {translations.welcome.companyItems.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
 
             <div className="section">
-              <div className="section-title">الوثائق المطلوبة</div>
+              <div className="section-title">{translations.welcome.nonIndustrialDocs}</div>
               <ul>
-                <li>الشهادات الإختصاصية</li>
-                <li>شهادات تسجيل الشركة</li>
+                {translations.welcome.companyDocs.map((doc, idx) => (
+                  <li key={idx}>{doc}</li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
 
-<Link to="/stepper" className="button-link">
-  البدء بتسجيل المنشأة
-</Link>
+        <Link to="/stepper" className="button-link">
+          {translations.welcome.startBtn}
+        </Link>
       </div>
     </div>
+     </>
   );
 };
 
