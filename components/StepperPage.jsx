@@ -101,7 +101,6 @@ const StepperPage = () => {
       />
 
       <div className="content-wrapper" style={{ flex: 1 }}>
-        <LanguageSwitcher />
 
         {/* Stepper */}
      <Stepper step={step} totalSteps={5} isRTL={isRTL} />
