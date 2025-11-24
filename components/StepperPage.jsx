@@ -8,6 +8,8 @@ import Step4 from "./steps/Step4";
 import Step5 from "./steps/Step5";
 import { LookupsService } from "../services/LookupsService";
 import LanguageSwitcher from "./LanguageSwitcher";
+import Stepper from "./Stepper";
+import StepperNavigation from "./StepperNavigation";
 
 const StepperPage = () => {
   const { translations, language } = useContext(LanguageContext);
@@ -102,17 +104,8 @@ const StepperPage = () => {
         <LanguageSwitcher />
 
         {/* Stepper */}
-        <div className="stepper-wrapper" style={{ direction: isRTL ? "rtl" : "ltr" }}>
-          {[1, 2, 3, 4, 5].map(s => (
-            <div
-              key={s}
-              className={`step ${s === step ? "active" : ""} ${s < step ? "completed" : ""}`}
-            >
-              <span>{s}</span>
-            </div>
-          ))}
-          <div className="stepper-progress" style={{ width: `${((step - 1) / 4) * 100}%` }}></div>
-        </div>
+     <Stepper step={step} totalSteps={5} isRTL={isRTL} />
+
 
         {/* Steps */}
         {step === 1 && (
@@ -152,16 +145,16 @@ const StepperPage = () => {
         {step === 5 && <Step5 translations={translations.step5} />}
 
         {/* Navigation */}
-        <div className="buttons-wrapper">
-          <button onClick={handlePrev} disabled={step === 1}>
-            {translations.buttons.prev}
-          </button>
-          {step < 5 ? (
-            <button onClick={handleNext}>{translations.buttons.next}</button>
-          ) : (
-            <button>{translations.step5.actions.payAndSubmit}</button>
-          )}
-        </div>
+ <StepperNavigation
+  step={step}
+  totalSteps={5}
+  onPrev={handlePrev}
+  onNext={handleNext}
+  translations={translations}
+  finalActionText={translations.step5.actions.payAndSubmit}
+/>
+
+
       </div>
     </div>
   );

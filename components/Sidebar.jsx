@@ -72,7 +72,9 @@ const Sidebar = ({
       width: '4px',                   // thickness of the line
       backgroundColor: '#05BAA3',     // green color
       borderRadius: '2px',
-      alignSelf: 'stretch'            // make it match height of text container
+      alignSelf: 'stretch',    
+      marginTop:'19px'
+      // make it match height of text container
     }} />
 
     {/* Text content */}
@@ -97,7 +99,9 @@ const Sidebar = ({
       width: '4px',
       backgroundColor: '#05BAA3',
       borderRadius: '2px',
-      alignSelf: 'stretch'
+      alignSelf: 'stretch',
+            marginTop:'19px'
+
     }} />
 
     {/* Text content */}
@@ -123,7 +127,9 @@ const Sidebar = ({
         width: '4px',
         backgroundColor: '#05BAA3',
         borderRadius: '2px',
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
+              marginTop:'19px'
+
       }} />
 
       {/* Text content */}
