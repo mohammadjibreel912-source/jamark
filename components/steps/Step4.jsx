@@ -5,13 +5,11 @@ import uploadIcon from "../../src/assets/uploadIcon.png";
 import plusIcon from "../../src/assets/plusIcon.png";
 import "../../styles/step4.css";
 import { LookupsService } from "../../services/LookupsService";
-
-
 import { LanguageContext } from "../../context/LanguageContext";
 
 const Step4 = ({ step }) => {
-  const { translations } = useContext(LanguageContext); // get current translations
-  const t = translations.step4; // all step4 keys should be in LanguageContext
+  const { translations, language } = useContext(LanguageContext); // get translations & language
+  const t = translations.step4;
 
   const [currencies, setCurrencies] = useState([]);
   const [formData, setFormData] = useState({
@@ -27,17 +25,15 @@ const Step4 = ({ step }) => {
 
   // Fetch currencies from API
   useEffect(() => {
-      const fetchCurrencies = async () => {
-        try {
-          const currencyList = await LookupsService.getCurrencies();
-          setCurrencies(currencyList.map((c) => c.code) || []);
-          console.log(currencyList);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      fetchCurrencies();
-    
+    const fetchCurrencies = async () => {
+      try {
+        const currencyList = await LookupsService.getCurrencies();
+        setCurrencies(currencyList || []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCurrencies();
   }, [step]);
 
   const handleChange = (e) => {
@@ -60,12 +56,14 @@ const Step4 = ({ step }) => {
   };
 
   return (
-    <div className="factory-form-container">
+    <div className="factory-form-container" style={{ direction: language === "ar" ? "rtl" : "ltr" }}>
       <h2 className="form-title">{t.factoryDocumentation}</h2>
       <form onSubmit={handleSubmit}>
         {/* Factory Name */}
         <div className="form-field">
-          <label>{t.factoryName} *</label>
+          <label>
+            {t.factoryName} <span style={{ color: "red" }}>*</span>
+          </label>
           <div className="input-with-icon-container">
             <input
               type="text"
@@ -80,7 +78,9 @@ const Step4 = ({ step }) => {
 
         {/* Factory Location */}
         <div className="form-field">
-          <label>{t.factoryLocation} *</label>
+          <label>
+            {t.factoryLocation} <span style={{ color: "red" }}>*</span>
+          </label>
           <div className="input-with-icon-container">
             <img src={mapIcon} alt="map" className="input-icon" />
             <input
@@ -95,7 +95,9 @@ const Step4 = ({ step }) => {
 
         {/* Registration Certificate */}
         <div className="form-field">
-          <label>{t.registrationCertificate} *</label>
+          <label>
+            {t.registrationCertificate} <span style={{ color: "red" }}>*</span>
+          </label>
           <div className="input-with-icon-container">
             <img alt="upload" className="input-icon" src={uploadIcon} />
             <input
@@ -108,7 +110,9 @@ const Step4 = ({ step }) => {
 
         {/* Specialty Certificates */}
         <div className="form-field">
-          <label>{t.specialtyCertificates} *</label>
+          <label>
+            {t.specialtyCertificates} <span style={{ color: "red" }}>*</span>
+          </label>
           <div className="input-with-icon-container">
             <input
               type="file"
@@ -130,7 +134,9 @@ const Step4 = ({ step }) => {
 
         {/* Foundation Year */}
         <div className="form-field">
-          <label>{t.foundationYear} *</label>
+          <label>
+            {t.foundationYear} <span style={{ color: "red" }}>*</span>
+          </label>
           <div className="input-with-icon-container">
             <img src={calendarIcon} alt="calendar" className="input-icon" />
             <input
@@ -143,41 +149,33 @@ const Step4 = ({ step }) => {
         </div>
 
         {/* Capital + Currency */}
-       {/* Capital + Currency */}
-<div className="form-field">
-  <label>{t.capital} *</label>
-  <div className="capital-currency-container">
-    <input
-      type="number"
-      name="capital"
-      value={formData.capital}
-      onChange={handleChange}
-      className="capital-input"
-      placeholder="0"
-    />
-    <select
-      name="currency"
-      value={formData.currency}
-      onChange={handleChange}
-      className="currency-select"
-    >
-      {currencies.map((cur) => (
-        <option key={cur.code} value={cur.code}>
-          {/* عرض أيقونة + الكود */}
-          {cur.icon && (
-            <img
-              src={baseImageUrl + cur.icon}
-              alt={cur.code}
-              style={{ width: 20, height: 14, marginRight: 5 }}
+        <div className="form-field">
+          <label>
+            {t.capital} <span style={{ color: "red" }}>*</span>
+          </label>
+          <div className="capital-currency-container">
+            <input
+              type="number"
+              name="capital"
+              value={formData.capital}
+              onChange={handleChange}
+              className="capital-input"
+              placeholder={t.capitalPlaceholder}
             />
-          )}
-          {cur.code}
-        </option>
-      ))}
-    </select>
-  </div>
-</div>
-
+            <select
+              name="currency"
+              value={formData.currency}
+              onChange={handleChange}
+              className="currency-select"
+            >
+              {currencies.map((cur) => (
+                <option key={cur.code} value={cur.code}>
+                  {cur.code}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         {/* Notes */}
         <div className="form-field">
@@ -190,8 +188,6 @@ const Step4 = ({ step }) => {
           />
         </div>
 
-        {/* Submit Button */}
-       
       </form>
     </div>
   );

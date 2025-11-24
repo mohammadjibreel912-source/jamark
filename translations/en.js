@@ -6,12 +6,14 @@ export default {
     nonIndustrial: "Non-Industrial",
     chooseCompanyType: "Choose company type"
   },
+
   step2: {
     basicInfo: "Basic Information",
     name: "Name",
     email: "Email",
     phone: "Phone"
   },
+
   step3: {
     companyData: "Company Data",
     companyName: "Company Name",
@@ -21,35 +23,58 @@ export default {
     managementMethod: "Management Method",
     managerName: "Manager Name"
   },
+
   step4: {
-    companyDocumentation: "Company Documentation",
-    companyAddress: "Company Address",
-    companyAddressPlaceholder: "Company Address",
-    mapLinkPlaceholder: "Google Maps link or coordinates",
-    registrationCertificate: "Registration Certificate",
-    specialtyCertificates: "Specialty Certificates (ISO, FSSC, FDA, GMP, etc.)",
-    foundingYear: "Founding Year",
-    foundingYearPlaceholder: "Select Year",
-    capitalPlaceholder: "Amount",
-    notes: "Notes and Additional Comments",
-    notesPlaceholder: "Additional notes",
-    addressDetails: "Address Details",
-    country: "Country",
-    city: "City",
-    region: "Region"
-  },
+  factoryDocumentation: "Factory Documentation",
+  factoryName: "Factory Name",
+  factoryNamePlaceholder: "As in registration certificate",
+  factoryLocation: "Factory Location",
+  factoryLocationPlaceholder: "Google Maps link or coordinates",
+  registrationCertificate: "Registration Certificate",
+  specialtyCertificates: "Specialty Certificates (ISO, FSSC, FDA, GMP, etc.)",
+  foundationYear: "Foundation Year",
+  foundationYearPlaceholder: "Select Year",
+  capital: "Capital",
+  capitalPlaceholder: "Amount",
+  notes: "Notes and Additional Comments",
+  notesPlaceholder: "Additional notes",
+  formSubmitted: "Form submitted successfully!"
+}
+,
+
   step5: {
-    reviewSubmit: "Review and Submit",
-    confirmData: "Please confirm all data before submission",
-    submitButton: "Submit"
+    cardSection: {
+      cardHolderName: "Card Holder Name",
+      cardHolderNamePlaceholder: "Name as shown on card",
+      cardNumber: "Card Number",
+      cardNumberPlaceholder: "1234 5678 9101 1121",
+      expiryDate: "Expiry Date",
+      expiryDatePlaceholder: "MM/YY",
+      cvv: "CVV",
+      cvvPlaceholder: "123",
+      visa: "VISA"
+    },
+    actions: {
+      payAndSubmit: "Pay & Submit"
+    },
+    invoice: {
+      title: "Invoice Summary",
+      companyRegistration: "Company Registration",
+      technicalSupport: "Technical Support",
+      serviceTax: "Service Tax",
+      totalLabel: "Total Amount"
+    },
+    pageTitle: "Electronic Payment"
   },
+
   buttons: {
     next: "Next",
     prev: "Previous",
     save: "Save",
     close: "Close"
   },
-   login: {
+
+  login: {
     title: "Login",
     email: "Email",
     password: "Password",
@@ -57,13 +82,15 @@ export default {
     noAccount: "Don't have an account?",
     register: "Register"
   },
-    otp: {
+
+  otp: {
     title: "Account Verification",
     subtext: "Enter the OTP code",
     timerText: "Resend after",
     button: "Verify Account"
   },
-    registration: {
+
+  registration: {
     title: "Create New Account",
     name: "Name",
     email: "Email",
@@ -74,16 +101,20 @@ export default {
     login: "Login",
     submit: "Create Account"
   },
+
   welcome: {
     industrial: "Industrial Establishment",
     industrialSub: "(Factory)",
     industrialInfo: "Factory Information",
     industrialDocs: "Required Documents",
+
     nonIndustrial: "Non-Industrial Establishment",
     nonIndustrialSub: "(Company)",
     nonIndustrialInfo: "Company Information",
     nonIndustrialDocs: "Required Documents",
+
     startBtn: "Start Registering Your Establishment",
+
     factoryItems: [
       "Factory Name",
       "Factory Location and Address",
@@ -95,6 +126,7 @@ export default {
       "Specialized Certificates",
       "Factory Registration Certificate"
     ],
+
     companyItems: [
       "Company Name",
       "Company Location and Address",
@@ -105,24 +137,19 @@ export default {
       "Management Method",
       "Authorized Manager Name"
     ],
+
     companyDocs: [
       "Specialized Certificates",
       "Company Registration Certificates"
     ]
   },
-    step4: {
-    factoryDocumentation: "Factory Documentation",
-    factoryName: "Factory Name",
-    factoryNamePlaceholder: "Baghdad - Iraq - Al Wahda St.",
-    factoryLocation: "Factory Location",
-    factoryLocationPlaceholder: "https://maps.app.goo.gl/...",
-    registrationCertificate: "Registration Certificate",
-    specialtyCertificates: "Specialty Certificates",
-    foundationYear: "Foundation Year",
-    capital: "Capital",
-    notes: "Notes / Additional Comments",
-    notesPlaceholder: "Write any notes or comments here",
-    save: "Save",
-    formSubmitted: "Form submitted successfully!",
-  },
+   factoryInfo: "Factory Information",
+      factoryName: "Factory Name",
+      factoryActivity: "Factory Activity",
+      factoryProducts: "Products Offered by Factory",
+      addProduct: "Add Product",
+      productImage: "Product Image",
+      productName: "Product Name",
+      productDetails: "Details",
+      actions: "Actions",
 };

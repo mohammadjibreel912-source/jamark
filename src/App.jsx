@@ -13,7 +13,6 @@ function App() {
     <AppProvider>
       <LanguageProvider>
         <Router>
-            <LanguageSwitcher />
 
           <Routes>
             <Route path="/" element={<WelcomePage />} />

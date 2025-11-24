@@ -269,4 +269,191 @@
 
 .card-wrapper.selected {
   border-color: #28a745;
+}/* FactoryForm.css */
+
+body {
+  background-color: #f5f5f5;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #21303b;
+}
+
+.progress-bar {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 24px;
+  justify-content: space-between;
+}
+
+.progress-bar li {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ddd;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  position: relative;
+}
+
+.progress-bar li.completed {
+  background-color: #4caf50;
+}
+
+.progress-bar li.active {
+  background-color: #2196f3;
+}
+
+.progress-bar li::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 100%;
+  height: 4px;
+  background-color: #ddd;
+  z-index: -1;
+}
+
+.progress-bar li.completed::after {
+  background-color: #4caf50;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+form label {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+form input[type="text"],
+form select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+form input[type="text"]:focus,
+form select:focus {
+  outline: none;
+  border-color: #2196f3;
+}
+
+.add-product-btn {
+  margin: 10px 0;
+  padding: 8px 16px;
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.add-product-btn:hover {
+  background-color: #1976d2;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+table img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0 4px;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.action-btn:hover {
+  transform: scale(1.2);
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.prev-btn,
+.next-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.prev-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.prev-btn:hover {
+  background-color: #bbb;
+}
+
+.next-btn {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.next-btn:hover {
+  background-color: #1976d2;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  form input[type="text"],
+  form select {
+    font-size: 12px;
+  }
+
+  .add-product-btn,
+  .prev-btn,
+  .next-btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  table img {
+    width: 40px;
+    height: 40px;
+  }
 }

@@ -1,9 +1,7 @@
 import React, { createContext, useState } from "react";
 import ar from "../translations/ar";
 import en from "../translations/en";
-
 export const LanguageContext = createContext();
-
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState("ar"); 
 

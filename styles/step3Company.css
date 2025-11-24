@@ -1,0 +1,51 @@
+.label-parent {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+  color: #2e3238;
+  font-family: Cairo;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.parent {
+  display: flex;
+  align-items: center;
+}
+
+.div {
+  position: relative;
+  line-height: 22px;
+  flex-shrink: 0;
+}
+
+.basic {
+  align-self: stretch;
+  height: 38px;
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 7px 10px;
+  font-size: 14px;
+  color: #2e3238;
+}
+
+.basic input, .basic select {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #2e3238;
+}

@@ -1,47 +1,65 @@
 export default {
   step1: {
-    foreignCompany: "منشأة أجنبية",
-    iraqiCompany: "منشأة عراقية",
-    industrial: "منشأة صناعية",
-    nonIndustrial: "منشأة غير صناعية",
-    chooseCompanyType: "اختر نوع المنشأة"
+    foreignCompany: "شركة أجنبية",
+    iraqiCompany: "شركة عراقية",
+    industrial: "صناعية",
+    nonIndustrial: "غير صناعية",
+    chooseCompanyType: "اختر نوع الشركة"
   },
   step2: {
     basicInfo: "المعلومات الأساسية",
     name: "الاسم",
     email: "البريد الإلكتروني",
-    phone: "رقم الهاتف"
+    phone: "الهاتف"
   },
   step3: {
     companyData: "بيانات الشركة",
     companyName: "اسم الشركة",
-    activity: "نشاط الشركة",
+    activity: "النشاط",
     companyType: "نوع الشركة",
     companyForm: "شكل الشركة",
-    managementMethod: "طريقة إدارة الشركة",
+    managementMethod: "طريقة الإدارة",
     managerName: "اسم المدير"
   },
   step4: {
-    companyDocumentation: "توثيق الشركة",
-    companyAddress: "عنوان الشركة",
-    companyAddressPlaceholder: "عنوان الشركة",
-    mapLinkPlaceholder: "رابط Google Maps أو إحداثيات",
-    registrationCertificate: "شهادة تسجيل الشركة",
-    specialtyCertificates: "الشهادات الاختصاصية (ISO, FSSC, FDA, GMP, etc.)",
-    foundingYear: "سنة التأسيس",
-    foundingYearPlaceholder: "اختر السنة",
-    capitalPlaceholder: "المبلغ",
-    notes: "ملاحظات وتعليقات إضافية",
-    notesPlaceholder: "ملاحظات إضافية",
-    addressDetails: "تفاصيل العنوان",
-    country: "البلد",
-    city: "المدينة",
-    region: "المنطقة"
-  },
+  factoryDocumentation: "توثيق المصنع",
+  factoryName: "اسم المصنع",
+  factoryNamePlaceholder: "كما هو في شهادة التسجيل",
+  factoryLocation: "موقع المصنع",
+  factoryLocationPlaceholder: "رابط خرائط جوجل أو الإحداثيات",
+  registrationCertificate: "شهادة التسجيل",
+  specialtyCertificates: "الشهادات المتخصصة (ISO, FSSC, FDA, GMP, إلخ)",
+  foundationYear: "سنة التأسيس",
+  foundationYearPlaceholder: "اختر السنة",
+  capital: "رأس المال",
+  capitalPlaceholder: "المبلغ",
+  notes: "ملاحظات وتعليقات إضافية",
+  notesPlaceholder: "ملاحظات إضافية",
+  formSubmitted: "تم إرسال النموذج بنجاح!"
+},
   step5: {
-    reviewSubmit: "مراجعة وتقديم",
-    confirmData: "يرجى التأكد من صحة البيانات قبل الإرسال",
-    submitButton: "إرسال"
+    cardSection: {
+      cardHolderName: "اسم صاحب البطاقة",
+      cardHolderNamePlaceholder: "الاسم كما يظهر على البطاقة",
+      cardNumber: "رقم البطاقة",
+      cardNumberPlaceholder: "1234 5678 9101 1121",
+      expiryDate: "تاريخ الانتهاء",
+      expiryDatePlaceholder: "MM/YY",
+      cvv: "CVV",
+      cvvPlaceholder: "123",
+      visa: "VISA"
+    },
+    actions: {
+      payAndSubmit: "الدفع وتقديم الطلب"
+    },
+    invoice: {
+      title: "ملخص الفاتورة",
+      companyRegistration: "تسجيل الشركة",
+      technicalSupport: "الدعم الفني",
+      serviceTax: "ضريبة الخدمة",
+      totalLabel: "المبلغ الإجمالي"
+    },
+    pageTitle: "الدفع الإلكتروني"
   },
   buttons: {
     next: "التالي",
@@ -49,80 +67,74 @@ export default {
     save: "حفظ",
     close: "إغلاق"
   },
-    login: {
+  login: {
     title: "تسجيل الدخول",
     email: "البريد الإلكتروني",
     password: "كلمة المرور",
     loginBtn: "تسجيل الدخول",
-    noAccount: "لا تملك حساب؟",
-    register: "إنشاء حساب"
+    noAccount: "ليس لديك حساب؟",
+    register: "تسجيل"
   },
-   otp: {
-    title: "تأكيد الحساب",
-    subtext: "أدخل رمز التحقق (OTP)",
+  otp: {
+    title: "التحقق من الحساب",
+    subtext: "أدخل رمز التحقق",
     timerText: "إعادة الإرسال بعد",
-    button: "تأكيد الحساب"
+    button: "تحقق من الحساب"
   },
-    registration: {
+  registration: {
     title: "إنشاء حساب جديد",
     name: "الاسم",
     email: "البريد الإلكتروني",
-    phone: "رقم الهاتف",
+    phone: "الهاتف",
     password: "كلمة المرور",
     confirmPassword: "تأكيد كلمة المرور",
     haveAccount: "هل لديك حساب؟",
     login: "تسجيل الدخول",
-    submit: "إنشاء حساب"
+    submit: "إنشاء الحساب"
   },
-    welcome: {
+  welcome: {
     industrial: "منشأة صناعية",
     industrialSub: "(مصنع)",
-    industrialInfo: "معلومات المصنع",
-    industrialDocs: "الوثائق المطلوبة",
+    industrialInfo: "بيانات المصنع",
+    industrialDocs: "المستندات المطلوبة",
     nonIndustrial: "منشأة غير صناعية",
     nonIndustrialSub: "(شركة)",
-    nonIndustrialInfo: "معلومات الشركة",
-    nonIndustrialDocs: "الوثائق المطلوبة",
-    startBtn: "البدء بتسجيل المنشأة",
+    nonIndustrialInfo: "بيانات الشركة",
+    nonIndustrialDocs: "المستندات المطلوبة",
+    startBtn: "ابدأ بتسجيل منشأتك",
     factoryItems: [
-      "إسم المصنع",
+      "اسم المصنع",
       "موقع وعنوان المصنع",
       "سنة التأسيس",
       "رأس المال",
-      "المنتجات التي يقدمها المصنع"
+      "المنتجات المقدمة"
     ],
     factoryDocs: [
-      "الشهادات الإختصاصية",
+      "الشهادات التخصصية",
       "شهادة تسجيل المصنع"
     ],
     companyItems: [
-      "إسم الشركة",
+      "اسم الشركة",
       "موقع وعنوان الشركة",
       "سنة التأسيس",
       "رأس المال",
       "نوع الشركة",
       "شكل الشركة",
-      "طريقة إدارة الشركة",
-      "إسم المدير المفوض"
+      "طريقة الإدارة",
+      "اسم المدير المفوض"
     ],
     companyDocs: [
-      "الشهادات الإختصاصية",
+      "الشهادات التخصصية",
       "شهادات تسجيل الشركة"
     ]
   },
-   step4: {
-    factoryDocumentation: "توثيق المصنع",
-    factoryName: "عنوان المصنع",
-    factoryNamePlaceholder: "بغداد - العراق - شارع الوحدة",
-    factoryLocation: "موقع المصنع",
-    factoryLocationPlaceholder: "https://maps.app.goo.gl/...",
-    registrationCertificate: "شهادة تسجيل المصنع",
-    specialtyCertificates: "الشهادات الإختصاصية",
-    foundationYear: "سنة التأسيس",
-    capital: "رأس المال",
-    notes: "ملاحظات وتعليقات إضافية",
-    notesPlaceholder: "اكتب هنا أي ملاحظات أو تعليقات",
-    save: "حفظ",
-    formSubmitted: "تم إرسال البيانات بنجاح!",
-  },
+    factoryInfo: "معلومات المصنع",
+      factoryName: "اسم المصنع",
+      factoryActivity: "نشاط المصنع",
+      factoryProducts: "المنتجات التي يقدمها المصنع",
+      addProduct: "إضافة منتج",
+      productImage: "صورة المنتج",
+      productName: "إسم المنتج",
+      productDetails: "التفاصيل",
+      actions: "إجراءات",
 };

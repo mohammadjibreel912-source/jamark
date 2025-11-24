@@ -1,24 +1,30 @@
-import React, { useState, useContext } from "react";
-import "../styles/StepperStyles.css";
+import React, { useState, useContext, useEffect } from "react";
+import { LanguageContext } from "../context/LanguageContext";
+import Sidebar from "./Sidebar";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import Step3 from "./steps/Step3";
 import Step4 from "./steps/Step4";
 import Step5 from "./steps/Step5";
-import { LanguageContext } from "../context/LanguageContext";
+import { LookupsService } from "../services/LookupsService";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const StepperPage = () => {
   const { translations, language } = useContext(LanguageContext);
+  const isRTL = language === "ar";
 
   const [step, setStep] = useState(1);
-  const [topSelected, setTopSelected] = useState([]);
-  const [bottomSelected, setBottomSelected] = useState([]);
 
-  // بيانات مشتركة
+  // الاختيارات الآن واضحة
+  const [topSelected, setTopSelected] = useState([]);     // "foreign" أو "iraqi"
+  const [bottomSelected, setBottomSelected] = useState([]); // "factory" أو "company"
+
+  // Step2 fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
+  // Step3 fields
   const [companyName, setCompanyName] = useState("");
   const [activityId, setActivityId] = useState("");
   const [companyType, setCompanyType] = useState("");
@@ -26,6 +32,7 @@ const StepperPage = () => {
   const [managementMethod, setManagementMethod] = useState("");
   const [managerName, setManagerName] = useState("");
 
+  // Lookup data
   const [activities, setActivities] = useState([]);
   const [companyTypes, setCompanyTypes] = useState([]);
   const [companyForms, setCompanyForms] = useState([]);
@@ -34,62 +41,68 @@ const StepperPage = () => {
   const handleNext = () => setStep(prev => Math.min(prev + 1, 5));
   const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
 
-  const handleSelect = (section, index) => {
+  // 🔥 handleSelect يستخدم النصوص مباشرة
+  const handleSelect = (section, value) => {
     if (section === "top") {
       setTopSelected(prev =>
-        prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
+        prev.includes(value) ? prev.filter(v => v !== value) : [value] // اختر واحد فقط
       );
     } else {
       setBottomSelected(prev =>
-        prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
+        prev.includes(value) ? prev.filter(v => v !== value) : [value] // اختر واحد فقط
       );
     }
   };
 
-  // حالة Sidebar
-  let status = translations.step1.chooseCompanyType;
-  if (bottomSelected.includes(0)) status = translations.step1.iraqiCompany;
-  if (bottomSelected.includes(1)) status = translations.step1.industrial;
+  // Fetch lookups فقط عند Step3
+  useEffect(() => {
+    if (step === 3) {
+      const fetchLookups = async () => {
+        try {
+          const [types, forms, methods, acts] = await Promise.all([
+            LookupsService.getCompanyTypes(),
+            LookupsService.getCompanyForms(),
+            LookupsService.getManagementMethods(),
+            LookupsService.getFactoryActivitiesWithExamples(),
+          ]);
+          setCompanyTypes(types || []);
+          setCompanyForms(forms || []);
+          setManagementMethods(methods || []);
+          setActivities(acts || []);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      fetchLookups();
+    }
+  }, [step]);
 
-  // ترتيب Sidebar و content-wrapper حسب اللغة
-  const isRTL = language === "ar";
-  const wrapperStyle = { display: "flex", flexDirection: isRTL ? "row-reverse" : "row" };
-  const sidebarStyle = { order: isRTL ? 2 : 1 };
-  const contentStyle = { flex: 1, padding: "20px", order: isRTL ? 1 : 2 };
+  // ✅ الآن يستخدم string واضح
+  const isFactory = bottomSelected.includes("factory");
 
   return (
-    <div className="page-wrapper" style={wrapperStyle} dir={isRTL ? "rtl" : "ltr"}>
-      {/* Sidebar */}
-      <div className="sidebar" style={sidebarStyle}>
-        <div className="sidebar-content">
-          <h3>{translations.step3.companyData}</h3>
-          <span>{status}</span>
-          {bottomSelected.includes(0) && <p>{translations.step1.iraqiCompany}</p>}
-          {bottomSelected.includes(1) && <p>{translations.step1.industrial}</p>}
-          {step === 2 && (
-            <div>
-              <p>{translations.step2.name}: {name}</p>
-              <p>{translations.step2.email}: {email}</p>
-              <p>{translations.step2.phone}: {phone}</p>
-            </div>
-          )}
-          {step === 3 && (
-            <div>
-              <p>{translations.step3.companyName}: {companyName}</p>
-              <p>{translations.step3.activity}: {activityId}</p>
-              <p>{translations.step3.companyType}: {companyType}</p>
-              <p>{translations.step3.companyForm}: {companyForm}</p>
-              <p>{translations.step3.managementMethod}: {managementMethod}</p>
-              <p>{translations.step3.managerName}: {managerName}</p>
-            </div>
-          )}
-        </div>
-      </div>
+    <div className="page-wrapper" style={{ display: "flex" }} dir={isRTL ? "rtl" : "ltr"}>
+      <Sidebar
+        step={step}
+        bottomSelected={bottomSelected}
+        translations={translations}
+        name={name}
+        email={email}
+        phone={phone}
+        companyName={companyName}
+        activityId={activityId}
+        companyType={companyType}
+        companyForm={companyForm}
+        managementMethod={managementMethod}
+        managerName={managerName}
+        isFactory={isFactory}
+      />
 
-      {/* محتوى Steps */}
-      <div className="content-wrapper" style={contentStyle}>
-        {/* Stepper progress */}
-        <div className="stepper-wrapper" style={{ marginBottom: "20px" }}>
+      <div className="content-wrapper" style={{ flex: 1 }}>
+        <LanguageSwitcher />
+
+        {/* Stepper */}
+        <div className="stepper-wrapper" style={{ direction: isRTL ? "rtl" : "ltr" }}>
           {[1, 2, 3, 4, 5].map(s => (
             <div
               key={s}
@@ -98,15 +111,26 @@ const StepperPage = () => {
               <span>{s}</span>
             </div>
           ))}
-          <div
-            className="stepper-progress"
-            style={{ width: `${((step - 1) / 4) * 100}%` }}
-          ></div>
+          <div className="stepper-progress" style={{ width: `${((step - 1) / 4) * 100}%` }}></div>
         </div>
 
-        {/* Steps content */}
-        {step === 1 && <Step1 topSelected={topSelected} bottomSelected={bottomSelected} handleSelect={handleSelect} />}
-        {step === 2 && <Step2 name={name} setName={setName} email={email} setEmail={setEmail} phone={phone} setPhone={setPhone} />}
+        {/* Steps */}
+        {step === 1 && (
+          <Step1
+            topSelected={topSelected}
+            bottomSelected={bottomSelected}
+            handleSelect={handleSelect}
+            translations={translations.step1}
+          />
+        )}
+        {step === 2 && (
+          <Step2
+            name={name} setName={setName}
+            email={email} setEmail={setEmail}
+            phone={phone} setPhone={setPhone}
+            translations={translations.step2}
+          />
+        )}
         {step === 3 && (
           <Step3
             companyName={companyName} setCompanyName={setCompanyName}
@@ -115,24 +139,28 @@ const StepperPage = () => {
             companyForm={companyForm} setCompanyForm={setCompanyForm}
             managementMethod={managementMethod} setManagementMethod={setManagementMethod}
             managerName={managerName} setManagerName={setManagerName}
-            activities={activities} setActivities={setActivities}
-            companyTypes={companyTypes} setCompanyTypes={setCompanyTypes}
-            companyForms={companyForms} setCompanyForms={setCompanyForms}
-            managementMethods={managementMethods} setManagementMethods={setManagementMethods}
-            step={step}
+            activities={activities}
+            companyTypes={companyTypes}
+            companyForms={companyForms}
+            managementMethods={managementMethods}
+            isFactory={isFactory}
+            translations={translations.step3}
+            language={language}
           />
         )}
-        {step === 4 && <Step4 />}
-        {step === 5 && <Step5 />}
+        {step === 4 && <Step4 translations={translations.step4} />}
+        {step === 5 && <Step5 translations={translations.step5} />}
 
-        {/* أزرار التالي والسابق */}
-        <div className="buttons-wrapper" style={{ marginTop: "20px" }}>
+        {/* Navigation */}
+        <div className="buttons-wrapper">
           <button onClick={handlePrev} disabled={step === 1}>
             {translations.buttons.prev}
           </button>
-          <button onClick={handleNext} disabled={step === 5}>
-            {translations.buttons.next}
-          </button>
+          {step < 5 ? (
+            <button onClick={handleNext}>{translations.buttons.next}</button>
+          ) : (
+            <button>{translations.step5.actions.payAndSubmit}</button>
+          )}
         </div>
       </div>
     </div>
