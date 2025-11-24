@@ -72,13 +72,32 @@
   line-height: 24px;
   word-wrap: break-word;
 }
-
-.rectangle-div {
-  width: 100%;
-  height: 264px;
-  transform: rotate(-90deg);
-  transform-origin: center; /* optional */
-  object-fit: cover; /* makes sure it fills the space */
-  display: block; /* remove inline spacing */
+/* Logo */
+.logo-container {
+  margin-bottom: 20px;
 }
 
+.cor-platform {
+  width: 120px; /* adjust logo size */
+  height: auto;
+  display: block;
+}
+
+/* Rectangle */
+.rectangle-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center; /* center the rectangle inside */
+  margin-top: 50px;    /* pixels */
+
+}
+
+.rectangle-div {
+  width: 264px;       /* rectangle width */
+  height: 40px;       /* rectangle height */
+  background-color: #05baa3;
+  transform: rotate(-90deg); /* rotate rectangle */
+  display: block;
+  
+}
