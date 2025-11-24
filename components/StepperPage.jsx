@@ -141,7 +141,16 @@ const StepperPage = () => {
             language={language}
           />
         )}
-        {step === 4 && <Step4 translations={translations.step4} />}
+
+        {step === 4 && (
+  <Step4
+    isFactory={isFactory} // pass the flag
+    translations={translations.step4}
+    language={language}
+    // you can pass additional props like formData handlers if needed
+  />
+)}
+
         {step === 5 && <Step5 translations={translations.step5} />}
 
         {/* Navigation */}
@@ -153,6 +162,7 @@ const StepperPage = () => {
   translations={translations}
   finalActionText={translations.step5.actions.payAndSubmit}
 />
+
 
 
       </div>

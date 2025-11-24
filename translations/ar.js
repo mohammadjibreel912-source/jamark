@@ -35,7 +35,22 @@ export default {
   capitalPlaceholder: "المبلغ",
   notes: "ملاحظات وتعليقات إضافية",
   notesPlaceholder: "ملاحظات إضافية",
-  formSubmitted: "تم إرسال النموذج بنجاح!"
+  formSubmitted: "تم إرسال النموذج بنجاح!",
+  companyInformation: "معلومات الشركة",
+  companyName: "اسم الشركة",
+  companyNamePlaceholder: "كما هو في شهادة التسجيل",
+  companyActivities: "أنشطة الشركة",
+  activityPlaceholder: "أضف نشاطًا",
+  companyType: "نوع الشركة",
+  companyTypePlaceholder: "ذات مسؤولية محدودة",
+  companyForm: "شكل الشركة",
+  companyFormPlaceholder: "اعتيادية",
+  managementMethod: "طريقة إدارة الشركة",
+  managementMethodPlaceholder: "مدير مفوض",
+  managerName: "إسم المدير المفوض",
+  managerNamePlaceholder: "الاسم الكامل",
+  saveButton: "حفظ البيانات",
+  formSubmitted: "تم إرسال البيانات بنجاح!"
 },
   step5: {
     cardSection: {
