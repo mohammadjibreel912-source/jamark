@@ -30,7 +30,6 @@ body {
 }
 
 .field {
-  width: calc(25% - 20px);
   display: flex;
   flex-direction: column;
   gap: 6px;

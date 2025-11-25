@@ -6,7 +6,6 @@
   margin: 0;
   padding: 0;
   font-family: "Cairo", sans-serif;
-
   background-color: rgba(7, 18, 107, 0.6);
   background-image: url('../src/assets/background.jpg');
   background-size: cover;
@@ -178,4 +177,7 @@
     top: 15px;
     right: 15px;
   }
+}
+div#root {
+    width: 100%;
 }
