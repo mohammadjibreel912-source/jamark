@@ -1,0 +1,150 @@
+/* استيراد خط Cairo */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+/* --- الستايلات الأساسية والتخطيط --- */
+
+.form-page-container-outer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 4rem; 
+    padding-bottom: 5rem;
+    min-height: 100vh;
+    background-color: #f7f9fb; 
+    font-family: 'Cairo', sans-serif;
+}
+
+.main-form-card {
+    /* تصغير العرض الأقصى ليعود لـ 550px ليكون أنحف/أصغر */
+    width: 100%;
+    max-width: 550px; 
+    /* ---------------------------------------------------- */
+    background: #ffffff;
+    padding: 30px; /* تقليل البادينغ قليلاً */
+    border-radius: 15px; /* تقليل استدارة الزوايا قليلاً */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08); /* ظل أغمق قليلاً */
+    direction: rtl; 
+}
+
+/* --- العناوين --- */
+
+.form-title {
+    font-size: 1.875rem; 
+    font-weight: 700; 
+    color: #374151; 
+    text-align: center;
+    margin-bottom: 2rem; /* تقليل المسافة السفلية */
+    width: 100%;
+}
+
+/* --- حقول النموذج --- */
+
+.form-fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* تقليل المسافة بين الحقول */
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    /* محاذاة العناصر إلى اليمين داخل كل مجموعة حقل */
+    align-items: flex-start; 
+}
+
+.form-label {
+    display: block;
+    color: #4b5563; 
+    font-weight: 600; 
+    font-size: 1rem; 
+    margin-bottom: 0.4rem; /* تقليل المسافة بين التسمية والحقل */
+    text-align: right;
+    width: 100%; /* ضمان أن التسمية تملأ المساحة وتتم محاذاتها لليمين */
+}
+
+.custom-input-style,
+.custom-textarea-style {
+    width: 100%;
+    padding: 0.6rem 1rem; /* تقليل البادينغ الداخلي قليلاً */
+    text-align: right;
+    font-size: 1rem; /* تصغير حجم خط الحقل قليلاً */
+    border: 1px solid #E1E1E1; 
+    border-radius: 4px; /* تصغير استدارة الحواف */
+    transition: all 0.2s;
+}
+
+.custom-input-style {
+    height: 40px; /* تصغير ارتفاع الحقل */
+}
+
+.custom-textarea-style {
+    min-height: 120px; /* تقليل الارتفاع الأدنى */
+    resize: vertical;
+}
+
+/* ستايل التركيز (Focus) */
+.custom-input-style:focus,
+.custom-textarea-style:focus {
+    outline: none;
+    border-color: #3b82f6; 
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* تخفيف ظل التركيز */
+}
+
+/* --- منطقة تحميل الصورة (Small) --- */
+
+.upload-area-small {
+    /* أبعاد منطقة التحميل أصغر لتقابل الصورة المطلوبة */
+    width: 120px; 
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    
+    border: 2px dashed #D1D5DB; 
+    border-radius: 4px; 
+    transition: all 0.2s;
+    color: #A1A1A1; 
+}
+
+.upload-area-small:hover {
+    border-color: #9ca3af; 
+    background-color: #f9fafb; 
+}
+
+.upload-area-icon {
+    font-size: 2rem; /* تصغير حجم علامة + */
+    line-height: 1;
+}
+
+.upload-text {
+    font-size: 0.8rem; /* تصغير حجم النص */
+    margin-top: 0.2rem; 
+}
+
+/* --- زر الإرسال --- */
+
+.button-container {
+    padding-top: 2rem; /* زيادة المسافة قبل الزر لجعله في الأسفل */
+}
+
+.submit-button {
+    width: 100%;
+    padding: 0.8rem 0; /* زيادة ارتفاع الزر */
+    font-size: 1.25rem; /* تكبير خط الزر */
+    font-weight: 700; /* سميك جداً */
+    color: #ffffff;
+    background-color: #07126B; /* اللون الأزرق الداكن المطلوب */
+    border-radius: 8px; 
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); /* ظل أوضح للزر */
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #1e3a8a; 
+}
