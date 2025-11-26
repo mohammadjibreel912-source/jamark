@@ -170,8 +170,6 @@ const StepperPage = () => {
                         isFactory={isFactory} // pass the flag
                         translations={translations.step4}
                         language={language}
-                        
-                        // 🔥 تمرير دوال التحديث (setters) وبيانات Step 4 إلى المكون
                         establishmentAddress={establishmentAddress} setEstablishmentAddress={setEstablishmentAddress}
                         establishmentLocation={establishmentLocation} setEstablishmentLocation={setEstablishmentLocation}
                         foundingYear={foundingYear} setFoundingYear={setFoundingYear}

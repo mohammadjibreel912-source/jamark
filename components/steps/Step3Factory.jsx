@@ -6,7 +6,6 @@ import { LanguageContext } from "../../context/LanguageContext";
 // 🔥 مكون InfoIcon الذي يحمل كود SVG المطلوب
 const InfoIcon = ({ language }) => {
     const iconColor = "#007AFF"; 
-    // ضبط الهامش بناءً على اتجاه اللغة
     const marginAdjustment = language === "ar" ? { marginRight: 5 } : { marginLeft: 5 };
 
     return (
@@ -20,7 +19,7 @@ const InfoIcon = ({ language }) => {
     );
 };
 
-// بيانات وهمية للمنتجات
+// 🔥 بيانات وهمية للمنتجات - تم إعادتها
 const productsData = [
   {
     id: 1,
@@ -44,28 +43,21 @@ const productsData = [
 
 
 const Step3Factory = ({
-  activities = [], // قائمة أنشطة المصانع (الـ Lookups)
+  activities = [], 
   companyName, setCompanyName, 
-  activityId, setActivityId
+  activityId, setActivityId,
+activityName 
 }) => {
   const { translations, language } = useContext(LanguageContext);
   
-  // حالة النشاط المحلي، مرتبطة بالـ Prop activityId
   const [selectedActivityId, setSelectedActivityId] = useState(activityId || activities[0]?.id || ""); 
-  
-  // حالة التحكم في ظهور قائمة الأنشطة الرئيسية المخصصة
   const [showActivityDropdown, setShowActivityDropdown] = useState(false); 
-
-  // 🔥 حالة جديدة لتتبع الأنشطة التي يتم التمرير عليها لإظهار القائمة الفرعية (الأمثلة)
   const [hoveredActivityId, setHoveredActivityId] = useState(null); 
 
-  // مرجع للـ Dropdown لكي نتمكن من إغلاقه عند النقر خارجياً
   const dropdownRef = useRef(null); 
-
-  // العثور على النشاط المختار وأمثلته
   const selectedActivity = activities.find(activity => activity.id === selectedActivityId);
 
-  const [products, setProducts] = useState(productsData);
+  const [products, setProducts] = useState(productsData); // ⬅️ يتم تعيين الحالة هنا
   const [showPopup, setShowPopup] = useState(false);
   const [newProduct, setNewProduct] = useState({ name: "", details: "", image: "" });
   const [editingProduct, setEditingProduct] = useState(null); 
@@ -95,20 +87,20 @@ const Step3Factory = ({
     foodIndustry: "مصانع الصناعات الغذائية",
   }; 
   
-  // دالة لتبديل حالة القائمة المخصصة
+  // ... (بقية دوال المكون)
   const toggleDropdown = () => {
     setShowActivityDropdown(prev => !prev);
   };
 
-  // دالة لتحديد النشاط (وتحديث الحالة الأب)
   const handleActivitySelect = (activityId) => {
     const newId = parseInt(activityId);
     setSelectedActivityId(newId);
-    setActivityId(newId); // تحديث الحالة في المكون الأب
-    setShowActivityDropdown(false); // أغلق القائمة بعد الاختيار
+    setActivityId(newId);
+  const activity = list.find(act => act.id === id);
+    activityName=activity;
+    setShowActivityDropdown(false);
   };
 
-  // useEffect لإغلاق القائمة عند النقر خارجياً
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -122,7 +114,6 @@ const Step3Factory = ({
     };
   }, [dropdownRef]);
   
-  // Update newProduct / editingProduct state as user types
   const handleChange = (e) => {
     const { name, value } = e.target;
     
@@ -133,20 +124,17 @@ const Step3Factory = ({
     }
   };
 
-  // دالة الحذف
   const handleDeleteProduct = (id) => {
     if (window.confirm(language === "ar" ? "هل أنت متأكد من حذف هذا المنتج؟" : "Are you sure you want to delete this product?")) {
         setProducts(products.filter((product) => product.id !== id));
     }
   };
 
-  // دالة بدء التعديل
   const handleStartEdit = (product) => {
     setEditingProduct(product); 
     setShowPopup(true); 
   };
 
-  // دالة حفظ التعديلات
   const handleSaveEdit = () => {
     if (!editingProduct || !editingProduct.name) return;
     
@@ -158,7 +146,6 @@ const Step3Factory = ({
     setShowPopup(false);
   };
 
-  // دالة الإضافة
   const handleAddProduct = () => {
     if (!newProduct.name) return; 
     const productToAdd = {
@@ -172,7 +159,6 @@ const Step3Factory = ({
     setShowPopup(false);
   };
   
-  // دالة الإغلاق العامة للـ Popup
   const handleClosePopup = () => {
       setShowPopup(false);
       setEditingProduct(null);
@@ -248,7 +234,6 @@ const Step3Factory = ({
                 top: 'calc(100% + 5px)',
                 [language === "ar" ? 'right' : 'left']: 0,
                 width: '100%',
-                maxWidth: 450,
                 zIndex: 100,
                 background: '#fff',
                 border: '1px solid #ccc',
@@ -261,7 +246,6 @@ const Step3Factory = ({
                     <div 
                         key={activity.id}
                         onClick={() => handleActivitySelect(activity.id)}
-                        // 🔥 تعيين الحالة عند التمرير وإلغائها عند المغادرة
                         onMouseEnter={() => setHoveredActivityId(activity.id)} 
                         onMouseLeave={() => setHoveredActivityId(null)} 
                         style={{
@@ -272,7 +256,7 @@ const Step3Factory = ({
                             alignItems: 'flex-start',
                             fontSize: 14,
                             borderBottom: '1px solid #eee',
-                            background: activity.id === selectedActivityId ? '#f0f0ff' : (hoveredActivityId === activity.id ? '#f5f5f5' : 'transparent'), // تظليل عند التمرير
+                            background: activity.id === selectedActivityId ? '#f0f0ff' : (hoveredActivityId === activity.id ? '#f5f5f5' : 'transparent'), 
                         }}
                     >
                         <div style={{ fontWeight: 'bold' }}>
@@ -284,11 +268,10 @@ const Step3Factory = ({
                             <div style={{ position: 'relative', cursor: 'help' }}>
                                 <InfoIcon language={language} />
 
-                                {/* 🔥 عرض القائمة المتداخلة إذا تم التمرير على هذا النشاط */}
+                                {/* عرض القائمة المتداخلة إذا تم التمرير على هذا النشاط */}
                                 {hoveredActivityId === activity.id && (
                                     <div style={{
                                         position: 'absolute',
-                                        // يظهر على الجانب المقابل لاتجاه الكتابة
                                         [language === "ar" ? 'left' : 'right']: '105%', 
                                         top: 0,
                                         width: 250,
@@ -297,9 +280,11 @@ const Step3Factory = ({
                                         borderRadius: 4,
                                         boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
                                         padding: 10,
-                                        zIndex: 101, // تأكد أنه يظهر فوق القائمة الرئيسية
+                                        zIndex: 101, 
                                     }}>
-                                        
+                                        <p style={{ margin: '0 0 5px 0', fontWeight: 'bold', textAlign: language === "ar" ? "right" : "left" }}>
+                                            {language === "ar" ? "أمثلة الأنشطة ذات الصلة:" : "Related Activity Examples:"}
+                                        </p>
                                         <ul style={{ margin: 0, paddingInlineStart: language === "ar" ? 15 : 20, listStyleType: 'disc', textAlign: language === "ar" ? "right" : "left" }}>
                                             {activity.examples.map((example, index) => (
                                                 <li key={index} style={{ marginBottom: 3, fontSize: 12 }}>
@@ -317,8 +302,102 @@ const Step3Factory = ({
           )}
         </div>
 
-        {/* ... (بقية مكون الجدول والـ Popup) */}
-      
+        {/* Add Product Button */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+          <label style={{ color: "#2E3238", fontSize: 16, fontWeight: 400 }}>
+            {t.productsHeader} <span style={{ color: "red" }}>*</span>
+          </label>
+          <button
+            type="button"
+            onClick={() => { setShowPopup(true); setEditingProduct(null); setNewProduct({ name: "", details: "", image: "" }); }}
+            style={{
+              background: "#05BAA3",
+              color: "#fff",
+              border: "none",
+              padding: "10px 16px",
+              borderRadius: 6,
+              cursor: "pointer",
+              marginBottom: 20,
+            }}
+          >
+            {t.addProduct}
+          </button>
+        </div>
+
+        {/* Products Table */}
+        <div style={{ borderRadius: 4, border: "1px solid #E1E1E1", background: "#FFF", display: "flex", flexDirection: "column", padding: 10, gap: 10 }}>
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 10, fontWeight: "bold", fontSize: 14, color: "#2E3238", borderBottom: "1px solid #E1E1E1" }}>
+            <div style={{ flex: 0.5, textAlign: "center" }}>{t.productImage}</div>
+            <div style={{ flex: 1, textAlign: language === "ar" ? "right" : "left" }}>{t.productName}</div>
+            <div style={{ flex: 2, textAlign: language === "ar" ? "right" : "left" }}>{t.details}</div>
+            <div style={{ flex: 0.5, textAlign: "center" }}>{t.actions}</div>
+          </div>
+
+          {/* Rows */}
+          {products.map((product) => (
+            <div key={product.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: 10, borderRadius: 4, background: "#FAFAFA", gap: 10 }}>
+              <img src={product.image} alt={product.name} style={{ width: 40, height: 40, borderRadius: 5 }} />
+              <div style={{ flex: 1, textAlign: language === "ar" ? "right" : "left" }}>{product.name}</div>
+              <div style={{ flex: 2, textAlign: language === "ar" ? "right" : "left" }}>{product.details}</div>
+              
+              {/* الأزرار مع وظائف الحذف والتعديل */}
+              <div style={{ flex: 0.5, display: "flex", gap: 10, justifyContent: "center" }}>
+                <button type="button" onClick={() => handleStartEdit(product)} style={{ background: "transparent", border: "none", cursor: "pointer" }}>
+                  <img src={editIcon} alt="Edit" style={{ width: 20, height: 20 }} />
+                </button>
+                <button type="button" onClick={() => handleDeleteProduct(product.id)} style={{ background: "transparent", border: "none", cursor: "pointer" }}>
+                  <img src={deleteIcon} alt="Delete" style={{ width: 20, height: 20 }} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Popup (Add/Edit) */}
+        {showPopup && (
+          <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 }}>
+            <div style={{ width: 591, padding: 35, background: "white", borderRadius: 20, display: "flex", flexDirection: "column", gap: 20, direction: language === "ar" ? "rtl" : "ltr" }}>
+              
+              {/* العنوان: يتغير بين "إضافة" و "تعديل" */}
+              <h2 style={{ textAlign: "center", fontSize: 32, color: "#2E3238" }}>{popupTitle}</h2>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 15 }}>
+                {/* Name */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <label>{t.productName} <span style={{ color: "red" }}>*</span></label>
+                  <input type="text" name="name" value={currentProductData.name} onChange={handleChange} placeholder={t.productNamePlaceholder} style={{ height: 36, padding: 7, borderRadius: 4, outline: "1px #E1E1E1 solid", textAlign: language === "ar" ? "right" : "left" }} />
+                </div>
+
+                {/* Details */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <label>{t.details}</label>
+                  <textarea name="details" value={currentProductData.details} onChange={handleChange} placeholder={t.detailsPlaceholder} rows={4} style={{ padding: 7, borderRadius: 4, outline: "1px #E1E1E1 solid", textAlign: language === "ar" ? "right" : "left" }} />
+                </div>
+
+                {/* Image */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <label>{t.productImage}</label>
+                  <input type="text" name="image" value={currentProductData.image} onChange={handleChange} placeholder={t.imageUrlPlaceholder} style={{ height: 36, padding: 7, borderRadius: 4, outline: "1px #E1E1E1 solid", textAlign: language === "ar" ? "right" : "left" }} />
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
+                <button type="button" onClick={handleClosePopup} style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #E1E1E1", background: "#F5F5F5", cursor: "pointer" }}>{t.cancel}</button>
+                
+                {/* الزر الرئيسي: إما إضافة أو حفظ التعديلات */}
+                <button 
+                    type="button" 
+                    onClick={editingProduct ? handleSaveEdit : handleAddProduct} 
+                    style={{ padding: "8px 16px", borderRadius: 6, border: "none", cursor: "pointer", background: "#07126B", color: "#fff" }}
+                >
+                    {editingProduct ? t.save : t.add}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   );
