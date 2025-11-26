@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from "react";
-import { LookupsService } from "../../services/LookupsService";
+import React, { useContext } from "react";
 import { LanguageContext } from "../../context/LanguageContext";
 import "../../styles/step3Company.css"; // Your CSS
 
@@ -10,35 +9,19 @@ const Step3Company = ({
   companyForm, setCompanyForm,
   managementMethod, setManagementMethod,
   managerName, setManagerName,
-  activities, setActivities,
-  companyTypes, setCompanyTypes,
-  companyForms, setCompanyForms,
-  managementMethods, setManagementMethods,
-  step
+  
+  // 🔥 هذه البيانات يجب أن تكون ممررة من StepperPage بعد جلبها
+  activities, 
+  companyTypes, 
+  companyForms, 
+  managementMethods,
+  
+  // تم إزالة 'step' لأنه لم يعد يستخدم لجلب البيانات
 }) => {
   const { translations, language } = useContext(LanguageContext);
+  
+  // 🔥 تم إزالة الـ useEffect لجعل المكون يعتمد على الـ Props الممررة
 
-  useEffect(() => {
-    if (step === 3) {
-      const fetchLookups = async () => {
-        try {
-          const [types, forms, methods, acts] = await Promise.all([
-            LookupsService.getCompanyTypes(),
-            LookupsService.getCompanyForms(),
-            LookupsService.getManagementMethods(),
-            LookupsService.getFactoryActivitiesWithExamples(),
-          ]);
-          setCompanyTypes(types || []);
-          setCompanyForms(forms || []);
-          setManagementMethods(methods || []);
-          setActivities(acts || []);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      fetchLookups();
-    }
-  }, [step]);
 
   const renderField = (label, value, setValue, placeholder, isSelect, options) => (
     <div className="label-parent">
@@ -49,18 +32,23 @@ const Step3Company = ({
       </div>
       <div className="basic" style={{ textAlign: language === "ar" ? "right" : "left" }}>
         {isSelect ? (
+          // حقل اختيار (Select)
           <select value={value} onChange={e => setValue(e.target.value)}>
+            {/* إضافة خيار افتراضي للسماح باختيار أي شيء */}
+            <option value="">{translations.step3.selectOptionPlaceholder || 'اختر قيمة'}</option> 
             {options.length === 0 ? (
-              <option>{translations.step3.loading}</option>
+              <option disabled>{translations.step3.loading}</option>
             ) : (
               options.map(opt => (
-                <option key={opt.id || opt.value} value={opt.id || opt.value}>
+                // استخدام id أو value للمفتاح والقيمة، واستخدام nameAr/nameEn للعرض
+                <option key={opt.id || opt.value} value={opt.id || opt.value || opt.name}>
                   {language === "ar" ? opt.nameAr || opt.name : opt.nameEn || opt.name}
                 </option>
               ))
             )}
           </select>
         ) : (
+          // حقل إدخال (Input)
           <input
             type="text"
             value={value}
@@ -76,12 +64,57 @@ const Step3Company = ({
     <div className="main-section" dir={language === "ar" ? "rtl" : "ltr"}>
       <h2 style={{ textAlign: language === "ar" ? "right" : "left" }}>معلومات الشركة</h2>
 
-      {renderField(translations.step3.companyName, companyName, setCompanyName, translations.step3.companyNamePlaceholder, false)}
-      {renderField(translations.step3.activity, activityId, setActivityId, translations.step3.chooseActivity, true, activities)}
-      {renderField(translations.step3.companyType, companyType, setCompanyType, translations.step3.chooseCompanyType, true, companyTypes)}
-      {renderField(translations.step3.companyForm, companyForm, setCompanyForm, translations.step3.chooseCompanyForm, true, companyForms)}
-      {renderField(translations.step3.managementMethod, managementMethod, setManagementMethod, translations.step3.chooseManagementMethod, true, managementMethods)}
-      {renderField(translations.step3.managerName, managerName, setManagerName, translations.step3.managerNamePlaceholder, false)}
+      {renderField(
+        translations.step3.companyName, 
+        companyName, 
+        setCompanyName, 
+        translations.step3.companyNamePlaceholder, 
+        false
+      )}
+      
+      {renderField(
+        translations.step3.activity, 
+        activityId, 
+        setActivityId, 
+        translations.step3.chooseActivity, 
+        true, 
+        activities // بيانات الـ Lookup
+      )}
+      
+      {renderField(
+        translations.step3.companyType, 
+        companyType, 
+        setCompanyType, 
+        translations.step3.chooseCompanyType, 
+        true, 
+        companyTypes // بيانات الـ Lookup
+      )}
+      
+      {renderField(
+        translations.step3.companyForm, 
+        companyForm, 
+        setCompanyForm, 
+        translations.step3.chooseCompanyForm, 
+        true, 
+        companyForms // بيانات الـ Lookup
+      )}
+      
+      {renderField(
+        translations.step3.managementMethod, 
+        managementMethod, 
+        setManagementMethod, 
+        translations.step3.chooseManagementMethod, 
+        true, 
+        managementMethods // بيانات الـ Lookup
+      )}
+      
+      {renderField(
+        translations.step3.managerName, 
+        managerName, 
+        setManagerName, 
+        translations.step3.managerNamePlaceholder, 
+        false
+      )}
     </div>
   );
 };

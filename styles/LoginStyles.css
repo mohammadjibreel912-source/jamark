@@ -76,14 +76,14 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  text-align: inherit;
+  text-align: right ;
 }
 
 .login-form-group label {
   font-size: 15px;
   font-weight: 500;
   color: #07126B;
-  text-align: inherit;
+  text-align: right;
 }
 
 .login-input {
