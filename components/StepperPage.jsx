@@ -153,13 +153,12 @@ const StepperPage = () => {
                         companyForm={companyForm} setCompanyForm={setCompanyForm}
                         managementMethod={managementMethod} setManagementMethod={setManagementMethod}
                         managerName={managerName} setManagerName={setManagerName}
-                        
+                        activities={activities} // 🔥 تم تمريرها هنا
                         // تمرير بيانات Lookup التي تم جلبها في useEffect
-                        activities={activities}
                         companyTypes={companyTypes}
                         companyForms={companyForms}
                         managementMethods={managementMethods}
-
+                        
                         isFactory={isFactory}
                         translations={translations.step3}
                         language={language}
