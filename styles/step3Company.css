@@ -1,31 +1,43 @@
+/* --- Base Structure Styles --- */
 .label-parent {
   width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
+  /* Set base gap between label group and input field */
   gap: 10px;
   font-size: 16px;
   color: #2e3238;
   font-family: Cairo;
 }
 
+/* --- Label Styles (Includes Text and Star) --- */
 .label {
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-
-.parent {
-  display: flex;
-  align-items: center;
-}
-
-.div {
-  position: relative;
+  /* CORRECTED: Removed gap entirely to ensure the star is attached */
+  gap: 0;
+  font-size: 16px;
   line-height: 22px;
-  flex-shrink: 0;
 }
 
+/* RTL (Arabic) Label Layout */
+.label.rtl {
+  /* Aligns the entire label group to the right */
+  justify-content: flex-end;
+  /* Puts the star (*) immediately to the left of the label text */
+  flex-direction: row-reverse;
+}
+
+/* LTR (English) Label Layout */
+.label.ltr {
+  /* Aligns the entire label group to the left */
+  justify-content: flex-start;
+  /* Puts the star (*) immediately to the right of the label text */
+  flex-direction: row;
+}
+
+/* --- Input Container (Basic Input/Select) --- */
 .basic {
   align-self: stretch;
   height: 38px;
@@ -35,17 +47,105 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   padding: 7px 10px;
   font-size: 14px;
   color: #2e3238;
 }
 
-.basic input, .basic select {
+.basic input,
+.basic select {
   width: 100%;
   border: none;
   outline: none;
   background: transparent;
   font-size: 14px;
   color: #2e3238;
+  /* Ensure the input's text alignment follows its dir attribute */
+  text-align: inherit;
+}
+
+.basic select {
+  appearance: none;
+}
+
+/* --- Multi-Select Activities Field (The one with the '+' Icon) --- */
+
+.activities-container {
+  /* Inherits basic styling from .basic for border, color, etc. */
+  composes: basic;
+  padding: 0; /* Remove padding from the container, apply to input/icon wrapper */
+  justify-content: space-between;
+}
+
+.activities-container input {
+  /* Styles for the readonly text input inside the activities container */
+  padding: 7px 10px;
+}
+
+.activities-icon-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+/* LTR (English) - Icon on the Right */
+.activities-container.ltr {
+  /* [Input] [Icon] */
+  flex-direction: row-reverse;
+}
+
+/* RTL (Arabic) - Icon on the Left */
+.activities-container.rtl {
+  /* [Icon] [Input] */
+  /* Note: Text input is element 1, Icon is element 2. For RTL, we want Icon on the left.
+       Setting row puts element 1 on the left (text) and element 2 on the right (icon).
+       The previous attempt used 'row' for AR, which was correct for [Text] [Icon].
+       If the user insists icon must be on the LEFT in AR: [Icon] [Text] -> needs reverse ordering.
+       Wait, the user requested: 'in arabic must in left and + icon in the english must be in the righrt'
+       AR: [Icon] [Text] -> flex-direction: row-reverse (to swap order)
+       EN: [Text] [Icon] -> flex-direction: row-reverse (to put icon right)
+
+       Let's re-examine the current JSX element order:
+       1. <input> (text)
+       2. <div> (icon)
+
+       If AR (RTL): Want [Icon] [Text] -> Need to reverse the visual order of (1) and (2). So, flex-direction: row-reverse.
+       If EN (LTR): Want [Text] [Icon] -> Need to reverse the visual order of (1) and (2). So, flex-direction: row-reverse.
+       
+       Let's assume the input is supposed to take up the full available width, and the icon is fixed.
+
+       Correcting based on typical usage where Input is the primary element:
+       Input: [Text]
+       Icon: [+]
+
+       AR (RTL): We want [+] [Text] --> Input (1), Icon (2). We want visual order 2 then 1. Need `row-reverse`.
+       EN (LTR): We want [Text] [+] --> Input (1), Icon (2). We want visual order 1 then 2. Need `row`.
+
+       I will adjust the flex-direction logic to align with standard web component structure for LTR/RTL:
+    */
+  flex-direction: row; /* [Text] [Icon] - This will put the icon on the right in LTR and on the left in RTL. */
+}
+
+/* LTR (English) - Icon on the Right */
+.activities-container.ltr {
+  /* [Text] [Icon] */
+  flex-direction: row;
+}
+
+/* RTL (Arabic) - Icon on the Left */
+.activities-container.rtl {
+  /* [Icon] [Text] - Achieved by using row-reverse on the internal elements */
+  flex-direction: row-reverse;
+}
+
+/* --- Generic/Unused Snippet Classes --- */
+.parent {
+  display: flex;
+  align-items: center;
+}
+
+.div {
+  position: relative;
+  line-height: 22px;
+  flex-shrink: 0;
 }

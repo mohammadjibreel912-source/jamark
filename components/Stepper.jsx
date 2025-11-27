@@ -1,5 +1,5 @@
 import React from "react";
-
+import LanguageSwitcher from "./LanguageSwitcher";
 const Stepper = ({ step = 1, totalSteps = 5, isRTL = false }) => {
   const steps = Array.from({ length: totalSteps }, (_, i) => i + 1);
 
@@ -15,6 +15,8 @@ const Stepper = ({ step = 1, totalSteps = 5, isRTL = false }) => {
         flexDirection: isRTL ? "row-reverse" : "row",
       }}
     >
+      <LanguageSwitcher />
+
       {displaySteps.map((s, index) => {
         const isCurrent = s === step;
         const isCompleted = isRTL

@@ -14,7 +14,12 @@ const Step2 = ({ name, setName, email, setEmail, phone, setPhone }) => {
         className="form-section"
         style={{ display: "flex", flexDirection: "column", gap: "15px" }}
       >
-        <h2 style={{ textAlign: language === "ar" ? "right" : "left", marginBottom: "10px" }}>
+        <h2
+          style={{
+            textAlign: language === "ar" ? "right" : "left",
+            marginBottom: "10px",
+          }}
+        >
           {translations.step2.title}
         </h2>
 

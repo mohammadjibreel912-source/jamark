@@ -1,57 +1,76 @@
 export default {
   step1: {
-    foreignCompany: "شركة أجنبية",
-    iraqiCompany: "شركة عراقية",
-    industrial: "صناعية",
-    nonIndustrial: "غير صناعية",
-    chooseCompanyType: "اختر نوع الشركة"
+    foreignCompany: "منشأة أجنبية",
+    iraqiCompany: "منشأة عراقية",
+    industrial: "منشأة صناعية",
+    nonIndustrial: "منشأة غير صناعية",
+
+    // النص داخل الأقواس ()
+    foreignSetup: "أجنبية",
+    iraqiSetup: "عراقية",
+    factory: "مصنع",
+    company: "شركة",
   },
   step2: {
     basicInfo: "المعلومات الأساسية",
     name: "الاسم",
     email: "البريد الإلكتروني",
-    phone: "الهاتف"
+    phone: "الهاتف",
   },
   step3: {
-    companyData: "بيانات الشركة",
+    companyInformation: "معلومات الشركة",
     companyName: "اسم الشركة",
-    activity: "النشاط",
+    companyNamePlaceholder: "أدخل اسم الشركة بالكامل",
+
+    companyActivities: "أنشطة الشركة",
+    activitiesSelected: "تم اختيار",
+    chooseActivity: "اختر نشاط الشركة...",
+    selectActivitiesTitle: "اختيار أنشطة الشركة",
+
     companyType: "نوع الشركة",
     companyForm: "شكل الشركة",
-    managementMethod: "طريقة الإدارة",
-    managerName: "اسم المدير"
+
+    managementMethodCompany: "طريقة إدارة الشركة",
+    authorizedManagerName: "اسم المدير المفوض",
+    managerNamePlaceholder: "أدخل الاسم الرباعي للمدير المفوض",
+
+    selectOptionPlaceholder: "اختر قيمة",
+    loading: "جاري التحميل...",
+    chooseCompanyType: "اختر نوع الشركة",
+    chooseCompanyForm: "اختر شكل الشركة",
+    chooseManagementMethod: "اختر طريقة الإدارة",
   },
   step4: {
-  factoryDocumentation: "توثيق المصنع",
-  factoryName: "اسم المصنع",
-  factoryNamePlaceholder: "كما هو في شهادة التسجيل",
-  factoryLocation: "موقع المصنع",
-  factoryLocationPlaceholder: "رابط خرائط جوجل أو الإحداثيات",
-  registrationCertificate: "شهادة التسجيل",
-  specialtyCertificates: "الشهادات المتخصصة (ISO, FSSC, FDA, GMP, إلخ)",
-  foundationYear: "سنة التأسيس",
-  foundationYearPlaceholder: "اختر السنة",
-  capital: "رأس المال",
-  capitalPlaceholder: "المبلغ",
-  notes: "ملاحظات وتعليقات إضافية",
-  notesPlaceholder: "ملاحظات إضافية",
-  formSubmitted: "تم إرسال النموذج بنجاح!",
-  companyInformation: "معلومات الشركة",
-  companyName: "اسم الشركة",
-  companyNamePlaceholder: "كما هو في شهادة التسجيل",
-  companyActivities: "أنشطة الشركة",
-  activityPlaceholder: "أضف نشاطًا",
-  companyType: "نوع الشركة",
-  companyTypePlaceholder: "ذات مسؤولية محدودة",
-  companyForm: "شكل الشركة",
-  companyFormPlaceholder: "اعتيادية",
-  managementMethod: "طريقة إدارة الشركة",
-  managementMethodPlaceholder: "مدير مفوض",
-  managerName: "إسم المدير المفوض",
-  managerNamePlaceholder: "الاسم الكامل",
-  saveButton: "حفظ البيانات",
-  formSubmitted: "تم إرسال البيانات بنجاح!"
-},
+    factoryDocumentation: "توثيق المصنع",
+    factoryName: "اسم المصنع",
+    factoryNamePlaceholder: "كما هو في شهادة التسجيل",
+    factoryLocation: "موقع المصنع",
+    factoryLocationPlaceholder: "رابط خرائط جوجل أو الإحداثيات",
+    registrationCertificate: "شهادة التسجيل",
+    specialtyCertificates: "الشهادات المتخصصة (ISO, FSSC, FDA, GMP, إلخ)",
+    foundationYear: "سنة التأسيس",
+    foundationYearPlaceholder: "اختر السنة",
+    capital: "رأس المال",
+    capitalPlaceholder: "المبلغ",
+    notes: "ملاحظات وتعليقات إضافية",
+    notesPlaceholder: "ملاحظات إضافية",
+    formSubmitted: "تم إرسال النموذج بنجاح!",
+    companyInformation: "معلومات الشركة",
+    companyName: "اسم الشركة",
+    companyNamePlaceholder: "كما هو في شهادة التسجيل",
+    companyActivities: "أنشطة الشركة",
+    activityPlaceholder: "أضف نشاطًا",
+    companyType: "نوع الشركة",
+    companyTypePlaceholder: "ذات مسؤولية محدودة",
+    companyForm: "شكل الشركة",
+    companyFormPlaceholder: "اعتيادية",
+    managementMethod: "طريقة إدارة الشركة",
+    managementMethodPlaceholder: "مدير مفوض",
+    managerName: "إسم المدير المفوض",
+    managerNamePlaceholder: "الاسم الكامل",
+    saveButton: "حفظ البيانات",
+    formSubmitted: "تم إرسال البيانات بنجاح!",
+  },
   step5: {
     cardSection: {
       cardHolderName: "اسم صاحب البطاقة",
@@ -62,25 +81,25 @@ export default {
       expiryDatePlaceholder: "MM/YY",
       cvv: "CVV",
       cvvPlaceholder: "123",
-      visa: "VISA"
+      visa: "VISA",
     },
     actions: {
-      payAndSubmit: "الدفع وتقديم الطلب"
+      payAndSubmit: "الدفع وتقديم الطلب",
     },
     invoice: {
       title: "ملخص الفاتورة",
       companyRegistration: "تسجيل الشركة",
       technicalSupport: "الدعم الفني",
       serviceTax: "ضريبة الخدمة",
-      totalLabel: "المبلغ الإجمالي"
+      totalLabel: "المبلغ الإجمالي",
     },
-    pageTitle: "الدفع الإلكتروني"
+    pageTitle: "الدفع الإلكتروني",
   },
   buttons: {
     next: "التالي",
     prev: "السابق",
     save: "حفظ",
-    close: "إغلاق"
+    close: "إغلاق",
   },
   login: {
     title: "تسجيل الدخول",
@@ -88,13 +107,13 @@ export default {
     password: "كلمة المرور",
     loginBtn: "تسجيل الدخول",
     noAccount: "ليس لديك حساب؟",
-    register: "تسجيل"
+    register: "تسجيل",
   },
   otp: {
     title: "التحقق من الحساب",
     subtext: "أدخل رمز التحقق",
     timerText: "إعادة الإرسال بعد",
-    button: "تحقق من الحساب"
+    button: "تحقق من الحساب",
   },
   registration: {
     title: "إنشاء حساب جديد",
@@ -105,7 +124,7 @@ export default {
     confirmPassword: "تأكيد كلمة المرور",
     haveAccount: "هل لديك حساب؟",
     login: "تسجيل الدخول",
-    submit: "إنشاء الحساب"
+    submit: "إنشاء الحساب",
   },
   welcome: {
     industrial: "منشأة صناعية",
@@ -122,12 +141,9 @@ export default {
       "موقع وعنوان المصنع",
       "سنة التأسيس",
       "رأس المال",
-      "المنتجات المقدمة"
+      "المنتجات المقدمة",
     ],
-    factoryDocs: [
-      "الشهادات التخصصية",
-      "شهادة تسجيل المصنع"
-    ],
+    factoryDocs: ["الشهادات التخصصية", "شهادة تسجيل المصنع"],
     companyItems: [
       "اسم الشركة",
       "موقع وعنوان الشركة",
@@ -136,20 +152,37 @@ export default {
       "نوع الشركة",
       "شكل الشركة",
       "طريقة الإدارة",
-      "اسم المدير المفوض"
+      "اسم المدير المفوض",
     ],
-    companyDocs: [
-      "الشهادات التخصصية",
-      "شهادات تسجيل الشركة"
-    ]
+    companyDocs: ["الشهادات التخصصية", "شهادات تسجيل الشركة"],
   },
-    factoryInfo: "معلومات المصنع",
-      factoryName: "اسم المصنع",
-      factoryActivity: "نشاط المصنع",
-      factoryProducts: "المنتجات التي يقدمها المصنع",
-      addProduct: "إضافة منتج",
-      productImage: "صورة المنتج",
-      productName: "إسم المنتج",
-      productDetails: "التفاصيل",
-      actions: "إجراءات",
+  factoryInfo: "معلومات المصنع",
+  factoryName: "اسم المصنع",
+  factoryActivity: "نشاط المصنع",
+  factoryProducts: "المنتجات التي يقدمها المصنع",
+  addProduct: "إضافة منتج",
+  productImage: "صورة المنتج",
+  productName: "إسم المنتج",
+  productDetails: "التفاصيل",
+  actions: "إجراءات",
+  addressForm: {
+    title: "إضافة عنوان",
+    country: "البلد",
+    city: "المدينة",
+    area: "المنطقة",
+    streetOrDistrict: "الشارع أو الحي",
+    buildingNumber: "رقم البناية",
+    floor: "الطابق",
+    officeNumber: "رقم المكتب",
+    otherDetails: "تفاصيل أخرى",
+    poBox: "صندوق البريد",
+    zipCode: "الرمز البريدي",
+    email: "البريد الإلكتروني",
+    phone: "الهاتف",
+    fax: "الفاكس",
+    mobile1: "موبايل 1",
+    mobile2: "موبايل 2",
+    addButton: "إضافة",
+    required: "*",
+  },
 };

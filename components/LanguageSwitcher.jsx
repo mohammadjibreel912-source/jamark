@@ -5,7 +5,7 @@ const LanguageSwitcher = () => {
   const { language, setLanguage } = useContext(LanguageContext);
 
   return (
-    <button 
+    <button
       onClick={() => setLanguage(language === "ar" ? "en" : "ar")}
       style={{ padding: "8px 16px", margin: "10px" }}
     >
