@@ -1,0 +1,69 @@
+/* -------------------- Main Structure Styles -------------------- */
+.mainSection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formSection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* -------------------- Header and Label Styles -------------------- */
+.title {
+    /* textAlign is dynamic, handled by .rtlText/.ltrText */
+    margin-bottom: 10px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    /* labels need to be aligned */
+}
+
+/* -------------------- Input Base Styles -------------------- */
+.inputBase {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+    box-sizing: border-box; /* ensure padding doesn't increase width */
+}
+
+/* -------------------- Directional Styles (RTL/LTR) -------------------- */
+
+.rtlText {
+    text-align: right;
+}
+
+.ltrText {
+    text-align: left;
+}
+
+.rtlInput {
+    text-align: right;
+    direction: rtl;
+}
+
+.ltrInput {
+    text-align: left;
+    direction: ltr;
+}
+
+/* -------------------- Error Styles -------------------- */
+
+.inputError {
+    border-color: #dc3545 !important; /* Red color for error border */
+    border-width: 2px; 
+    border-style: solid;
+}
+
+.errorMessage {
+    color: #dc3545; /* Red color for error text */
+    font-size: 0.85em; 
+    margin-top: 4px; 
+    margin-bottom: 5px;
+    /* textAlign is handled by .rtlText/.ltrText */
+}

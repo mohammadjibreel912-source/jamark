@@ -1,0 +1,200 @@
+.mainSection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.title {
+    color: #2E3238;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.formSection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 16px;
+    color: #2e3238;
+}
+
+.labelBase {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 4px;
+    color: #2E3238;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    gap: 0;
+}
+
+.requiredStar {
+    color: red;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+
+.inputBase,
+.customMultiSelectContainer {
+    align-self: stretch;
+    min-height: 38px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #e1e1e1;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: #2e3238;
+}
+
+.inputBase {
+    width: 100%;
+    padding: 7px 10px;
+    height: 38px; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.innerInputBase {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #2e3238;
+    text-align: inherit;
+    padding: 0; 
+}
+
+.inputBase input,
+.inputBase select {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #2e3238;
+    text-align: inherit;
+}
+
+
+.customMultiSelectContainer {
+    display: flex;
+    cursor: pointer;
+    padding: 0; 
+    flex-wrap: wrap; 
+    align-items: flex-start; 
+}
+
+.tagsContainer {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 4px 10px; 
+    min-height: 38px;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    flex-shrink: 0;
+    align-self: center; 
+}
+
+.clickableIcon {
+    cursor: pointer;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.placeholderInput {
+    composes: innerInputBase; 
+    color: #a0a0a0;
+}
+
+.selectedTag {
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    border: 1px solid #05BAA3;
+    background-color: #f6fffc;
+    font-size: 14px;
+    color: #2e3238;
+    white-space: nowrap;
+}
+
+[dir="rtl"] .selectedTag {
+    margin-left: 5px; 
+    margin-right: 0;
+}
+[dir="ltr"] .selectedTag {
+    margin-right: 5px;
+    margin-left: 0;
+}
+
+.rtlText {
+    text-align: right;
+}
+.ltrText {
+    text-align: left;
+}
+
+.labelBase.rtlText {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+}
+
+.labelBase.ltrText {
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.rtlInput {
+    text-align: right;
+    direction: rtl;
+}
+.ltrInput {
+    text-align: left;
+    direction: ltr;
+}
+
+.customMultiSelectContainer[dir="rtl"] {
+    flex-direction: row-reverse;
+}
+
+.customMultiSelectContainer[dir="ltr"] {
+    flex-direction: row;
+}
+
+
+.inputError {
+    border-color: #dc3545 !important;
+    border-width: 2px; 
+    border-style: solid;
+    padding: 6px 9px;
+}
+
+.customMultiSelectContainer.inputError {
+    border-color: #dc3545 !important;
+    border-width: 2px; 
+    border-style: solid;
+}
+
+.errorMessage {
+    color: #dc3545;
+    font-size: 0.85em; 
+    margin-top: 4px; 
+    margin-bottom: 5px;
+}

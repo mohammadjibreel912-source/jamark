@@ -1,0 +1,89 @@
+import React from "react";
+// تأكد من وجود ملف الـ CSS
+import "../styles/CertificateUpload.css"; 
+
+// 🔥 استيراد جميع الأيقونات المطلوبة
+// يجب أن تكون هذه الأيقونات متطابقة مع الأيقونات المستخدمة في المكون الثابت
+import deleteIcon from "../src/assets/delete.png"; 
+import wordIcon from "../src/assets/word.png";
+import excelIcon from "../src/assets/excel.png"; 
+import imgIcon from "../src/assets/img.png";
+import pdfIcon from "../src/assets/pdf.png";
+import plusIcon from "../src/assets/plus.png"; 
+
+// دالة تحديد الأيقونة حسب نوع الملف
+const getFileIcon = (fileName) => {
+    const extension = fileName.split('.').pop().toLowerCase();
+    if (['doc', 'docx'].includes(extension)) return wordIcon;
+    if (['xls', 'xlsx'].includes(extension)) return excelIcon;
+    if (['png', 'jpg', 'jpeg', 'gif'].includes(extension)) return imgIcon;
+    if (extension === 'pdf') return pdfIcon;
+    return wordIcon; // أيقونة افتراضية
+};
+
+
+// استقبال الـ Props (وظائف ومصفوفة الملفات)
+const CertificateUpload = ({ 
+    uploadedFiles = [], 
+    onOpenUploader, 
+    onDeleteFile,
+    // onDone: إذا كان هناك زر 'تم'
+}) => {
+    
+    return (
+        <div className="file-upload-container" dir="rtl">
+
+            <div className="header">الشهادات الإختصاصية</div>
+
+            {/* 🔥 تطبيق الـ Inline Style المفضل: flexDirection: "row-reverse" */}
+            <div className="file-items-grid" style={{ flexDirection: "row-reverse" }}>
+
+                {/* 1. زر إضافة ملف جديد (Add New) */}
+                <div 
+                    className="file-item add-new"
+                    onClick={onOpenUploader} // ربط بدالة فتح المودال/الـ Uploader
+                    style={{ cursor: 'pointer' }} // إضافة مؤشر ليدل على التفاعل
+                >
+                    <img src={plusIcon} alt="إضافة" className="add-icon" />
+                    {/* يمكن إضافة نص هنا اختياريًا */}
+                </div>
+
+                {/* 2. عرض الملفات المرفوعة ديناميكياً باستخدام map */}
+                {uploadedFiles.map((file, index) => (
+                    <div 
+                        key={index} 
+                        // لتطبيق ستايل خاص لكل نوع ملف من الـ CSS (مثل file-word)
+                        className={`file-item file-${file.name.split('.').pop()}`}
+                    >
+                        
+                        {/* زر الحذف */}
+                        <img 
+                            src={deleteIcon} 
+                            className="delete-button" 
+                            alt="حذف"
+                            onClick={() => onDeleteFile(file)} // ربط بدالة الحذف
+                            style={{ cursor: 'pointer' }}
+                        />
+                        
+                        {/* أيقونة الملف المناسبة */}
+                        <img 
+                            src={getFileIcon(file.name)} 
+                            alt={file.name} 
+                        />
+                        
+                        {/* اسم الملف */}
+                        <div className="file-extension">
+                            {file.name}
+                        </div>
+                    </div>
+                ))}
+            </div>
+            
+            {/* إذا كان هناك زر 'تم' (onDone) */}
+            {/* يمكنك إضافة زر 'تم' هنا بنفس الستايل المفضل لديك من الأمثلة السابقة إذا لزم الأمر */}
+
+        </div>
+    );
+};
+
+export default CertificateUpload;

@@ -1,0 +1,241 @@
+/* Certificates.css */
+
+/* Import Cairo font (The font used in the original HTML) */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+/* Base Styles */
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #f7f9fb;
+    margin: 0;
+}
+
+/* Main Content Container (max-w-4xl, mx-auto, bg-white, shadow-2xl, rounded-xl, p-6, space-y-8) */
+.main-container {
+    max-width: 64rem; /* Equivalent to max-w-4xl (1024px) */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff; 
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
+    border-radius: 0.75rem; /* rounded-xl (12px) */
+    padding: 1.5rem; 
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* space-y-8 (32px) */
+}
+
+/* --- Top Action Bar --- */
+
+.top-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* space-x-4 space-x-reverse (16px) in RTL */
+    margin-bottom: 2rem; 
+}
+
+/* Input/Dropdown Container (input-container-styles) */
+.input-container {
+    flex-grow: 1; 
+    display: flex;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
+    background-color: #ffffff; 
+    overflow: hidden;
+    height: 42px;
+    align-items: center;
+    /* Custom padding: 7px top/bottom, 10px right/left */
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-right: 10px; 
+    padding-left: 10px; 
+    gap: 10px; 
+    transition: all 0.15s ease-in-out; 
+}
+
+/* focus-within:ring-2 focus-within:ring-teal-400 focus-within:border-teal-400 */
+.input-container:focus-within {
+    box-shadow: 0 0 0 2px #2dd4bf;
+    border-color: #2dd4bf;
+}
+
+/* Input Field (input-field-styles) */
+.input-field {
+    flex-grow: 1;
+    border: 0;
+    outline: none;
+    color: #1f2937; /* text-gray-800 */
+    padding: 0;
+    text-align: right;
+    height: 100%;
+}
+
+/* Dropdown Icon Wrapper (dropdown-icon-wrapper) */
+.dropdown-icon-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8E8E8E; /* Default icon color */
+}
+
+/* Hidden Select element (select-element) */
+.select-element {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+}
+
+
+/* Add Button (btn-add) */
+.btn-add {
+    background-color: #2dd4bf; 
+    height: 3rem; /* 48px */
+    color: #ffffff; 
+    font-weight: 700; 
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.15s ease-in-out; 
+    flex-shrink: 0;
+    border: none;
+    cursor: pointer;
+}
+.btn-add:hover {
+    background-color: #20b8a4; 
+}
+
+/* --- Table Section --- */
+
+.table-wrapper {
+    margin-top: 2rem; 
+    border: 1px solid #e5e7eb; 
+    border-radius: 0.5rem; 
+    overflow: hidden;
+}
+
+/* Table Grid Structure (grid grid-cols-4 - 3/4 for name, 1/4 for action) */
+.table-header,
+.table-row {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    padding: 0.75rem; 
+}
+
+/* Table Header Specifics */
+.table-header {
+    background-color: #f3f4f6; 
+    color: #374151; 
+    font-weight: 700; 
+    border-bottom: 1px solid #d1d5db; 
+}
+
+/* Table Row Specifics */
+.table-row {
+    background-color: #ffffff; 
+    color: #374151; 
+    border-bottom: 1px solid #f3f4f6; 
+    transition: background-color 0.15s ease-in-out; 
+}
+
+.table-row:hover {
+    background-color: #f9fafb; 
+}
+
+/* Remove border from last row */
+.table-content > .table-row:last-child {
+    border-bottom: none;
+}
+
+/* Column styles */
+.col-name {
+    text-align: right;
+}
+
+.col-action {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* space-x-4 space-x-reverse */
+}
+
+/* Action Icons (action-icon) */
+.action-icon-button {
+    color: #8E8E8E; /* Default color (text-gray-400 equivalent from old style) */
+    transition: color 0.15s ease-in-out; 
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.action-icon-delete:hover {
+    color: #ef4444; /* hover:text-red-500 */
+}
+
+.action-icon-edit:hover {
+    color: #3b82f6; /* hover:text-blue-500 */
+}
+
+/* SVG icon sizing */
+.action-icon-svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor; /* Inherit color from the parent button for fill icons */
+    stroke: currentColor; /* Inherit color from the parent button for stroke icons */
+}
+
+/* --- Fixed Footer/Save Bar --- */
+
+.footer-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #07126B; /* color-primary-dark */
+    box-shadow: 0 -20px 25px -5px rgba(0, 0, 0, 0.1), 0 -10px 10px -5px rgba(0, 0, 0, 0.04); 
+    padding: 1rem; 
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: 0.75rem; 
+    border-top-right-radius: 0.75rem;
+}
+
+.save-button {
+    background-color: #07126B;
+    height: 42px;
+    border-radius: 12px;
+    padding-left: 1rem; 
+    padding-right: 1rem; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #ffffff; 
+    font-weight: 700; 
+    font-size: 1.25rem; 
+    transition: opacity 0.15s ease-in-out; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    opacity: 0.9; 
+}

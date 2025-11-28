@@ -1,0 +1,148 @@
+body {
+    background-color: #f0f0f0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* الكارد الرئيسي مع بوردر */
+.file-upload-container {
+    direction: rtl;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #CAD0D9;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 1032px;
+    width: 100%;
+    margin-top: 40px;
+    min-height: 306px;
+}
+
+/* العنوان */
+.header {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* شبكة الملفات */
+.file-items-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+/* قاعدة عناصر الملفات */
+.file-item {
+    width: 160px;
+    height: 133px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1px;
+    box-sizing: border-box;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: #ffffff; /* icon inside card */
+}
+
+/* Hover effect */
+.file-item:not(.add-new):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+/* أيقونة الحذف */
+.delete-button {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: #FFFFFF;
+    color: #ff5252;
+    border: 1px solid #ff5252;
+    border-radius: 3px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    cursor: pointer;
+    opacity: 1;
+    z-index: 10;
+}
+.delete-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* أيقونة الإضافة */
+.file-item.add-new {
+    border: 1px dashed #8E8E8E;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+.add-icon { width: 40px; height: 40px; }
+
+/* الخلفيات الخاصة بأنواع الملفات */
+.file-item.file-word { background-color: #4954B81A; }
+.file-item.file-excel { background-color: #4ACB4E1A; }
+.file-item.file-image { background-color: #C14DB91A; }
+.file-item.file-pdf { background-color: #0F8BA61A; }
+
+.file-item img {
+    max-width: 60px;
+    max-height: 60px;
+    margin-bottom: 5px;
+}
+
+.file-extension {
+    font-size: 0.75rem;
+    color: #666;
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* مثال على الستايلات المطلوبة في ملف CSS */
+.file-items-grid {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 15px; /* المسافة بين العناصر */
+}
+
+.file-item {
+    width: 120px; 
+    height: 120px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* ... باقي الستايلات لتوسيط الأيقونة والنص ... */
+}
+
+.file-item.add-new {
+    border: 2px dashed #007bff;
+    /* ... باقي ستايل زر الإضافة ... */
+}
+
+.delete-button {
+    /* يجب وضع زر الحذف في الزاوية العلوية اليسرى في RTL */
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    /* ... إلخ ... */
+}
+

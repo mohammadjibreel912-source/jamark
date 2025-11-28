@@ -1,0 +1,317 @@
+.factoryFormContainer {
+    direction: ltr;
+}
+
+.formContentArea {
+    padding: 0 10px;
+}
+
+.formField {
+    margin-bottom: 20px;
+}
+
+.formField label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.inputWithIconContainer {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+    height: 44px;
+    position: relative;
+}
+
+.inputWithIconContainer:focus-within {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+}
+
+.inputWithIconContainer input[type="text"],
+.inputWithIconContainer input[type="number"] {
+    flex-grow: 1;
+    padding: 10px 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1rem;
+    color: #000;
+}
+
+.inputIcon {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px;
+    flex-shrink: 0;
+}
+
+.clickableIcon {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.clickableIcon:hover {
+    opacity: 1;
+}
+
+.textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    min-height: 100px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+}
+
+.errorText {
+    color: red;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
+
+.inputError {
+    border-color: red !important;
+}
+
+.inputSuccess {
+    border: 2px solid #4CAF50 !important;
+}
+
+.inputInfo {
+    border: 2px solid #007bff !important;
+}
+
+.capitalCurrencyContainer {
+    display: flex;
+}
+
+.capitalInput {
+    flex: 2;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-right: none;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.capitalInput[dir="rtl"] {
+    border-radius: 4px 0 0 4px;
+    border-left: none;
+    border-right: 1px solid #ccc;
+}
+
+.capitalInput:focus {
+    border-color: #007bff;
+}
+
+.capitalInput::-webkit-inner-spin-button,
+.capitalInput::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.capitalInput {
+    -moz-appearance: textfield;
+}
+
+.currencyCustomSelectWrapper {
+    flex: 1;
+    min-width: 150px;
+    position: relative;
+    z-index: 5;
+}
+
+.currencyDisplayContainer {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: #fff;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.currencyDisplayContainer[dir="rtl"] {
+    border-radius: 4px 0 0 4px;
+    border-left: 1px solid #ccc;
+    border-right: none;
+}
+
+.currencyIcon {
+    width: 24px;
+    height: 18px;
+    border-radius: 2px;
+    object-fit: cover;
+}
+
+.currencyCodeText {
+    font-weight: bold;
+}
+
+.arrowIcon {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.2s;
+}
+
+.dropdownList {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+}
+
+.dropdownItem {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdownItem:last-child {
+    border-bottom: none;
+}
+
+.dropdownItemSelected {
+    background-color: #e0f7ff;
+}
+
+.dropdownItem:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdownItemSelected:hover {
+    background-color: #d0f0ff;
+}
+
+.currencyNameText {
+    font-size: 0.9em;
+    color: #666;
+    margin-left: 10px;
+}
+
+.currencyNameText[dir="rtl"] {
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+.yearDropdownList {
+    position: absolute;
+    z-index: 200;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #0056b3;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-top: 5px;
+}
+
+.yearDropdownItem {
+    padding: 8px 15px;
+    cursor: pointer;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.yearDropdownItem:last-child {
+    border-bottom: none;
+}
+
+.yearDropdownItemSelected {
+    font-weight: bold;
+    background-color: #e0f7ff;
+}
+
+.yearDropdownItem:hover {
+    background-color: #f0f0f0;
+}
+
+.yearDropdownItemSelected:hover {
+    background-color: #d0f0ff;
+}
+
+.yearInput {
+    text-align: left;
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.yearInput[dir="rtl"] {
+    text-align: right;
+}
+
+.fileTagsContainer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 44px;
+    padding-right: 10px;
+    padding-left: 5px;
+}
+
+.fileTag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e6f7ff;
+    color: #0050b3;
+    border-radius: 12px;
+    padding: 4px 8px;
+    margin: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.filePlaceholder {
+    flex-grow: 1;
+    padding: 10px 5px;
+    color: #888;
+    text-align: right;
+}
+
+.filePlaceholder[dir="ltr"] {
+    text-align: left;
+}
+
+.certificatePathText {
+    margin-top: 5px;
+    font-size: 12px;
+    color: green;
+}
