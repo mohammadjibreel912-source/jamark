@@ -1,0 +1,30 @@
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+.card-title {
+  /* يسمح بترتيب العنوان والعنوان الفرعي بشكل عمودي */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* ... التنسيقات الأخرى للعناوين ... */
+}
+
+.card-subtitle {
+  /* يضمن أن النص داخل الأقواس على سطر جديد */
+  display: block;
+}
+
+.light-gray {
+  /* اللون الرمادي الفاتح */
+  color: #a0a0a0;
+}

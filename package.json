@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@fontsource/cairo": "^5.2.7",
+<<<<<<< HEAD
     "@react-google-maps/api": "^2.20.7",
+=======
+>>>>>>> 0f8e5a90b69a5bfccf2b1479241a874a94e77524
     "axios": "^1.13.2",
     "cors": "^2.8.5",
     "leaflet": "^1.9.4",

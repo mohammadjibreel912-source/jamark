@@ -1,0 +1,135 @@
+/* Step3Factory.css */
+
+/* العنوان الرئيسي */
+.factory-title {
+  color: #2E3238;
+  font-size: 32px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 400;
+  line-height: 24px;
+  margin-bottom: 25px;
+  word-wrap: break-word;
+}
+
+/* الحقول */
+.factory-form label {
+  color: #2E3238;
+  font-size: 16px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 400;
+  line-height: 22px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.factory-form input,
+.factory-form select {
+  width: 100%;
+  padding: 7px 10px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  color: #2E3238;
+  border: 1px solid #E1E1E1;
+  border-radius: 4px;
+  background-color: #fff;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+/* Placeholder */
+.factory-form input::placeholder {
+  color: #CACACA;
+  font-size: 14px;
+}
+
+/* زر إضافة منتج */
+.add-product-btn {
+  width: 100px;
+  height: 35px;
+  background-color: #05BAA3;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 400;
+  line-height: 22px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border: none;
+}
+
+/* جدول المنتجات */
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.products-table th,
+.products-table td {
+  border: 1px solid #E1E1E1;
+  padding: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 12px;
+  line-height: 22px;
+  color: #2E3238;
+  text-align: center;
+}
+
+.products-table th {
+  font-weight: 700;
+  background-color: #fff;
+}
+
+.products-table img {
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  background-color: #D9D9D9;
+  object-fit: cover;
+}
+
+/* أزرار تعديل وحذف */
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 16px;
+}
+
+.action-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .factory-title {
+    font-size: 24px;
+  }
+
+  .factory-form input,
+  .factory-form select {
+    font-size: 12px;
+  }
+
+  .add-product-btn {
+    width: 90px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .products-table th,
+  .products-table td {
+    font-size: 10px;
+  }
+
+  .products-table img {
+    width: 24px;
+    height: 24px;
+  }
+}
