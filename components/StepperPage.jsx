@@ -66,10 +66,8 @@ const StepperPage = () => {
     const [fieldErrors, setFieldErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
     
-    // 🆕 تتبع نوع المنشأة السابق للكشف عن التغيير
     const [prevBottomSelected, setPrevBottomSelected] = useState(formData.bottomSelected);
     
-    // 2. دالة تحديث عامة
     const updateField = useCallback((field, value) => {
         setFormData(prevData => ({
             ...prevData,
@@ -83,7 +81,6 @@ const StepperPage = () => {
         setSubmitted(false);
     }, []);
 
-    // 3. الحفظ التلقائي في localStorage
     useEffect(() => {
         try {
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
@@ -92,17 +89,14 @@ const StepperPage = () => {
         }
     }, [formData]);
 
-    // 🆕 مراقبة تغيير نوع المنشأة (شركة/مصنع)
     useEffect(() => {
         const currentBottomSelected = formData.bottomSelected[0];
         const previousBottomSelected = prevBottomSelected[0];
         
-        // إذا تغير نوع المنشأة من شركة إلى مصنع أو العكس
         if (currentBottomSelected !== previousBottomSelected && previousBottomSelected) {
             console.log(`🔄 نوع المنشأة تغير من ${previousBottomSelected} إلى ${currentBottomSelected}`);
             console.log("🗑️ مسح بيانات الخطوة 3 القديمة...");
             
-            // مسح بيانات الخطوة 3 بالكامل
             setFormData(prevData => ({
                 ...prevData,
                 companyName: "",
@@ -121,11 +115,9 @@ const StepperPage = () => {
             setSubmitted(false);
         }
         
-        // تحديث القيمة السابقة
         setPrevBottomSelected(formData.bottomSelected);
     }, [formData.bottomSelected]);
 
-    // 4. دالة التحديث للخطوة 1
     const handleSelect = (section, value) => {
         const fieldName = section === "top" ? 'topSelected' : 'bottomSelected';
         
@@ -147,7 +139,6 @@ const StepperPage = () => {
         setSubmitted(false);
     };
     
-    // 5. دوال التحقق من الصحة
     const validateStep1 = () => {
         let errors = {};
         let isValid = true;
@@ -209,12 +200,14 @@ const StepperPage = () => {
 
         const validationMessages = translations.validation;
 
+        // 1. التحقق من الاسم (مطلوب للجميع)
         if (!nameField.trim()) {
             const fieldName = isFactory ? 'factoryName' : 'companyName';
             errors[fieldName] = validationMessages?.companyNameRequired || 'اسم الشركة/المصنع مطلوب.';
             isValid = false;
         }
         
+        // 2. التحقق من الأنشطة (مطلوب للجميع)
         if (isFactory) {
             if (!activitiesField) {
                 errors.factoryActivityId = validationMessages?.activitiesRequired || 'نشاط المصنع مطلوب.';
@@ -227,31 +220,43 @@ const StepperPage = () => {
             }
         }
         
+        // 3. التحقق من المنتجات (مطلوب للمصنع فقط)
         if (isFactory && (!Array.isArray(factoryProducts) || factoryProducts.length === 0)) {
             errors.factoryProducts = translations.step3?.validation?.minOneProduct || 'يجب إضافة منتج واحد على الأقل للمصنع.';
             isValid = false;
         }
 
-        if (!companyType) {
-            errors.companyType = validationMessages?.companyTypeRequired || 'نوع الشركة/المصنع مطلوب.';
-            isValid = false;
-        }
+        // 4. التحقق من النوع والشكل وطريقة الإدارة واسم المدير المفوض (مطلوب للشركة فقط)
+        if (!isFactory) {
+             if (!companyType) {
+                errors.companyType = validationMessages?.companyTypeRequired || 'نوع الشركة/المصنع مطلوب.';
+                isValid = false;
+            }
 
-        if (!companyForm) {
-            errors.companyForm = validationMessages?.companyFormRequired || 'شكل الشركة/المصنع مطلوب.';
-            isValid = false;
-        }
+            if (!companyForm) {
+                errors.companyForm = validationMessages?.companyFormRequired || 'شكل الشركة/المصنع مطلوب.';
+                isValid = false;
+            }
 
-        if (!managementMethod) {
-            errors.managementMethod = validationMessages?.managementMethodRequired || 'طريقة الإدارة مطلوبة.';
-            isValid = false;
+            if (!managementMethod) {
+                errors.managementMethod = validationMessages?.managementMethodRequired || 'طريقة الإدارة مطلوبة.';
+                isValid = false;
+            }
+            
+            // 🚨 شرط اسم المدير المفوض للشركة فقط
+             if (!managerName) {
+                errors.managerName = validationMessages?.managerNameRequired || 'اسم المدير المفوض مطلوب.';
+                isValid = false;
+            }
         }
-
-        if (!managerName) {
-            errors.managerName = validationMessages?.managerNameRequired || 'اسم المدير المفوض مطلوب.';
-            isValid = false;
+        
+        // 🚨 أمر الطباعة لتشخيص الأخطاء 
+        if (!isValid) {
+            console.log("❌ Step 3 Validation Failed. Errors:", errors);
+        } else {
+            console.log("✅ Step 3 Validation Success.");
         }
-
+        
         setFieldErrors(errors);
         return isValid;
     };
@@ -300,11 +305,18 @@ const StepperPage = () => {
             isValid = false;
         }
 
+        // 🚨 أمر الطباعة لتشخيص الأخطاء 
+        if (!isValid) {
+            console.log("❌ Step 4 Validation Failed. Errors:", errors);
+        } else {
+            console.log("✅ Step 4 Validation Success.");
+        }
+
         setFieldErrors(errors);
         return isValid;
     };
 
-    // 6. دالة تحديد صلاحية الخطوة
+    // 6. دالة تحديد صلاحية الخطوة (لتعطيل/تفعيل زر Next)
     const isStepValid = (step) => {
         const isFactory = (formData.bottomSelected || []).includes("factory");
 
@@ -320,17 +332,26 @@ const StepperPage = () => {
                 {
                     const nameField = isFactory ? formData.factoryName : formData.companyName;
                     const activitiesField = isFactory ? formData.factoryActivityId : formData.companyActivities;
+                    
                     const activitiesValid = isFactory ? !!activitiesField : (Array.isArray(activitiesField) && activitiesField.length > 0);
+                    
                     const productsLen = Array.isArray(formData.factoryProducts) ? formData.factoryProducts.length : 0;
                     
+                    // شروط مطلوبة للمصنع (الاسم والنشاط) 
                     let step3Valid = (nameField || "").trim() !== '' 
-                        && activitiesValid
-                        && (formData.companyType || "").toString().trim() !== '' 
-                        && (formData.companyForm || "").toString().trim() !== '' 
-                        && (formData.managementMethod || "").toString().trim() !== '' 
-                        && (formData.managerName || "").toString().trim() !== '';
+                        && activitiesValid;
 
+                    if (!isFactory) { 
+                         // شروط النوع والشكل وطريقة الإدارة واسم المدير المفوض مطلوبة للشركة فقط
+                        step3Valid = step3Valid 
+                            && (formData.companyType || "").toString().trim() !== '' 
+                            && (formData.companyForm || "").toString().trim() !== '' 
+                            && (formData.managementMethod || "").toString().trim() !== ''
+                            && (formData.managerName || "").toString().trim() !== ''; // 🚨 إضافة المدير المفوض للشركة
+                    }
+                    
                     if (isFactory) {
+                        // شرط إضافي للمصنع: يجب أن يكون لديه منتج واحد على الأقل
                         step3Valid = step3Valid && productsLen > 0;
                     }
                     return step3Valid;
@@ -410,7 +431,7 @@ const StepperPage = () => {
                     setManagementMethods(methods || []);
                     setActivities(acts || []);
                 } catch (err) {
-                    console.error(err);
+                    console.error("Failed to fetch lookups:", err);
                 }
             };
             fetchLookups();
@@ -461,10 +482,15 @@ const StepperPage = () => {
                 {formData.step === 3 && (
                     isFactory ? (
                         <Step3Factory
+                            // حقول المصنع الخاصة 
                             companyName={formData.factoryName}
                             setCompanyName={(value) => updateField('factoryName', value)}
                             companyActivities={formData.factoryActivityId}
                             setCompanyActivities={(value) => updateField('factoryActivityId', value)}
+                            factoryProducts={formData.factoryProducts}
+                            setFactoryProducts={(value) => updateField('factoryProducts', value)} 
+                            
+                            // الحقول المشتركة (لكنها غير إلزامية في التحقق)
                             companyType={formData.companyType}
                             setCompanyType={(value) => updateField('companyType', value)}
                             companyForm={formData.companyForm}
@@ -474,13 +500,12 @@ const StepperPage = () => {
                             managerName={formData.managerName}
                             setManagerName={(value) => updateField('managerName', value)}
                             
-                            factoryProducts={formData.factoryProducts}
-                            setFactoryProducts={(value) => updateField('factoryProducts', value)} 
-                            
+                            // بيانات الـ Lookups
                             activities={activities}
                             companyTypes={companyTypes}
                             companyForms={companyForms}
                             managementMethods={managementMethods}
+                            
                             isFactory={isFactory}
                             translations={translations}
                             language={language}
@@ -488,10 +513,13 @@ const StepperPage = () => {
                         />
                     ) : (
                         <Step3Company
+                            // حقول الشركة الخاصة
                             companyName={formData.companyName}
                             setCompanyName={(value) => updateField('companyName', value)}
                             companyActivities={formData.companyActivities}
                             setCompanyActivities={(value) => updateField('companyActivities', value)}
+                            
+                            // الحقول المشتركة
                             companyType={formData.companyType}
                             setCompanyType={(value) => updateField('companyType', value)}
                             companyForm={formData.companyForm}
@@ -500,10 +528,13 @@ const StepperPage = () => {
                             setManagementMethod={(value) => updateField('managementMethod', value)}
                             managerName={formData.managerName}
                             setManagerName={(value) => updateField('managerName', value)}
+                            
+                            // بيانات الـ Lookups
                             activities={activities}
                             companyTypes={companyTypes}
                             companyForms={companyForms}
                             managementMethods={managementMethods}
+                            
                             isFactory={isFactory}
                             translations={translations.step3}
                             language={language}
@@ -512,42 +543,42 @@ const StepperPage = () => {
                     )
                 )}
 
-               {formData.step === 4 && (
-    <Step4
-        isFactory={isFactory}
-        onNext={handleNext}
-        googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY}
-        
-        addressInfo={formData.addressInfo}
-        setAddressInfo={(value) => updateField('addressInfo', value)}
-        
-        establishmentLocation={formData.establishmentLocation}
-        setEstablishmentLocation={(value) => updateField('establishmentLocation', value)}
-        
-        foundingYear={formData.foundingYear}
-        setFoundingYear={(value) => updateField('foundingYear', value)}
-        
-        capital={formData.capital}
-        setCapital={(value) => updateField('capital', value)}
-        
-        currency={formData.currency} // 🆕
-        setCurrency={(value) => updateField('currency', value)} // 🆕
-        
-        notes={formData.notes}
-        setNotes={(value) => updateField('notes', value)}
-        
-        registrationCertificate={formData.registrationCertificate}
-        setRegistrationCertificate={(value) => updateField('registrationCertificate', value)}
-        
-        additionalCertificates={formData.additionalCertificates}
-        setAdditionalCertificates={(value) => updateField('additionalCertificates', value)}
-        
-        translations={translations.step4}
-        language={language}
-        fieldErrors={fieldErrors}
-    />
-)}
-              
+                {formData.step === 4 && (
+                    <Step4
+                        isFactory={isFactory}
+                        onNext={handleNext}
+                        googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY}
+                        
+                        addressInfo={formData.addressInfo}
+                        setAddressInfo={(value) => updateField('addressInfo', value)}
+                        
+                        establishmentLocation={formData.establishmentLocation}
+                        setEstablishmentLocation={(value) => updateField('establishmentLocation', value)}
+                        
+                        foundingYear={formData.foundingYear}
+                        setFoundingYear={(value) => updateField('foundingYear', value)}
+                        
+                        capital={formData.capital}
+                        setCapital={(value) => updateField('capital', value)}
+                        
+                        currency={formData.currency} 
+                        setCurrency={(value) => updateField('currency', value)} 
+                        
+                        notes={formData.notes}
+                        setNotes={(value) => updateField('notes', value)}
+                        
+                        registrationCertificate={formData.registrationCertificate}
+                        setRegistrationCertificate={(value) => updateField('registrationCertificate', value)}
+                        
+                        additionalCertificates={formData.additionalCertificates}
+                        setAdditionalCertificates={(value) => updateField('additionalCertificates', value)}
+                        
+                        translations={translations.step4}
+                        language={language}
+                        fieldErrors={fieldErrors}
+                    />
+                )}
+                          
                 {formData.step === 5 && (
                     <Step5 
                         translations={translations.step5} 
