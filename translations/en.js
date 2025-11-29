@@ -124,30 +124,43 @@ export default {
     // ------------------------------------
     // 5. Step 5: Payment
     // ------------------------------------
-    step5: {
-        cardSection: {
-            cardHolderName: "Card Holder Name",
-            cardHolderNamePlaceholder: "Name as shown on card",
-            cardNumber: "Card Number",
-            cardNumberPlaceholder: "1234 5678 9101 1121",
-            expiryDate: "Expiry Date",
-            expiryDatePlaceholder: "MM/YY",
-            cvv: "CVV",
-            cvvPlaceholder: "123",
-            visa: "VISA",
-        },
-        actions: {
-            payAndSubmit: "Pay & Submit",
-        },
-        invoice: {
-            title: "Invoice Summary",
-            companyRegistration: "Company Registration",
-            technicalSupport: "Technical Support",
-            serviceTax: "Service Tax",
-            totalLabel: "Total Amount",
-        },
-        pageTitle: "Electronic Payment",
+  "step5": {
+    "cardSection": {
+        "cardHolderName": "Card Holder Name",
+        "cardHolderNamePlaceholder": "Name as shown on card",
+        "cardNumber": "Card Number",
+        "cardNumberPlaceholder": "1234 5678 9101 1121",
+        "expiryDate": "Expiry Date",
+        "expiryDatePlaceholder": "MM/YY",
+        "cvv": "CVV",
+        "cvvPlaceholder": "123",
+        "visa": "VISA",
+        "saveCard": "Save card for future payments"
     },
+    "actions": {
+        "payAndSubmit": "Pay & Submit"
+    },
+    "invoice": {
+        "title": "Invoice Summary",
+        "companyRegistration": "Company Registration",
+        "technicalSupport": "Technical Support",
+        "serviceTax": "Service Tax",
+        "totalLabel": "Total Amount",
+        "header": "Invoice Summary" // Added 'header' key based on the JSX usage
+    },
+    "pageTitle": "Electronic Payment",
+    
+    // 🛑 REQUIRED VALIDATION MESSAGES
+    "validation": {
+        "cardNameRequired": "Card holder name is required and must be at least 3 characters long.",
+        "cardNameInvalid": "Name must contain letters and spaces only.",
+        "cardNumberLength": "Card number must be 16 digits.",
+        "cvvLength": "CVV must be 3 or 4 digits.",
+        "expiryFormat": "Expiry date must be in MM/YY format.",
+        "expiryMonthInvalid": "Invalid month (must be 01-12).",
+        "expiryDateExpired": "The card has expired."
+    }
+},
 
     // ------------------------------------
     // 6. Factory/Industrial Product Management
