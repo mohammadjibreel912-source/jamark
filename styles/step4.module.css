@@ -355,4 +355,128 @@
     margin-top: 5px;
     font-size: 12px;
     color: #1abc9c;
+}/* --- تعديلات الشهادات الاختصاصية (File Tags) --- */
+
+/* 1. جعل الحدود خضراء عند وجود شهادات - تم إلغاء هذا لجعل التصميم يعتمد فقط على .fileTagsContainer */
+/* .inputWithIconContainer.inputSuccess {
+    border: 2px solid #28a745; 
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+} */
+
+/* 2. ستايل التاج النظيف (يحل محل .fileTag الأصلي) */
+.fileTagClean {
+padding: 4px 8px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    border: 1px solid #05BAA3;
+    background-color: #f6fffc;
+    font-size: 14px;
+    color: #2e3238;
+    white-space: nowrap;
+    margin: 2px;
+}
+
+/* 3. أيقونة الحذف داخل التاج (استبدال X) */
+.tagDeleteIcon {
+    width: 14px; /* حجم صغير */
+    height: 14px;
+    margin-left: 5px; /* مسافة على اليسار (للعربية) */
+    margin-right: 0;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+.fileTagClean[dir="ltr"] .tagDeleteIcon {
+    margin-right: 5px; 
+    margin-left: 0;
+}
+.tagDeleteIcon:hover {
+    opacity: 1;
+}
+
+/* 4. مؤشر الملفات الإضافية (مثل +3) */
+.moreFilesIndicator {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 4px 8px;
+    margin: 4px;
+    border-radius: 12px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* 5. تعديل حاوية الـ Tags لجعلها مرتبة و **باللون الأخضر** */
+.fileTagsContainer {
+    display: flex;
+    align-items: center; /* توسيط العناصر عمودياً */
+    flex-wrap: wrap;
+    gap: 0; /* تم إزالة الـ gap الأصلي والاعتماد على margin التاجات */
+    padding: 5px; 
+    cursor: pointer;
+    min-height: 44px;
+    position: relative;
+    justify-content: flex-start; 
+
+    /* جعل الحدود خضراء كما في الصورة */
+    border: 2px solid #28a745 !important; 
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    border-radius: 8px; /* حواف مستديرة قليلاً */
+}
+.fileTagsContainer[dir="rtl"] {
+    justify-content: flex-end; 
+}
+
+
+/* --- ستايل حقل الملاحظات (Textarea) --- */
+
+.textAreaCustom {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 8px; /* حواف مستديرة */
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    resize: vertical; /* يسمح بتغيير الارتفاع عمودياً فقط */
+    min-height: 100px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* ظل خفيف */
+}
+
+.textAreaCustom:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- تعديل بسيط لـ inputWithIconContainer (لإزالة الأخضر) --- */
+/* التعديلات الأصلية التي تزيل الأخضر والـ shadow عند التركيز وحالة النجاح */
+.inputWithIconContainer:focus-within {
+    border-color: #ddd;
+    box-shadow: none;
+}
+.inputWithIconContainer {
+    position: relative;
+} 
+/* إلغاء ستايل النجاح لـ inputWithIconContainer ليتطابق مع طلبك */
+.inputWithIconContainer.inputSuccess {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+}
+
+/* تعديل ستايل الأيقونة الإضافية وزر الإضافة ليناسب التعديل الجديد على .fileTagsContainer */
+.addCertificateButton {
+    /* ... (التنسيقات الأصلية) ... */
+    margin: 4px; /* لإعطائه مسافة من التاجات */
+}
+/* الأنماط داخل CurrencyDropdown (سواء CSS Module أو Tailwind) */
+.currencyDropdownContainer {
+    position: absolute; /* مهم جداً */
+    z-index: 30;       /* تأكد أن قيمته أعلى من أي شيء آخر */
+    top: 100%;         /* ليبدأ أسفل العنصر الأب */
+    /* ... خصائص العرض والخلفية ... */
 }

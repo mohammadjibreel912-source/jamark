@@ -8,7 +8,6 @@ export default {
         industrial: "Industrial Establishment",
         nonIndustrial: "Non-Industrial Establishment",
 
-        // Text inside parentheses ()
         foreignSetup: "Foreign",
         iraqiSetup: "Iraqi",
         factory: "Factory",
@@ -59,10 +58,7 @@ export default {
         chooseManagementMethod: "Choose Management Method",
 
         validation: {
-            // General
             requiredField: "This field is required.",
-
-            // Step 3 Specific Errors
             companyNameRequired: "Company name is required.",
             activitiesRequired: "At least one company activity must be selected.",
             companyTypeRequired: "Company Type is required.",
@@ -75,42 +71,61 @@ export default {
     // ------------------------------------
     // 4. Step 4: Factory/Company Documentation and Details
     // ------------------------------------
-    step4: {
-        // Document & Detail Fields (Used for both Factory/Company)
-        factoryDocumentation: "Establishment Documentation", // Generalizing for both
-        factoryName: "Establishment Name", // Generalizing for both
-        factoryNamePlaceholder: "As in registration certificate",
-        factoryLocation: "Establishment Location", // Generalizing for both
-        factoryLocationPlaceholder: "Google Maps link or coordinates",
-        registrationCertificate: "Registration Certificate",
-        specialtyCertificates: "Specialty Certificates (ISO, FSSC, FDA, GMP, etc.)",
-        foundationYear: "Foundation Year",
-        foundationYearPlaceholder: "Select Year",
-        capital: "Capital",
-        capitalPlaceholder: "Amount",
-        notes: "Notes and Additional Comments",
-        notesPlaceholder: "Additional notes",
+   step4: {
+    // ------------------------------------
+    // General Keys (Used for both Factory/Company)
+    // ------------------------------------
+    factoryDocumentation: "Establishment Documentation", 
+    factoryName: "Establishment Name", 
+    factoryNamePlaceholder: "As in registration certificate",
+    factoryLocation: "Establishment Location", 
+    factoryLocationPlaceholder: "Google Maps link or coordinates",
+    
+    // Keys needed for Address/Location/Certificate building (from Step4FormFields.jsx logic)
+    address: "Address",
+    location: "Location",
+    certificate: "Certificate", 
+    registration: "Registration", 
+    addressFactoryPlaceholder: "Click plus to enter address",
 
-        // Non-Industrial Summary/Detail Fields
-        companyInformation: "Company Information",
-        companyName: "Company Name",
-        companyNamePlaceholder: "As on registration certificate",
-        companyActivities: "Company Activities",
-        activityPlaceholder: "Add an activity",
-        companyType: "Company Type",
-        companyTypePlaceholder: "Limited Liability Company",
-        companyForm: "Company Form",
-        companyFormPlaceholder: "Ordinary",
-        managementMethod: "Management Method",
-        managementMethodPlaceholder: "Authorized Manager",
-        managerName: "Manager Name",
-        managerNamePlaceholder: "Full Name",
+    // Document Fields
+    registrationCertificate: "Registration Certificate",
+    specialtyCertificates: "Specialty Certificates (ISO, FSSC, FDA, GMP, etc.)", // Existing Key
+    foundationYear: "Foundation Year",
+    foundationYearPlaceholder: "Select Year",
+    capital: "Capital",
+    capitalPlaceholder: "Amount",
+    notes: "Notes and Additional Comments",
+    notesPlaceholder: "Additional notes",
 
-        // General
-        saveButton: "Save",
-        formSubmitted: "Form submitted successfully!",
-    },
+    // --- Keys for File/Certificate Management (SpecialtyCertificatesInput.jsx) ---
+    uploadMultipleFiles: "Manage files by clicking the plus icon", 
+    moreFiles: "More",
+    plusIconAlt: "Plus icon", 
 
+    // ------------------------------------
+    // Non-Industrial Summary Fields (Company)
+    // ------------------------------------
+    companyInformation: "Company Information",
+    companyName: "Company Name",
+    companyNamePlaceholder: "As on registration certificate", // Placeholder for company name
+    companyActivities: "Company Activities",
+    activityPlaceholder: "Add an activity",
+    companyType: "Company Type",
+    companyTypePlaceholder: "Limited Liability Company",
+    companyForm: "Company Form",
+    companyFormPlaceholder: "Ordinary",
+    managementMethod: "Management Method",
+    managementMethodPlaceholder: "Authorized Manager",
+    managerName: "Manager Name",
+    managerNamePlaceholder: "Full Name",
+
+    // ------------------------------------
+    // Actions
+    // ------------------------------------
+    saveButton: "Save",
+    formSubmitted: "Form submitted successfully!",
+},
     // ------------------------------------
     // 5. Step 5: Payment
     // ------------------------------------
@@ -201,6 +216,8 @@ export default {
         mobile2: "Mobile 2",
         addButton: "Add",
         required: "*",
+        cancelButton: "Cancel",
+        requiredFields: "Please fill in the required fields: Country, City, Street or District.",
     },
 
     // ------------------------------------
@@ -288,77 +305,43 @@ export default {
 
         companyDocs: ["Specialized Certificates", "Company Registration Certificates"],
     },
-     addProduct: {
-    title: "Add New Product",
-    productName: "Product Name",
-    productNamePlaceholder: "Product Name",
-    details: "Details",
-    detailsPlaceholder: "Write details here",
-    productImage: "Product Image",
-    uploadImage: "Upload Image",
-    submitButton: "Add",
-  },
-  addressForm: {
-    title: "Add Address",
-    country: "Country",
-    city: "City",
-    area: "Area",
-    streetOrDistrict: "Street or District",
-    buildingNumber: "Building No",
-    floor: "Floor",
-    officeNumber: "Office No",
-    otherDetails: "Other Details",
-    poBox: "P.O. Box",
-    zipCode: "Zip Code",
-    email: "Email",
-    phone: "Phone",
-    fax: "Fax",
-    mobile1: "Mobile 1",
-    mobile2: "Mobile 2",
-    addButton: "Add and Save Address",
-    cancelButton: "Cancel",
-    requiredFields: "Please fill in the required fields: Country, City, Street or District.",
-  },
-  addressForm: {
-    title: "Add Address",
-    country: "Country",
-    city: "City",
-    area: "Area",
-    streetOrDistrict: "Street or District",
-    buildingNumber: "Building No",
-    floor: "Floor",
-    officeNumber: "Office No",
-    otherDetails: "Other Details",
-    poBox: "P.O. Box",
-    zipCode: "Zip Code",
-    email: "Email",
-    phone: "Phone",
-    fax: "Fax",
-    mobile1: "Mobile 1",
-    mobile2: "Mobile 2",
-    addButton: "Add and Save Address",
-    cancelButton: "Cancel",
-    requiredFields: "Please fill in the required fields: Country, City, Street or District.",
-  },
-  certificates: {
-    title: "Specialty Certificates",
-    placeholder: "Write the specialty certificate name here",
-    dropdownPlaceholder: "Select",
-    option1: "Option 1",
-    option2: "Option 2",
-    option3: "Option 3",
-    addButton: "Add",
-    tableName: "Certificate Name",
-    tableAction: "Action",
-    noCertificates: "No specialty certificates currently available.",
-    saveButton: "Save",
-    alertSuccess: "Certificates saved successfully",
-    alertEdit: "Editing certificate no: {id} - (In a real app, an edit form would open)",
-    deleteAriaLabel: "Delete",
-    editAriaLabel: "Edit",
-    modalTitle: "Confirm Deletion",
-    modalMessage: "Are you sure you want to delete this certificate?",
-    modalConfirm: "Delete",
-    modalCancel: "Cancel",
-  }
+
+    // ------------------------------------
+    // 13. Add Product Modal
+    // ------------------------------------
+    addProduct: {
+        title: "Add New Product",
+        productName: "Product Name",
+        productNamePlaceholder: "Product Name",
+        details: "Details",
+        detailsPlaceholder: "Write details here",
+        productImage: "Product Image",
+        uploadImage: "Upload Image",
+        submitButton: "Add",
+    },
+    
+    // ------------------------------------
+    // 14. Certificates Management
+    // ------------------------------------
+    certificates: {
+        title: "Specialty Certificates",
+        placeholder: "Write the specialty certificate name here",
+        dropdownPlaceholder: "Select",
+        option1: "Option 1",
+        option2: "Option 2",
+        option3: "Option 3",
+        addButton: "Add",
+        tableName: "Certificate Name",
+        tableAction: "Action",
+        noCertificates: "No specialty certificates currently available.",
+        saveButton: "Save",
+        alertSuccess: "Certificates saved successfully",
+        alertEdit: "Editing certificate no: {id} - (In a real app, an edit form would open)",
+        deleteAriaLabel: "Delete",
+        editAriaLabel: "Edit",
+        modalTitle: "Confirm Deletion",
+        modalMessage: "Are you sure you want to delete this certificate?",
+        modalConfirm: "Delete",
+        modalCancel: "Cancel",
+    }
 };

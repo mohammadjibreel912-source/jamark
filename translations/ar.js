@@ -1,6 +1,6 @@
 export default {
     // ------------------------------------
-    // 1. Step 1: Establishment Type Selection
+    // 1. الخطوة 1: اختيار نوع المنشأة (Step 1)
     // ------------------------------------
     step1: {
         foreignCompany: "منشأة أجنبية",
@@ -16,7 +16,7 @@ export default {
     },
 
     // ------------------------------------
-    // 2. Step 2: Basic Contact Information
+    // 2. الخطوة 2: معلومات الاتصال الأساسية (Step 2)
     // ------------------------------------
     step2: {
         basicInfo: "البيانات الأساسية",
@@ -33,7 +33,7 @@ export default {
     },
 
     // ------------------------------------
-    // 3. Step 3: Non-Industrial Company Information
+    // 3. الخطوة 3: معلومات الشركة غير الصناعية (Step 3)
     // ------------------------------------
     step3: {
         companyInformation: "معلومات الشركة",
@@ -70,24 +70,32 @@ export default {
     },
 
     // ------------------------------------
-    // 4. Step 4: Factory/Company Documentation and Details
+    // 4. الخطوة 4: وثائق وتفاصيل المنشأة (Step 4)
     // ------------------------------------
     step4: {
+        // المفاتيح الإضافية المطلوبة لبناء العناوين (من الكود)
+        address: "عنوان",
+        location: "موقع",
+        certificate: "شهادة",
+        registration: "تسجيل",
+        uploadFilePlaceholder: "اختر ملفاً...",
+        addressFactoryPlaceholder: "انقر على إشارة الزائد لإدخال العنوان",
+        
         // العناوين الموحدة لـ (الشركة / المصنع)
-        factoryDocumentation: "توثيق الشركة / المصنع",
-        factoryName: "اسم الشركة / المصنع",
+        factoryDocumentation: "توثيق المنشأة", // تم التعديل ليكون عاماً
+        factoryName: "اسم المنشأة", // تم التعديل ليكون عاماً
         factoryNamePlaceholder: "كما هو في شهادة التسجيل",
-        factoryLocation: "موقع الشركة / المصنع",
+        factoryLocation: "موقع المنشأة", // تم التعديل ليكون عاماً
         factoryLocationPlaceholder: "رابط خرائط جوجل أو الإحداثيات",
-        registrationCertificate: "شهادة تسجيل الشركة / المصنع",
-        specialtyCertificates: "الشهادة الاختصاصية (ISO, FSSC, FDA, GMP, إلخ)",
+        registrationCertificate: "شهادة التسجيل",
+        specialtyCertificates: "الشهادات الاختصاصية (ISO, FSSC, FDA, GMP, إلخ)",
         foundationYear: "سنة التأسيس",
         foundationYearPlaceholder: "اختر السنة",
         capital: "رأس المال",
         capitalPlaceholder: "المبلغ",
         notes: "ملاحظات وتعليقات إضافية",
         notesPlaceholder: "ملاحظات إضافية",
-
+        
         // ملخص غير الصناعية (Company Fields)
         companyInformation: "معلومات الشركة",
         companyName: "اسم الشركة",
@@ -105,10 +113,20 @@ export default {
         // عام
         saveButton: "حفظ البيانات",
         formSubmitted: "تم إرسال البيانات بنجاح!",
+        // ... ضمن ملف ar.js (في قسم step4 أو certificates)
+
+// 1. عنوان الحقل
+specialtyCertificates: "الشهادات الاختصاصية", 
+
+// 2. نص الـ Placeholder عند عدم وجود ملفات
+uploadMultipleFiles: "إدارة الملفات بالنقر على أيقونة الزائد", 
+
+// 3. كلمة "المزيد" لعدد الملفات المتبقية
+moreFiles: "المزيد",
     },
 
     // ------------------------------------
-    // 5. Step 5: Payment
+    // 5. الخطوة 5: الدفع (Step 5)
     // ------------------------------------
     step5: {
         cardSection: {
@@ -136,7 +154,7 @@ export default {
     },
 
     // ------------------------------------
-    // 6. Factory/Industrial Product Management
+    // 6. إدارة منتجات المصنع / الصناعة (Factory)
     // ------------------------------------
     factory: {
         infoTitle: "معلومات المصنع",
@@ -176,7 +194,7 @@ export default {
     },
 
     // ------------------------------------
-    // 7. Address Form Modal
+    // 7. نموذج العنوان (Address Form Modal)
     // ------------------------------------
     addressForm: {
         title: "إضافة عنوان",
@@ -197,10 +215,12 @@ export default {
         mobile2: "موبايل 2",
         addButton: "إضافة",
         required: "*",
+        cancelButton: "إلغاء",
+        requiredFields: "يرجى ملء الحقول المطلوبة: البلد، المدينة، الشارع أو الحي.",
     },
 
     // ------------------------------------
-    // 8. General UI Elements (Buttons/Links)
+    // 8. عناصر واجهة المستخدم العامة (Buttons/Links)
     // ------------------------------------
     buttons: {
         next: "التالي",
@@ -210,7 +230,7 @@ export default {
     },
 
     // ------------------------------------
-    // 9. Login Page
+    // 9. صفحة تسجيل الدخول (Login)
     // ------------------------------------
     login: {
         title: "تسجيل الدخول",
@@ -222,7 +242,7 @@ export default {
     },
 
     // ------------------------------------
-    // 10. OTP Page
+    // 10. صفحة رمز التحقق (OTP)
     // ------------------------------------
     otp: {
         title: "التحقق من الحساب",
@@ -232,7 +252,7 @@ export default {
     },
 
     // ------------------------------------
-    // 11. Registration Page
+    // 11. صفحة التسجيل (Registration)
     // ------------------------------------
     registration: {
         title: "إنشاء حساب جديد",
@@ -247,7 +267,7 @@ export default {
     },
 
     // ------------------------------------
-    // 12. Welcome Page
+    // 12. صفحة الترحيب (Welcome)
     // ------------------------------------
     welcome: {
         industrial: "منشأة صناعية",
@@ -284,35 +304,43 @@ export default {
 
         companyDocs: ["الشهادات التخصصية", "شهادات تسجيل الشركة"],
     },
-     addProduct: {
-    title: "إضافة منتج جديد",
-    productName: "إسم المنتج",
-    productNamePlaceholder: "إسم المنتج",
-    details: "التفاصيل",
-    detailsPlaceholder: "اكتب هنا التفاصيل",
-    productImage: "صورة المنتج",
-    uploadImage: "رفع صورة",
-    submitButton: "إضافة",
-  },
-  certificates: {
-    title: "الشهادات المتخصصة",
-    placeholder: "اكتب هنا اسم الشهادة الاختصاصية",
-    dropdownPlaceholder: "اختيار",
-    option1: "خيار 1",
-    option2: "خيار 2",
-    option3: "خيار 3",
-    addButton: "إضافة",
-    tableName: "إسم الشهادة",
-    tableAction: "الإجراء",
-    noCertificates: "لا توجد شهادات متخصصة حاليًا.",
-    saveButton: "حفظ",
-    alertSuccess: "تم حفظ الشهادات بنجاح",
-    alertEdit: "جاري تعديل الشهادة رقم: {id} - (في التطبيق الحقيقي سيفتح نموذج التعديل)",
-    deleteAriaLabel: "حذف",
-    editAriaLabel: "تعديل",
-    modalTitle: "تأكيد الحذف",
-    modalMessage: "هل أنت متأكد من حذف هذه الشهادة؟",
-    modalConfirm: "حذف",
-    modalCancel: "إلغاء",
-  }
+    
+    // ------------------------------------
+    // 13. نموذج إضافة منتج (AddProduct)
+    // ------------------------------------
+    addProduct: {
+        title: "إضافة منتج جديد",
+        productName: "إسم المنتج",
+        productNamePlaceholder: "إسم المنتج",
+        details: "التفاصيل",
+        detailsPlaceholder: "اكتب هنا التفاصيل",
+        productImage: "صورة المنتج",
+        uploadImage: "رفع صورة",
+        submitButton: "إضافة",
+    },
+    
+    // ------------------------------------
+    // 14. إدارة الشهادات (Certificates)
+    // ------------------------------------
+    certificates: {
+        title: "الشهادات المتخصصة",
+        placeholder: "اكتب هنا اسم الشهادة الاختصاصية",
+        dropdownPlaceholder: "اختيار",
+        option1: "خيار 1",
+        option2: "خيار 2",
+        option3: "خيار 3",
+        addButton: "إضافة",
+        tableName: "إسم الشهادة",
+        tableAction: "الإجراء",
+        noCertificates: "لا توجد شهادات متخصصة حاليًا.",
+        saveButton: "حفظ",
+        alertSuccess: "تم حفظ الشهادات بنجاح",
+        alertEdit: "جاري تعديل الشهادة رقم: {id} - (في التطبيق الحقيقي سيفتح نموذج التعديل)",
+        deleteAriaLabel: "حذف",
+        editAriaLabel: "تعديل",
+        modalTitle: "تأكيد الحذف",
+        modalMessage: "هل أنت متأكد من حذف هذه الشهادة؟",
+        modalConfirm: "حذف",
+        modalCancel: "إلغاء",
+    }
 };
