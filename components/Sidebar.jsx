@@ -6,13 +6,14 @@ import logo from "../src/assets/logo.png";
 
 const Sidebar = ({
   step,
+locationSummary, // هذه الخاصية لم يتم استخدامها في النهاية
   topSelected = [],
   bottomSelected = [],
   name,
   email,
   phone,
   companyName,
-  activityId, // يُستخدم كـ Fallback ID
+  activityId, 
   companyType,
   companyForm,
   managementMethod,
@@ -23,19 +24,22 @@ const Sidebar = ({
   foundationYear,
   capital,
   currency,
-  translations, // ✅ يجب تمرير كائن الترجمة كاملاً من الأب
+  translations, 
   activityName, 
   companyTypeName,
   companyFormName,
   managementMethodName,
   establishmentAddress, 
-  establishmentLocation, 
+  establishmentLocation, // 🛑 هذه الخاصية هي الكائن الذي يسبب الخطأ
   foundingYear, 
   registrationCertificate, 
   additionalCertificates, 
   notes, 
   factoryProducts, 
 }) => {
+
+    // ملاحظة: تم حذف displayLocation = locationSummary?.address || "لم يتم التحديد"; 
+    // لأن establishmentLocation هو ما نحتاجه في الخطوة 5.
   const { language } = useContext(LanguageContext);
   const isRTL = language === "ar";
   const t = translations.sidebar || {}; // استخدام مفاتيح الترجمة من الكائن المُمرر
@@ -53,13 +57,22 @@ const Sidebar = ({
     />
   );
 
-  const formatCertificates = () => {
+ const formatCertificates = () => {
+    // 1. التحقق مما إذا كانت مصفوفة و غير فارغة
     if (
       Array.isArray(additionalCertificates) &&
       additionalCertificates.length > 0
     ) {
-      return additionalCertificates.join(", ");
+      // 2. تعيين اسم الخاصية التي تحمل الاسم (قد تكون name, filename, title)
+      const nameKey = 'name'; // افترضنا أن اسم الخاصية هو 'name'
+
+      // 3. تحويل مصفوفة الكائنات إلى مصفوفة من الأسماء، وتصفية أي قيم غير موجودة
+      return additionalCertificates
+        .map(cert => cert && typeof cert === 'object' ? cert[nameKey] : cert)
+        .filter(Boolean) // تصفية القيم الفارغة (مثل null, undefined)
+        .join(", ");
     }
+    // 4. إذا لم تكن مصفوفة، نعرضها كما هي (قد تكون نصاً واحداً)
     return additionalCertificates;
   };
   
@@ -83,6 +96,24 @@ const Sidebar = ({
     );
   };
 
+  // 💡 وظيفة مساعدة لاستخراج العنوان من الكائن
+  const getLocationAddress = (locationObject) => {
+    if (!locationObject) return null;
+    
+    // البحث عن خاصية العنوان
+    if (locationObject.address) return locationObject.address;
+    if (locationObject.display) return locationObject.display;
+    
+    // عرض الإحداثيات إذا كان العنوان غير متوفر
+    const lat = locationObject.latitude || locationObject.lat;
+    const lng = locationObject.longitude || locationObject.lng;
+
+    if (lat && lng) return `${lat}, ${lng}`;
+      
+    return null;
+  };
+
+
   return (
     <div className="sidebar" dir={isRTL ? "rtl" : "ltr"}>
       <div className="logo-container">
@@ -99,8 +130,8 @@ const Sidebar = ({
         </div>
 
         <div className="status-text">
-            {isFactory ? t.mainTitleFactory : t.mainTitleCompany}
-        </div>
+            {isFactory ? t.mainTitleFactory : t.mainTitleCompany}
+        </div>
 
         {step >= 2 && (
           <div
@@ -143,6 +174,7 @@ const Sidebar = ({
                 {phone && <div>{phone}</div>}
               </div>
             </div>
+           
           </div>
         )}
 
@@ -177,7 +209,7 @@ const Sidebar = ({
                     <>
                       {factoryName && (
                         <div>
-                           {factoryName}
+                           {factoryName}
                         </div>
                       )}
                       
@@ -189,7 +221,7 @@ const Sidebar = ({
                       
                       {managerName && (
                         <div>
-                         {managerName}
+                         {managerName}
                         </div>
                       )}
                       
@@ -219,7 +251,7 @@ const Sidebar = ({
                       
                       {(companyFormName || companyForm) && (
                         <div>
-                           {companyFormName || companyForm}
+                           {companyFormName || companyForm}
                         </div>
                       )}
                       
@@ -241,7 +273,7 @@ const Sidebar = ({
             </div>
           )}
 
-        {step >= 5 && (
+    {step >= 5 && (
           <div
             style={{
               display: "flex",
@@ -255,26 +287,37 @@ const Sidebar = ({
               style={{ display: "flex", flexDirection: "column", gap: "4px" }}
             >
               <h3 style={{ margin: 0 }}>
-                {isFactory ? t.documentationTitleFactory : t.documentationTitleCompany}
-            </h3>
+                {isFactory ? t.documentationTitleFactory : t.documentationTitleCompany}
+            </h3>
               <div style={{ fontSize: "14px" }}>
+                
+                {/* 1. العنوان */}
                 {establishmentAddress && <div>{establishmentAddress}</div>}
-                {establishmentLocation && (
+                
+                {/* 2. الموقع (الإحداثيات/الخريطة) */}
+                {establishmentLocation && getLocationAddress(establishmentLocation) && (
                   <div style={{ overflowWrap: "break-word" }}>
-                    {establishmentLocation}
+                    {getLocationAddress(establishmentLocation)}
                   </div>
                 )}
-                {foundingYear && <div>{foundingYear}</div>}
+                
+                {/* 3. السنة وجنبها م */}
+                {foundingYear && <div>{foundingYear} م</div>}
 
+                {/* 4. رأس المال مع العملة */}
                 {(capital || currency) && (
                   <div>
-                    <strong>{t.capitalLabel}:</strong> {capital} {currency}
+                    {capital} {currency}
                   </div>
                 )}
-                
-                {registrationCertificate && <div>{registrationCertificate}</div>}
+                
+                {/* 5. اسم الشهادة المرفوعة (شهادة التسجيل) */}
+                {registrationCertificate && <div>{registrationCertificate}</div>}
+                
+                {/* 6. اسماء الشهادات الإضافية (مجمعة) */}
                 {additionalCertificates && <div>{formatCertificates()}</div>}
 
+                {/* 7. الملاحظات والتعليقات */}
                 {notes && <div>{notes}</div>}
               </div>
             </div>
