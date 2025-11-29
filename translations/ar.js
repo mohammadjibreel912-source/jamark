@@ -8,7 +8,6 @@ export default {
         industrial: "منشأة صناعية",
         nonIndustrial: "منشأة غير صناعية",
 
-        // النص داخل الأقواس ()
         foreignSetup: "أجنبية",
         iraqiSetup: "عراقية",
         factory: "مصنع",
@@ -73,20 +72,23 @@ export default {
     // 4. الخطوة 4: وثائق وتفاصيل المنشأة (Step 4)
     // ------------------------------------
     step4: {
-        // المفاتيح الإضافية المطلوبة لبناء العناوين (من الكود)
+        // المفاتيح الإضافية المطلوبة لبناء العناوين
         address: "عنوان",
         location: "موقع",
         certificate: "شهادة",
         registration: "تسجيل",
         uploadFilePlaceholder: "اختر ملفاً...",
         addressFactoryPlaceholder: "انقر على إشارة الزائد لإدخال العنوان",
-        
+        plusIconAlt: "أيقونة الزائد", // Added based on en.js
+
         // العناوين الموحدة لـ (الشركة / المصنع)
-        factoryDocumentation: "توثيق المنشأة", // تم التعديل ليكون عاماً
-        factoryName: "اسم المنشأة", // تم التعديل ليكون عاماً
+        factoryDocumentation: "توثيق المنشأة", 
+        factoryName: "اسم المنشأة", 
         factoryNamePlaceholder: "كما هو في شهادة التسجيل",
-        factoryLocation: "موقع المنشأة", // تم التعديل ليكون عاماً
+        factoryLocation: "موقع المنشأة", 
         factoryLocationPlaceholder: "رابط خرائط جوجل أو الإحداثيات",
+        
+        // الوثائق والبيانات المالية
         registrationCertificate: "شهادة التسجيل",
         specialtyCertificates: "الشهادات الاختصاصية (ISO, FSSC, FDA, GMP, إلخ)",
         foundationYear: "سنة التأسيس",
@@ -96,6 +98,10 @@ export default {
         notes: "ملاحظات وتعليقات إضافية",
         notesPlaceholder: "ملاحظات إضافية",
         
+        // --- Keys for File/Certificate Management ---
+        uploadMultipleFiles: "إدارة الملفات بالنقر على أيقونة الزائد", 
+        moreFiles: "المزيد",
+
         // ملخص غير الصناعية (Company Fields)
         companyInformation: "معلومات الشركة",
         companyName: "اسم الشركة",
@@ -113,16 +119,6 @@ export default {
         // عام
         saveButton: "حفظ البيانات",
         formSubmitted: "تم إرسال البيانات بنجاح!",
-        // ... ضمن ملف ar.js (في قسم step4 أو certificates)
-
-// 1. عنوان الحقل
-specialtyCertificates: "الشهادات الاختصاصية", 
-
-// 2. نص الـ Placeholder عند عدم وجود ملفات
-uploadMultipleFiles: "إدارة الملفات بالنقر على أيقونة الزائد", 
-
-// 3. كلمة "المزيد" لعدد الملفات المتبقية
-moreFiles: "المزيد",
     },
 
     // ------------------------------------
@@ -342,5 +338,38 @@ moreFiles: "المزيد",
         modalMessage: "هل أنت متأكد من حذف هذه الشهادة؟",
         modalConfirm: "حذف",
         modalCancel: "إلغاء",
+    },
+    
+    // ------------------------------------
+    // 15. Sidebar Labels
+    // ------------------------------------
+    sidebar: {
+        mainTitleCompany: "تسجيل شركة جديدة",
+        mainTitleFactory: "تسجيل مصنع جديد",
+        establishmentInfo: "معلومات المنشأة",
+        factory: "مصنع",
+        company: "شركة",
+        iraqi: "عراقية",
+        foreign: "أجنبية",
+        basicInfo: "المعلومات الأساسية",
+        factoryInfo: "معلومات المصنع",
+        companyInfo: "معلومات الشركة",
+        documentationTitleCompany: "توثيق الشركة",
+        documentationTitleFactory: "توثيق المصنع",
+
+        // حقول الخطوة الثالثة (معلومات المنشأة)
+        companyNameLabel: "اسم الشركة",
+        activityLabel: "أنشطة الشركة",
+        companyTypeLabel: "نوع الشركة",
+        companyFormLabel: "شكل الشركة",
+        managementMethodLabel: "طريقة الإدارة",
+        managerNameLabel: "اسم المدير",
+        
+        factoryNameLabel: "اسم المصنع",
+        factoryActivityLabel: "نشاط المصنع",
+        factoryProductsLabel: "المنتجات",
+        
+        // حقول الخطوة الرابعة (البيانات المالية والتوثيق)
+        capitalLabel: "رأس المال"
     }
 };

@@ -7,16 +7,15 @@ import Step4FormFields from "./Step4FormFields";
 import Modal from "../Modal"; 
 import AddressForm from "../AddressForm"; 
 import DropzoneUploader from "../DropzoneUploader"; 
-import MapModalContainer from "../MapModalContainer"; // ⬅️ تم تصحيح اسم المكون
+import MapModalContainer from "../MapModalContainer"; 
 import CertificateUpload from "../CertificateUpload"; 
 import { LanguageContext } from "../../context/LanguageContext";
 import styles from "../../styles/Step4.module.css"; 
 
 const Step4 = (props) => { 
     
-    // --- 1. General Logic Hook ---
     const { 
-        t, language, errors, setErrors, currencies, selectedCurrencyCode, // ⬅️ استخلاص setErrors
+        t, language, errors, setErrors, currencies, selectedCurrencyCode, 
         primaryTermAr, primaryTermEn,
         isDropdownOpen, isYearDropdownOpen, 
         isAddressModalOpen, isUploaderModalOpen, isManagerModalOpen, isMapModalOpen,
@@ -39,7 +38,7 @@ const Step4 = (props) => {
     } = useCertificateManagement(
         props.registrationCertificate, props.setRegistrationCertificate, 
         props.additionalCertificates, props.setAdditionalCertificates,
-        setErrors, // ⬅️ تمرير setErrors
+        setErrors,
         t
     );
     
@@ -99,7 +98,7 @@ const Step4 = (props) => {
                             {t.mapLoadingText}
                         </div>
                     ) : (
-                        <MapModalContainer // ⬅️ استخدام المكون الصحيح
+                        <MapModalContainer 
                             onSave={handleSaveLocation} 
                             initialLocation={props.establishmentLocation} 
                             translations={t.mapModal} 

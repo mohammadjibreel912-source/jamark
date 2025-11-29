@@ -71,61 +71,56 @@ export default {
     // ------------------------------------
     // 4. Step 4: Factory/Company Documentation and Details
     // ------------------------------------
-   step4: {
-    // ------------------------------------
-    // General Keys (Used for both Factory/Company)
-    // ------------------------------------
-    factoryDocumentation: "Establishment Documentation", 
-    factoryName: "Establishment Name", 
-    factoryNamePlaceholder: "As in registration certificate",
-    factoryLocation: "Establishment Location", 
-    factoryLocationPlaceholder: "Google Maps link or coordinates",
+    step4: {
+        // General Keys (Used for both Factory/Company)
+        factoryDocumentation: "Establishment Documentation", 
+        factoryName: "Establishment Name", 
+        factoryNamePlaceholder: "As in registration certificate",
+        factoryLocation: "Establishment Location", 
+        factoryLocationPlaceholder: "Google Maps link or coordinates",
+        
+        // Keys needed for Address/Location/Certificate building
+        address: "Address",
+        location: "Location",
+        certificate: "Certificate", 
+        registration: "Registration", 
+        addressFactoryPlaceholder: "Click plus to enter address",
+        uploadFilePlaceholder: "Select a file...", // Added based on ar.js
+        plusIconAlt: "Plus icon", 
+
+        // Document Fields
+        registrationCertificate: "Registration Certificate",
+        specialtyCertificates: "Specialty Certificates (ISO, FSSC, FDA, GMP, etc.)", 
+        foundationYear: "Foundation Year",
+        foundationYearPlaceholder: "Select Year",
+        capital: "Capital",
+        capitalPlaceholder: "Amount",
+        notes: "Notes and Additional Comments",
+        notesPlaceholder: "Additional notes",
+
+        // --- Keys for File/Certificate Management ---
+        uploadMultipleFiles: "Manage files by clicking the plus icon", 
+        moreFiles: "More",
+
+        // Non-Industrial Summary Fields (Company) - Retained for Step 4 summary display
+        companyInformation: "Company Information",
+        companyName: "Company Name",
+        companyActivities: "Company Activities",
+        activityPlaceholder: "Add an activity",
+        companyType: "Company Type",
+        companyTypePlaceholder: "Limited Liability Company",
+        companyForm: "Company Form",
+        companyFormPlaceholder: "Ordinary",
+        managementMethod: "Management Method",
+        managementMethodPlaceholder: "Authorized Manager",
+        managerName: "Manager Name",
+        managerNamePlaceholder: "Full Name",
+
+        // Actions
+        saveButton: "Save",
+        formSubmitted: "Form submitted successfully!",
+    },
     
-    // Keys needed for Address/Location/Certificate building (from Step4FormFields.jsx logic)
-    address: "Address",
-    location: "Location",
-    certificate: "Certificate", 
-    registration: "Registration", 
-    addressFactoryPlaceholder: "Click plus to enter address",
-
-    // Document Fields
-    registrationCertificate: "Registration Certificate",
-    specialtyCertificates: "Specialty Certificates (ISO, FSSC, FDA, GMP, etc.)", // Existing Key
-    foundationYear: "Foundation Year",
-    foundationYearPlaceholder: "Select Year",
-    capital: "Capital",
-    capitalPlaceholder: "Amount",
-    notes: "Notes and Additional Comments",
-    notesPlaceholder: "Additional notes",
-
-    // --- Keys for File/Certificate Management (SpecialtyCertificatesInput.jsx) ---
-    uploadMultipleFiles: "Manage files by clicking the plus icon", 
-    moreFiles: "More",
-    plusIconAlt: "Plus icon", 
-
-    // ------------------------------------
-    // Non-Industrial Summary Fields (Company)
-    // ------------------------------------
-    companyInformation: "Company Information",
-    companyName: "Company Name",
-    companyNamePlaceholder: "As on registration certificate", // Placeholder for company name
-    companyActivities: "Company Activities",
-    activityPlaceholder: "Add an activity",
-    companyType: "Company Type",
-    companyTypePlaceholder: "Limited Liability Company",
-    companyForm: "Company Form",
-    companyFormPlaceholder: "Ordinary",
-    managementMethod: "Management Method",
-    managementMethodPlaceholder: "Authorized Manager",
-    managerName: "Manager Name",
-    managerNamePlaceholder: "Full Name",
-
-    // ------------------------------------
-    // Actions
-    // ------------------------------------
-    saveButton: "Save",
-    formSubmitted: "Form submitted successfully!",
-},
     // ------------------------------------
     // 5. Step 5: Payment
     // ------------------------------------
@@ -343,5 +338,38 @@ export default {
         modalMessage: "Are you sure you want to delete this certificate?",
         modalConfirm: "Delete",
         modalCancel: "Cancel",
+    },
+    
+    // ------------------------------------
+    // 15. Sidebar Labels
+    // ------------------------------------
+    sidebar: {
+        mainTitleCompany: "Register New Company",
+        mainTitleFactory: "Register New Factory",
+        establishmentInfo: "Establishment Information",
+        factory: "Factory",
+        company: "Company",
+        iraqi: "Iraqi",
+        foreign: "Foreign",
+        basicInfo: "Basic Information",
+        factoryInfo: "Factory Information",
+        companyInfo: "Company Information",
+        documentationTitleCompany: "Company Documentation",
+        documentationTitleFactory: "Factory Documentation",
+
+        // Step 3 Fields (Establishment Info)
+        companyNameLabel: "Company Name",
+        activityLabel: "Company Activity",
+        companyTypeLabel: "Company Type",
+        companyFormLabel: "Company Form",
+        managementMethodLabel: "Management Method",
+        managerNameLabel: "Manager Name",
+        
+        factoryNameLabel: "Factory Name",
+        factoryActivityLabel: "Factory Activity",
+        factoryProductsLabel: "Products",
+        
+        // Step 4 Fields (Financial/Documentation)
+        capitalLabel: "Capital"
     }
 };

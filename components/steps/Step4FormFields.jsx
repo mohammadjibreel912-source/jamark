@@ -229,7 +229,6 @@ const Step4FormFields = ({
                 className={styles.currencySelector}
                 onClick={onToggleDropdown}
             >
-                {/* 💡 الآن، selectedCurrency سيكون متغيرًا تم حسابه في Hook */}
                 <img
                     src={selectedCurrency?.icon || defaultFlagIcon}
                     alt="currency flag"
