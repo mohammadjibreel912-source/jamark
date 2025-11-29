@@ -1,8 +1,6 @@
 import React, { useState, useContext } from "react";
 import { LanguageContext } from "../../context/LanguageContext";
 import styles from "../../styles/Step5.module.css";
-// افترض أنك تحتاج إلى أنماط إضافية لرسائل الخطأ في Step5.module.css مثل .errorText
-// سنستخدم هنا style inline مؤقتًا لرسالة الخطأ
 
 export default function Step5() {
   const { translations } = useContext(LanguageContext);
@@ -12,6 +10,7 @@ export default function Step5() {
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expiry, setExpiry] = useState("");
+  const [saveCard, setSaveCard] = useState(false); // حالة حفظ البطاقة
 
   // 2. حالة تخزين الأخطاء
   const [errors, setErrors] = useState({});
@@ -22,41 +21,38 @@ export default function Step5() {
 
   // دالة لتنسيق تاريخ الانتهاء (MM/YY) وإضافة شرطة
   const formatExpiryDate = (value) => {
-    // إزالة أي حرف غير رقمي
     const cleanValue = value.replace(/\D/g, "");
-
-    // إضافة شرطة بعد أول رقمين (الشهر)
     if (cleanValue.length > 2) {
       return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2, 4)}`;
     }
     return cleanValue;
   };
 
-  // 3. دوال التحقق من صحة الحقول
+  // 3. دوال التحقق من صحة الحقول (مأخوذة من الكود السابق)
 
   const validateCardName = (name) => {
+    if (!name.trim()) {
+      return translations.step5.validation.cardNameRequired;
+    }
     if (name.trim().length < 3) {
       return translations.step5.validation.cardNameRequired;
     }
-    // يمكن إضافة تحقق لإدخال الحروف فقط (اختياري)
-    if (!/^[a-zA-Z\s]+$/.test(name)) {
+    if (!/^[a-zA-Z\s\u0600-\u06FF]+$/.test(name)) { // تم إضافة دعم للحروف العربية
       return translations.step5.validation.cardNameInvalid;
     }
     return "";
   };
 
   const validateCardNumber = (number) => {
-    // إزالة المسافات للتحقق
     const cleanNumber = number.replace(/\s/g, "");
     if (cleanNumber.length !== 16) {
       return translations.step5.validation.cardNumberLength;
     }
-    // يمكن إضافة تحقق لخوارزمية Luhn (اختياري، أكثر تعقيداً)
     return "";
   };
 
   const validateCvv = (value) => {
-    if (value.length !== 3 && value.length !== 4) { // تقبل 3 أو 4 أرقام
+    if (!/^\d{3,4}$/.test(value)) { // يقبل 3 أو 4 أرقام فقط
       return translations.step5.validation.cvvLength;
     }
     return "";
@@ -65,18 +61,18 @@ export default function Step5() {
   const validateExpiry = (date) => {
     const parts = date.split("/");
     if (parts.length !== 2 || parts[0].length !== 2 || parts[1].length !== 2) {
-      return translations.step5.validation.expiryFormat; // يجب أن يكون MM/YY
+      return translations.step5.validation.expiryFormat; 
     }
 
     const month = parseInt(parts[0], 10);
-    const year = parseInt(parts[1], 10) + 2000; // افتراض أن السنة YY تعني 20YY
+    const year = parseInt(parts[1], 10) + 2000; 
 
     if (month < 1 || month > 12) {
       return translations.step5.validation.expiryMonthInvalid;
     }
 
     const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1; // 1-12
+    const currentMonth = new Date().getMonth() + 1;
 
     if (year < currentYear || (year === currentYear && month < currentMonth)) {
       return translations.step5.validation.expiryDateExpired;
@@ -84,8 +80,7 @@ export default function Step5() {
     return "";
   };
 
-  // 4. دالة لمعالجة التغييرات (Handling Changes)
-
+  // 4. دالة لمعالجة التغييرات 
   const handleChange = (setter, validator, fieldName) => (e) => {
     const { value } = e.target;
     let processedValue = value;
@@ -94,6 +89,9 @@ export default function Step5() {
       processedValue = formatCardNumber(value);
     } else if (fieldName === 'expiry') {
       processedValue = formatExpiryDate(value);
+    } else if (fieldName === 'cvv') {
+      // السماح بالأرقام فقط للـ CVV والحد الأقصى 4
+      processedValue = value.replace(/\D/g, '').slice(0, 4);
     }
     
     setter(processedValue);
@@ -103,8 +101,7 @@ export default function Step5() {
     setErrors(prev => ({ ...prev, [fieldName]: error }));
   };
 
-
-  // دالة تشغيل التحقق الكامل (مثلاً عند الضغط على زر الدفع)
+  // دالة تشغيل التحقق الكامل (لزر الدفع)
   const validateAllFields = () => {
     const newErrors = {};
     newErrors.cardName = validateCardName(cardName);
@@ -114,27 +111,21 @@ export default function Step5() {
 
     setErrors(newErrors);
 
-    // إرجاع true إذا لم توجد أخطاء
     return Object.values(newErrors).every(error => error === "");
   };
+  
+  const handleSubmit = () => {
+    if (validateAllFields()) {
+      alert("Valid data. Proceeding to payment...");
+    } else {
+      alert("Please correct the errors.");
+    }
+  };
 
-
-  // // (بافتراض وجود زر دفع أو إجراء نهائي)
-  // const handleSubmit = () => {
-  //   if (validateAllFields()) {
-  //     console.log("Valid data:", { cardName, cardNumber, cvv, expiry });
-  //     // Proceed with payment logic
-  //   } else {
-  //     console.log("Validation failed");
-  //   }
-  // };
-
-
-  // 5. عرض الكومبوننت (JSX)
-
+  // دالة مساعدة لعرض رسائل الخطأ
   const ErrorText = ({ message }) => 
     message ? (
-      <div style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{message}</div>
+      <div className={styles.errorText}>{message}</div>
     ) : null;
 
   return (
@@ -154,6 +145,7 @@ export default function Step5() {
               value={cardName}
               onChange={handleChange(setCardName, validateCardName, 'cardName')}
               placeholder={translations.step5.cardSection.cardHolderNamePlaceholder}
+              className={errors.cardName ? styles.inputError : ''}
             />
             <ErrorText message={errors.cardName} />
           </div>
@@ -169,6 +161,7 @@ export default function Step5() {
               onChange={handleChange(setCardNumber, validateCardNumber, 'cardNumber')}
               placeholder={translations.step5.cardSection.cardNumberPlaceholder}
               maxLength={19}
+              className={errors.cardNumber ? styles.inputError : ''}
             />
             <ErrorText message={errors.cardNumber} />
           </div>
@@ -184,8 +177,9 @@ export default function Step5() {
                 value={cvv}
                 onChange={handleChange(setCvv, validateCvv, 'cvv')}
                 placeholder={translations.step5.cardSection.cvvPlaceholder}
-                maxLength={4} // تم تعديل MaxLength للسماح بـ 4 أرقام
-                type="text" // تم تغييره إلى text للرؤية
+                maxLength={4}
+                type="text"
+                className={errors.cvv ? styles.inputError : ''}
               />
               <ErrorText message={errors.cvv} />
             </div>
@@ -201,16 +195,16 @@ export default function Step5() {
                 onChange={handleChange(setExpiry, validateExpiry, 'expiry')}
                 placeholder={translations.step5.cardSection.expiryDatePlaceholder}
                 maxLength={5}
+                className={errors.expiry ? styles.inputError : ''}
               />
               <ErrorText message={errors.expiry} />
             </div>
           </div>
 
-          <div className={styles.saveCardBottom}>
-            <span>{translations.step5.cardSection.saveCard}</span>
-          </div>
+        
 
-          {/* Invoice Summary... (بقية الكود لم يتغير) */}
+
+          {/* Invoice Summary */}
           <div className={styles.invoice}>
             <div className={styles.invoiceHeader}>{translations.step5.invoice.header}</div>
             <ul className={styles.invoiceList}>
@@ -232,37 +226,31 @@ export default function Step5() {
               <div className={styles.total}>$1500</div>
             </div>
           </div>
+
+        
+         
         </div>
 
-        {/* Card Preview ... (بقية الكود لم يتغير) */}
+        {/* Card Preview - تم تعديل الهيكل ليتناسب مع الصورة المرفقة */}
         <div className={styles.card}>
-          <div className={styles.cardHeader}>
+          <div className={styles.cardTop}>
             <div className={styles.chip} />
-            <div className={styles.cardNumber}>
-              {cardNumber ? formatCardNumber(cardNumber) : translations.step5.cardSection.cardNumberPlaceholder}
-            </div>
+            <div className={styles.visaLogo}>{translations.step5.cardSection.visa}</div>
+          </div>
+          
+          <div className={styles.cardNumberPreview}>
+            {cardNumber || translations.step5.cardSection.cardNumberPlaceholder}
           </div>
 
-          <div className={styles.cardRow}>
+          <div className={styles.cardFooter}>
             <div className={styles.cardInfo}>
-              <div className={styles.cardLabel}>{translations.step5.cardSection.cardHolderName}</div>
-              <div className={styles.cardValue}>{cardName || translations.step5.cardSection.cardHolderNamePlaceholder}</div>
+              <div className={styles.cardLabel}>Card Holder name</div>
+              <div className={styles.cardValue}>{cardName || "Ali Salem"}</div>
             </div>
             <div className={styles.cardInfo}>
-              <div className={styles.cardLabel}>{translations.step5.cardSection.expiryDate}</div>
-              <div className={styles.cardValue}>{expiry || translations.step5.cardSection.expiryDatePlaceholder}</div>
+              <div className={styles.cardLabel}>Expiry Date</div>
+              <div className={styles.cardValue}>{expiry || "02/30"}</div>
             </div>
-          </div>
-
-          <div className={styles.cardRow}>
-            <div className={styles.cardInfo}>
-              <div className={styles.cardLabel}>{translations.step5.cardSection.cvv}</div>
-              <div className={styles.cardValue}>{cvv || "123"}</div>
-            </div>
-          </div>
-
-          <div className={styles.saveCard}>
-            <span>{translations.step5.cardSection.saveCard}</span>
           </div>
         </div>
       </div>

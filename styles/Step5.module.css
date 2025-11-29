@@ -10,6 +10,7 @@
   gap: 30px;
   flex-direction: column;
   font-family: 'Cairo', sans-serif;
+  direction: rtl; /* تعيين الاتجاه لليمين للواجهة بأكملها */
 }
 
 .grid {
@@ -19,26 +20,26 @@
   flex-wrap: wrap;
 }
 
+/* --- قسم البطاقة (Card Preview) --- */
 .card {
-  /* تم دمج الأنماط المكررة لـ .card هنا */
   width: 357px;
   height: 202px;
-  background: #05BAA3;
+  background: linear-gradient(135deg, #05BAA3 0%, #009688 100%);
   border-radius: 20px;
   padding: 25px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
   color: white;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   font-family: 'Arial', sans-serif;
+  direction: ltr; /* البطاقة تُعرض غالبًا بـ LTR */
 }
 
-.cardHeader { /* تم تغيير .card-header إلى camelCase لسهولة استخدامها في React */
+.cardTop { 
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .chip {
@@ -48,49 +49,50 @@
   border-radius: 5px;
 }
 
-.cardNumber { /* تم تغيير .card-number إلى camelCase */
-  font-size: 1.3rem;
-  letter-spacing: 3px;
-}
-
-.cardRow { /* تم تغيير .card-row إلى camelCase */
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.cardInfo { /* تم تغيير .card-info إلى camelCase */
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.cardLabel { /* تم تغيير .card-label إلى camelCase */
-  font-size: 0.8rem;
-  opacity: 0.9;
-  /* الأنماط من النسخة الأصلية */
-  color: #ffffff; 
-}
-
-.cardValue { /* تم تغيير .card-value إلى camelCase */
-  font-size: 1rem;
+.visaLogo {
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
-.saveCard, .saveCardBottom { /* تم تغيير .save-card و .save-card-bottom إلى camelCase */
-  margin-top: 15px;
-  font-size: 12px;
-  color: #ACACAC;
+.cardNumberPreview { 
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  margin-top: 20px;
+  font-weight: 500;
 }
 
-.formSection { /* تم تغيير .form-section إلى camelCase */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cardInfo { 
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cardLabel { 
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.cardValue { 
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* --- قسم النموذج (Form Section) --- */
+.formSection { 
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.formTitle { /* تم تغيير .form-title إلى camelCase */
+.formTitle { 
   font-size: 32px;
   font-weight: 500;
   color: #31373D;
@@ -102,12 +104,28 @@
   gap: 5px;
 }
 
-.field input {
-  padding: 8px 10px;
-  border-radius: 4px;
-  border: 1px solid #E1E1E1;
+.field label {
   text-align: right;
   font-size: 14px;
+}
+
+.field input {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #E1E1E1;
+  text-align: right; /* محاذاة النص لليمين */
+  font-size: 14px;
+}
+
+.inputError {
+    border-color: red !important;
+}
+
+.errorText {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: right;
 }
 
 .inline {
@@ -115,10 +133,21 @@
   gap: 20px;
 }
 
-.flex1 { /* تم تغيير .flex-1 إلى camelCase */
+.flex1 { 
   flex: 1;
 }
 
+/* --- حفظ البطاقة (Save Card) --- */
+.saveCardBottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #ACACAC;
+  justify-content: flex-end; /* المحاذاة لليمين */
+}
+
+/* --- ملخص الفاتورة (Invoice) --- */
 .invoice {
   background: #F1F1F1;
   padding: 16px;
@@ -129,35 +158,81 @@
   gap: 10px;
 }
 
-.invoiceHeader { /* تم تغيير .invoice-header إلى camelCase */
+.invoiceHeader { 
   font-size: 20px;
   color: #2E3238;
+  text-align: right;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #CAD0D9;
 }
 
-.invoiceList { /* تم تغيير .invoice-list إلى camelCase */
+.invoiceList { 
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.invoiceItem { /* تم تغيير .invoice-item إلى camelCase */
+.invoiceItem { 
   display: flex;
   justify-content: space-between;
   padding: 4px 0;
   font-size: 14px;
+  direction: rtl;
 }
 
-.totalRow { /* تم تغيير .total-row إلى camelCase */
+.totalRow { 
   display: flex;
   justify-content: space-between;
   font-size: 20px;
   font-weight: 500;
+  padding-top: 10px;
+  border-top: 1px solid #CAD0D9;
+  direction: rtl;
 }
 
-.totalLabel { /* تم تغيير .total-label إلى camelCase */
-    /* يُضاف ليتناسب مع .total-row */
+/* --- أزرار الإجراءات (Actions) --- */
+.actionButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 15px;
 }
 
-.total {
-    /* يُضاف ليتناسب مع .total-row */
+.submitButton {
+    background: #0D2258;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    flex-grow: 1;
+    order: 1; /* ليكون على اليمين في RTL */
+}
+
+.backButton {
+    background: white;
+    color: #6c757d;
+    padding: 12px 25px;
+    border: 1px solid #E1E1E1;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    flex-grow: 0.5;
+    order: 2; /* ليكون على اليسار في RTL */
+}
+
+
+/* Recommended CSS for the card preview to match the image */
+.card {
+  display: flex;
+  width: 357px;
+  height: 202px;
+  padding: 25px;
+  flex-direction: column;
+  /* Use space-between to push content (Header, Number, Footer) to the edges */
+  justify-content: space-between; 
+  /* Remove align-items: center; to allow elements like text to align left/right */
+  /* Remove gap: 10px; and control spacing using margin on internal elements */
 }
