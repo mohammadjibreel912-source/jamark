@@ -14,7 +14,7 @@ import Step3Company from "./steps/Step3Company";
 // مفتاح التخزين المحلي
 const LOCAL_STORAGE_KEY = 'registrationFormData';
 
-// دالة مساعدة للتحقق من صحة البريد الإلكتروني (خارج المكون)
+// دالة مساعدة للتحقق من صحة البريد الإلكتروني
 const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -24,56 +24,57 @@ const StepperPage = () => {
     const { translations, language } = useContext(LanguageContext);
     const isRTL = language === "ar";
 
-    // 1. 🚀 توحيد الحالة والحفظ من localStorage
+    const defaultFormData = {
+        step: 1,
+        topSelected: [],
+        bottomSelected: [],
+        name: "",
+        email: "",
+        phone: "",
+        companyName: "",
+        companyActivities: [],
+        companyType: "",
+        companyForm: "",
+        managementMethod: "",
+        managerName: "",
+        factoryName: "",
+        factoryActivityId: "",
+        factoryProducts: [],
+        addressInfo: {},
+        establishmentLocation: null,
+        foundingYear: "",
+        capital: "",
+        currency: "JOD",
+        registrationCertificate: "",
+        additionalCertificates: [],
+        notes: "",
+    };
+
     const [formData, setFormData] = useState(() => {
-        const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (savedData) {
-            return JSON.parse(savedData);
+        try {
+            const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (savedData) {
+                const parsed = JSON.parse(savedData) || {};
+                return { ...defaultFormData, ...parsed };
+            }
+        } catch (e) {
+            console.error("Failed to parse saved form data:", e);
         }
-        
-        // حالة البداية الافتراضية
-        return {
-            step: 1,
-            // Step 1
-            topSelected: [],
-            bottomSelected: [],
-            // Step 2
-            name: "",
-            email: "",
-            phone: "",
-            // Step 3 (Common fields for Company/Factory)
-            companyName: "",
-            activityId: "", // قد يستخدم لتخزين الـ ID المفرد
-            companyType: "",
-            companyForm: "",
-            managementMethod: "",
-            managerName: "",
-            companyActivities: [], // 💡 هذا هو الحقل الذي يتم التحقق منه كمصفوفة
-            factoryProducts: [], 
-            // Step 4
-            establishmentAddress: "",
-            establishmentLocation: "",
-            foundingYear: "",
-            capital: "",
-            registrationCertificate: "",
-            additionalCertificates: [],
-            notes: "",
-        };
+        return { ...defaultFormData };
     });
 
-    // 🆕 حالة الأخطاء لكل حقل
     const [fieldErrors, setFieldErrors] = useState({});
-    
-    // 💡 حالة تتبع محاولة الانتقال (لتشغيل عرض الخطأ الأحمر)
     const [submitted, setSubmitted] = useState(false);
     
-    // 2. 💾 دالة تحديث عامة (لجميع الحقول)
+    // 🆕 تتبع نوع المنشأة السابق للكشف عن التغيير
+    const [prevBottomSelected, setPrevBottomSelected] = useState(formData.bottomSelected);
+    
+    // 2. دالة تحديث عامة
     const updateField = useCallback((field, value) => {
         setFormData(prevData => ({
             ...prevData,
             [field]: value,
         }));
-        // مسح الخطأ الخاص بهذا الحقل فور البدء بالكتابة فيه
         setFieldErrors(prevErrors => {
             const newErrors = { ...prevErrors };
             delete newErrors[field];
@@ -82,17 +83,54 @@ const StepperPage = () => {
         setSubmitted(false);
     }, []);
 
-    // 3. 💾 الحفظ التلقائي في localStorage
+    // 3. الحفظ التلقائي في localStorage
     useEffect(() => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+        try {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+        } catch (e) {
+            console.error("Could not save to localStorage:", e);
+        }
     }, [formData]);
 
-    // 4. دالة التحديث للخطوة 1 (مُعدلة)
+    // 🆕 مراقبة تغيير نوع المنشأة (شركة/مصنع)
+    useEffect(() => {
+        const currentBottomSelected = formData.bottomSelected[0];
+        const previousBottomSelected = prevBottomSelected[0];
+        
+        // إذا تغير نوع المنشأة من شركة إلى مصنع أو العكس
+        if (currentBottomSelected !== previousBottomSelected && previousBottomSelected) {
+            console.log(`🔄 نوع المنشأة تغير من ${previousBottomSelected} إلى ${currentBottomSelected}`);
+            console.log("🗑️ مسح بيانات الخطوة 3 القديمة...");
+            
+            // مسح بيانات الخطوة 3 بالكامل
+            setFormData(prevData => ({
+                ...prevData,
+                companyName: "",
+                companyActivities: [],
+                factoryName: "",
+                factoryActivityId: "",
+                factoryProducts: [],
+                // الحفاظ على البيانات المشتركة
+                companyType: "",
+                companyForm: "",
+                managementMethod: "",
+                managerName: "",
+            }));
+            
+            setFieldErrors({});
+            setSubmitted(false);
+        }
+        
+        // تحديث القيمة السابقة
+        setPrevBottomSelected(formData.bottomSelected);
+    }, [formData.bottomSelected]);
+
+    // 4. دالة التحديث للخطوة 1
     const handleSelect = (section, value) => {
         const fieldName = section === "top" ? 'topSelected' : 'bottomSelected';
         
         setFormData(prevData => {
-            const currentSelection = prevData[fieldName];
+            const currentSelection = Array.isArray(prevData[fieldName]) ? prevData[fieldName] : [];
             const newSelection = currentSelection.includes(value) ? [] : [value];
             
             return {
@@ -100,7 +138,7 @@ const StepperPage = () => {
                 [fieldName]: newSelection,
             };
         });
-        // مسح خطأ القسم المحدد فور الاختيار
+        
         setFieldErrors(prevErrors => {
             const newErrors = { ...prevErrors };
             delete newErrors[section === "top" ? 'topSection' : 'bottomSection'];
@@ -109,17 +147,17 @@ const StepperPage = () => {
         setSubmitted(false);
     };
     
-    // 5. دوال التحقق من الصحة (تستخدم fieldErrors)
+    // 5. دوال التحقق من الصحة
     const validateStep1 = () => {
         let errors = {};
         let isValid = true;
         
-        if (formData.topSelected.length === 0) {
+        if ((formData.topSelected || []).length === 0) {
             errors.topSection = translations.step1.validation?.topRequired || 'الرجاء اختيار نوع المنشأة (عراقي/أجنبي).';
             isValid = false;
         }
         
-        if (formData.bottomSelected.length === 0) {
+        if ((formData.bottomSelected || []).length === 0) {
             errors.bottomSection = translations.step1.validation?.bottomRequired || 'الرجاء اختيار نوع النشاط (شركة/مصنع).';
             isValid = false;
         }
@@ -133,13 +171,11 @@ const StepperPage = () => {
         let errors = {};
         let isValid = true;
         
-        // 1. تحقق الاسم
         if (name.trim() === '') {
             errors.name = translations.step2.validation?.nameRequired || 'الاسم مطلوب.';
             isValid = false;
         }
 
-        // 2. تحقق البريد الإلكتروني (الوجود والتنسيق)
         if (email.trim() === '') {
             errors.email = translations.step2.validation?.emailRequired || 'البريد الإلكتروني مطلوب.';
             isValid = false;
@@ -148,7 +184,6 @@ const StepperPage = () => {
             isValid = false;
         }
 
-        // 3. تحقق رقم الهاتف
         if (phone.trim() === '') {
             errors.phone = translations.step2.validation?.phoneRequired || 'رقم الهاتف مطلوب.';
             isValid = false;
@@ -158,33 +193,44 @@ const StepperPage = () => {
         return isValid;
     };
 
-    // 🆕 دالة التحقق للخطوة 3 (Includes Product List Validation)
     const validateStep3 = () => {
-        const { companyName, companyActivities, companyType, companyForm, managementMethod, managerName, factoryProducts } = formData;
-        const isFactory = formData.bottomSelected.includes("factory");
+        const isFactory = (formData.bottomSelected || []).includes("factory");
+        
+        const nameField = isFactory ? (formData.factoryName || "") : (formData.companyName || "");
+        const activitiesField = isFactory ? (formData.factoryActivityId || "") : (formData.companyActivities || []);
+        const companyType = (formData.companyType || "").toString().trim();
+        const companyForm = (formData.companyForm || "").toString().trim();
+        const managementMethod = (formData.managementMethod || "").toString().trim();
+        const managerName = (formData.managerName || "").toString().trim();
+        const factoryProducts = formData.factoryProducts || [];
 
         let errors = {};
         let isValid = true;
 
-        const validationMessages = translations.validation; 
+        const validationMessages = translations.validation;
 
-        if (!companyName.trim()) {
-            errors.companyName = validationMessages?.companyNameRequired || 'اسم الشركة/المصنع مطلوب.';
+        if (!nameField.trim()) {
+            const fieldName = isFactory ? 'factoryName' : 'companyName';
+            errors[fieldName] = validationMessages?.companyNameRequired || 'اسم الشركة/المصنع مطلوب.';
             isValid = false;
         }
         
-        // 💡 CRITICAL: التحقق من حقل companyActivities كمصفوفة
-        if (!companyActivities || companyActivities.length === 0) {
-            errors.companyActivities = validationMessages?.activitiesRequired || 'أنشطة الشركة/المصنع مطلوبة.';
-            isValid = false;
+        if (isFactory) {
+            if (!activitiesField) {
+                errors.factoryActivityId = validationMessages?.activitiesRequired || 'نشاط المصنع مطلوب.';
+                isValid = false;
+            }
+        } else {
+            if (!Array.isArray(activitiesField) || activitiesField.length === 0) {
+                errors.companyActivities = validationMessages?.activitiesRequired || 'أنشطة الشركة مطلوبة.';
+                isValid = false;
+            }
         }
         
-        // 🏭 Product List Validation for Factory
-        if (isFactory && (!factoryProducts || factoryProducts.length === 0)) {
+        if (isFactory && (!Array.isArray(factoryProducts) || factoryProducts.length === 0)) {
             errors.factoryProducts = translations.step3?.validation?.minOneProduct || 'يجب إضافة منتج واحد على الأقل للمصنع.';
             isValid = false;
         }
-
 
         if (!companyType) {
             errors.companyType = validationMessages?.companyTypeRequired || 'نوع الشركة/المصنع مطلوب.';
@@ -201,7 +247,7 @@ const StepperPage = () => {
             isValid = false;
         }
 
-        if (!managerName.trim()) {
+        if (!managerName) {
             errors.managerName = validationMessages?.managerNameRequired || 'اسم المدير المفوض مطلوب.';
             isValid = false;
         }
@@ -210,22 +256,47 @@ const StepperPage = () => {
         return isValid;
     };
 
-    // 🆕 دالة التحقق للخطوة 4 
     const validateStep4 = () => {
-        const { establishmentAddress, capital } = formData;
+        const isFactory = (formData.bottomSelected || []).includes("factory");
+        const addressInfo = formData.addressInfo || {};
+        const establishmentLocation = formData.establishmentLocation;
+        const foundingYear = (formData.foundingYear || "").toString().trim();
+        const capital = (formData.capital || "").toString().trim();
+        const registrationCertificate = formData.registrationCertificate;
+        const additionalCertificates = formData.additionalCertificates || [];
         
         let errors = {};
         let isValid = true;
 
         const validationMessages = translations.validation;
 
-        if (!establishmentAddress.trim()) {
-            errors.establishmentAddress = validationMessages?.establishmentAddressRequired || 'عنوان التأسيس مطلوب.';
+        if (!addressInfo || Object.keys(addressInfo).length === 0) {
+            errors.addressInfo = validationMessages?.addressRequired || 'عنوان المنشأة مطلوب.';
             isValid = false;
         }
-        
-        if (!capital.trim()) {
-            errors.capital = validationMessages?.capitalRequired || 'رأس المال مطلوب.';
+
+        if (!establishmentLocation) {
+            errors.establishmentLocation = validationMessages?.locationRequired || 'موقع المنشأة مطلوب.';
+            isValid = false;
+        }
+
+        if (!foundingYear || isNaN(foundingYear) || foundingYear < 1900 || foundingYear > new Date().getFullYear()) {
+            errors.foundingYear = validationMessages?.invalidYear || 'سنة التأسيس غير صحيحة.';
+            isValid = false;
+        }
+
+        if (!capital || isNaN(capital) || Number(capital) <= 0) {
+            errors.capital = validationMessages?.capitalRequired || 'رأس المال مطلوب ويجب أن يكون رقماً موجباً.';
+            isValid = false;
+        }
+
+        if (!registrationCertificate) {
+            errors.registrationCertificate = validationMessages?.certificateRequired || 'شهادة التسجيل مطلوبة.';
+            isValid = false;
+        }
+
+        if (!Array.isArray(additionalCertificates) || additionalCertificates.length === 0) {
+            errors.additionalCertificates = validationMessages?.certificatesRequired || 'شهادات إضافية مطلوبة.';
             isValid = false;
         }
 
@@ -233,37 +304,48 @@ const StepperPage = () => {
         return isValid;
     };
 
-
-    // 6. دالة تحديد صلاحية الخطوة (لتعطيل الزر)
+    // 6. دالة تحديد صلاحية الخطوة
     const isStepValid = (step) => {
-        const isFactory = formData.bottomSelected.includes("factory");
+        const isFactory = (formData.bottomSelected || []).includes("factory");
 
         switch (step) {
             case 1:
-                return formData.topSelected.length > 0 && formData.bottomSelected.length > 0;
+                return (formData.topSelected || []).length > 0 && (formData.bottomSelected || []).length > 0;
             case 2:
-                // تحقق من التنسيق أيضاً لتعطيل الزر
-                return formData.name.trim() !== '' 
-                    && formData.email.trim() !== '' 
-                    && isValidEmail(formData.email) 
-                    && formData.phone.trim() !== '';
+                return (formData.name || "").trim() !== '' 
+                    && (formData.email || "").trim() !== '' 
+                    && isValidEmail(formData.email || "") 
+                    && (formData.phone || "").trim() !== '';
             case 3:
-                let step3Valid = formData.companyName.trim() !== '' 
-                    && formData.companyActivities.length > 0 // 💡 CRITICAL: التحقق هنا
-                    && formData.companyType.trim() !== '' 
-                    && formData.companyForm.trim() !== '' 
-                    && formData.managementMethod.trim() !== '' 
-                    && formData.managerName.trim() !== '';
+                {
+                    const nameField = isFactory ? formData.factoryName : formData.companyName;
+                    const activitiesField = isFactory ? formData.factoryActivityId : formData.companyActivities;
+                    const activitiesValid = isFactory ? !!activitiesField : (Array.isArray(activitiesField) && activitiesField.length > 0);
+                    const productsLen = Array.isArray(formData.factoryProducts) ? formData.factoryProducts.length : 0;
+                    
+                    let step3Valid = (nameField || "").trim() !== '' 
+                        && activitiesValid
+                        && (formData.companyType || "").toString().trim() !== '' 
+                        && (formData.companyForm || "").toString().trim() !== '' 
+                        && (formData.managementMethod || "").toString().trim() !== '' 
+                        && (formData.managerName || "").toString().trim() !== '';
 
-                // 🏭 Check product array length here for button disabling
-                if (isFactory) {
-                    step3Valid = step3Valid && formData.factoryProducts.length > 0;
+                    if (isFactory) {
+                        step3Valid = step3Valid && productsLen > 0;
+                    }
+                    return step3Valid;
                 }
-                return step3Valid;
             case 4:
-                return formData.establishmentAddress.trim() !== '' 
-                    && formData.capital.trim() !== '';
+                {
+                    const addressValid = formData.addressInfo && Object.keys(formData.addressInfo).length > 0;
+                    const locationValid = !!formData.establishmentLocation;
+                    const yearValid = formData.foundingYear && !isNaN(formData.foundingYear) && formData.foundingYear >= 1900 && formData.foundingYear <= new Date().getFullYear();
+                    const capitalValid = formData.capital && !isNaN(formData.capital) && Number(formData.capital) > 0;
+                    const certValid = !!formData.registrationCertificate;
+                    const additionalValid = Array.isArray(formData.additionalCertificates) && formData.additionalCertificates.length > 0;
 
+                    return addressValid && locationValid && yearValid && capitalValid && certValid && additionalValid;
+                }
             case 5:
                 return true;
             default:
@@ -271,7 +353,7 @@ const StepperPage = () => {
         }
     };
 
-    // 7. ⏭️ دالة الانتقال للخطوة التالية (مع التحقق)
+    // 7. دالة الانتقال للخطوة التالية
     const handleNext = () => {
         let isValid = true;
         
@@ -290,14 +372,14 @@ const StepperPage = () => {
                 ...prev,
                 step: Math.min(prev.step + 1, 5)
             }));
-            setFieldErrors({}); // مسح الأخطاء عند الانتقال
+            setFieldErrors({});
             setSubmitted(false); 
         } else {
-            setSubmitted(true); // تفعيل حالة محاولة الانتقال الفاشلة لعرض حدود الخطأ
+            setSubmitted(true);
         }
     };
     
-    // 8. 🔙 دالة الانتقال للخطوة السابقة
+    // 8. دالة الانتقال للخطوة السابقة
     const handlePrev = () => {
         setFormData(prev => ({
             ...prev,
@@ -307,7 +389,7 @@ const StepperPage = () => {
         setSubmitted(false); 
     };
 
-    // 9. جلب بيانات البحث (Lookups)
+    // 9. جلب بيانات البحث
     const [activities, setActivities] = useState([]);
     const [companyTypes, setCompanyTypes] = useState([]);
     const [companyForms, setCompanyForms] = useState([]);
@@ -335,7 +417,7 @@ const StepperPage = () => {
         }
     }, [formData.step]);
 
-    const isFactory = formData.bottomSelected.includes("factory");
+    const isFactory = (formData.bottomSelected || []).includes("factory");
 
     return (
         <div
@@ -379,11 +461,10 @@ const StepperPage = () => {
                 {formData.step === 3 && (
                     isFactory ? (
                         <Step3Factory
-                            companyName={formData.companyName}
-                            setCompanyName={(value) => updateField('companyName', value)}
-                            companyActivities={formData.companyActivities}
-                            // 💡 CRITICAL: تمرير تحديث مصفوفة الأنشطة
-                            setCompanyActivities={(value) => updateField('companyActivities', value)}
+                            companyName={formData.factoryName}
+                            setCompanyName={(value) => updateField('factoryName', value)}
+                            companyActivities={formData.factoryActivityId}
+                            setCompanyActivities={(value) => updateField('factoryActivityId', value)}
                             companyType={formData.companyType}
                             setCompanyType={(value) => updateField('companyType', value)}
                             companyForm={formData.companyForm}
@@ -431,34 +512,42 @@ const StepperPage = () => {
                     )
                 )}
 
-                {formData.step === 4 && (
-                    <Step4
-                        isFactory={isFactory}
-                        translations={translations.step4}
-                        language={language}
-                        companyName={formData.companyName}
-                        setCompanyName={(value) => updateField('companyName', value)}
-                        activityId={formData.activityId}
-                        setActivityId={(value) => updateField('activityId', value)}
-                        establishmentAddress={formData.establishmentAddress}
-                        setEstablishmentAddress={(value) => updateField('establishmentAddress', value)}
-                        establishmentLocation={formData.establishmentLocation}
-                        setEstablishmentLocation={(value) => updateField('establishmentLocation', value)}
-                        foundingYear={formData.foundingYear}
-                        setFoundingYear={(value) => updateField('foundingYear', value)}
-                        capital={formData.capital}
-                        setCapital={(value) => updateField('capital', value)}
-                        registrationCertificate={formData.registrationCertificate}
-                        setRegistrationCertificate={(value) => updateField('registrationCertificate', value)}
-                        additionalCertificates={formData.additionalCertificates}
-                        setAdditionalCertificates={(value) => updateField('additionalCertificates', value)}
-                        notes={formData.notes}
-                        setNotes={(value) => updateField('notes', value)}
-                        
-                        fieldErrors={fieldErrors}
-                    />
-                )}
-                
+               {formData.step === 4 && (
+    <Step4
+        isFactory={isFactory}
+        onNext={handleNext}
+        googleMapsApiKey={import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY}
+        
+        addressInfo={formData.addressInfo}
+        setAddressInfo={(value) => updateField('addressInfo', value)}
+        
+        establishmentLocation={formData.establishmentLocation}
+        setEstablishmentLocation={(value) => updateField('establishmentLocation', value)}
+        
+        foundingYear={formData.foundingYear}
+        setFoundingYear={(value) => updateField('foundingYear', value)}
+        
+        capital={formData.capital}
+        setCapital={(value) => updateField('capital', value)}
+        
+        currency={formData.currency} // 🆕
+        setCurrency={(value) => updateField('currency', value)} // 🆕
+        
+        notes={formData.notes}
+        setNotes={(value) => updateField('notes', value)}
+        
+        registrationCertificate={formData.registrationCertificate}
+        setRegistrationCertificate={(value) => updateField('registrationCertificate', value)}
+        
+        additionalCertificates={formData.additionalCertificates}
+        setAdditionalCertificates={(value) => updateField('additionalCertificates', value)}
+        
+        translations={translations.step4}
+        language={language}
+        fieldErrors={fieldErrors}
+    />
+)}
+              
                 {formData.step === 5 && (
                     <Step5 
                         translations={translations.step5} 

@@ -1,75 +1,80 @@
-import React from 'react';
-import '../styles/AddProductForm.css'; // سيتم تحديث هذا الملف الآن
+import React, { useContext } from 'react';
+import styles from '../styles/AddProductForm.module.css';
+import { LanguageContext } from '../context/LanguageContext';
 
 const AddProductForm = () => {
-  return (
-    // الحاوية الخارجية
-    <div className="form-page-container-outer">
-      {/* بطاقة النموذج الداخلية (الآن بحجم متوسط وتوسيط) */}
-      <div className="main-form-card">
-        
-        {/* العنوان */}
-        <h2 className="form-title">
-          إضافة منتج جديد
-        </h2>
+  const { translations, language, toggleLanguage } = useContext(LanguageContext);
+  const dir = language === "ar" ? "rtl" : "ltr";
 
-        {/* حاوية حقول النموذج (RTL) */}
-        <form className="form-fields-container" dir="rtl">
-          
-          {/* حقل اسم المنتج */}
-          <div className="form-group">
-            {/* هنا التسمية تكون 100% عرض ومحاذاة لليمين */}
-            <label htmlFor="productName" className="form-label">
-              إسم المنتج
-            </label>
-            <input
-              type="text"
-              id="productName"
-              placeholder="إسم المنتج"
-              className="custom-input-style"
-            />
-          </div>
-
-          {/* حقل التفاصيل (مساحة نصية) */}
-          <div className="form-group">
-            <label htmlFor="details" className="form-label">
-              التفاصيل
-            </label>
-            <textarea
-              id="details"
-              rows={4}
-              placeholder="اكتب هنا التفاصيل"
-              className="custom-textarea-style"
-            />
-          </div>
-
-          {/* قسم تحميل صورة المنتج */}
-          {/* نستخدم حاوية بسيطة لضمان أن منطقة الـ Label وحقل التحميل محاذيان لليمين */}
-          <div className="form-group">
-            <label className="form-label">
-                صورة المنتج
-            </label>
-            {/* منطقة التحميل ذات الحجم الأصغر */}
-            <label htmlFor="image-upload" className="upload-area-small">
-                <span className="upload-area-icon">+</span>
-                <p className="upload-text">رفع صورة</p>
-                <input type="file" id="image-upload" className="hidden" accept="image/*" />
-            </label>
-          </div>
-
-          {/* زر الإرسال */}
-          <div className="button-container">
-            <button
-              type="submit"
-              className="submit-button"
-            >
-              إضافة
-            </button>
-          </div>
-        </form>
+  return (
+    <div className={styles["form-page-container-outer"]} dir={dir}>
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          onClick={toggleLanguage}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-150"
+        >
+          {translations.addProduct.languageToggle}
+        </button>
       </div>
-    </div>
-  );
+
+      <div className={styles["main-form-card"]}>
+        
+        <h2 className={styles["form-title"]}>
+          {translations.addProduct.title}
+        </h2>
+
+        <form className={styles["form-fields-container"]}>
+          
+          <div className={styles["form-group"]}>
+            <label htmlFor="productName" className={styles["form-label"]}>
+              {translations.addProduct.productName}
+            </label>
+            <input
+              type="text"
+              id="productName"
+              placeholder={translations.addProduct.productNamePlaceholder}
+              className={styles["custom-input-style"]}
+              dir={dir} 
+            />
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label htmlFor="details" className={styles["form-label"]}>
+              {translations.addProduct.details}
+            </label>
+            <textarea
+              id="details"
+              rows={4}
+              placeholder={translations.addProduct.detailsPlaceholder}
+              className={styles["custom-textarea-style"]}
+              dir={dir} 
+            />
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>
+                {translations.addProduct.productImage}
+            </label>
+            <label htmlFor="image-upload" className={styles["upload-area-small"]}>
+                <span className={styles["upload-area-icon"]}>+</span>
+                <p className={styles["upload-text"]}>{translations.addProduct.uploadImage}</p>
+                <input type="file" id="image-upload" className={styles["hidden"]} accept="image/*" />
+            </label>
+          </div>
+
+          <div className={styles["button-container"]}>
+            <button
+              type="submit"
+              className={styles["submit-button"]}
+            >
+              {translations.addProduct.submitButton}
+            </button>
+          </div>
+        </form>
+        <style dangerouslySetInnerHTML={{__html: `.${styles.hidden} { display: none; }`}} />
+      </div>
+    </div>
+  );
 };
 
 export default AddProductForm;

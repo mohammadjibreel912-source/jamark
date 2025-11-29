@@ -17,11 +17,12 @@
     color: #555;
 }
 
+/* 🆕 الإنبوت الأول (العنوان) - بدون border أخضر */
 .inputWithIconContainer {
     display: flex;
     align-items: center;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 4px;
     transition: border-color 0.2s;
     height: 44px;
@@ -29,8 +30,8 @@
 }
 
 .inputWithIconContainer:focus-within {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+    border-color: #ddd;
+    box-shadow: none;
 }
 
 .inputWithIconContainer input[type="text"],
@@ -61,33 +62,35 @@
     opacity: 1;
 }
 
+/* 🆕 آخر إنبوت (الملاحظات) */
 .textarea {
     width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 10px;
+    padding: 12px;
     min-height: 100px;
     box-sizing: border-box;
     font-size: 1rem;
     resize: vertical;
     outline: none;
     transition: border-color 0.2s;
+    font-family: inherit;
 }
 
 .textarea:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+    border-color: #ddd;
+    box-shadow: none;
 }
 
 .errorText {
-    color: red;
+    color: #f44336;
     font-size: 0.85em;
     margin-top: 5px;
     display: block;
 }
 
 .inputError {
-    border-color: red !important;
+    border-color: #f44336 !important;
 }
 
 .inputSuccess {
@@ -105,10 +108,8 @@
 .capitalInput {
     flex: 2;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
     border-right: none;
     outline: none;
     font-size: 1rem;
@@ -116,13 +117,13 @@
 }
 
 .capitalInput[dir="rtl"] {
-    border-radius: 4px 0 0 4px;
+    border-radius: 0 4px 4px 0;
     border-left: none;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #ddd;
 }
 
 .capitalInput:focus {
-    border-color: #007bff;
+    border-color: #ddd;
 }
 
 .capitalInput::-webkit-inner-spin-button,
@@ -144,7 +145,7 @@
 
 .currencyDisplayContainer {
     padding: 10px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 0 4px 4px 0;
     display: flex;
     align-items: center;
@@ -157,7 +158,7 @@
 
 .currencyDisplayContainer[dir="rtl"] {
     border-radius: 4px 0 0 4px;
-    border-left: 1px solid #ccc;
+    border-left: 1px solid #ddd;
     border-right: none;
 }
 
@@ -185,7 +186,7 @@
     max-height: 200px;
     overflow-y: auto;
     background-color: white;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 5px;
@@ -204,15 +205,15 @@
 }
 
 .dropdownItemSelected {
-    background-color: #e0f7ff;
+    background-color: #e8f5e9;
 }
 
 .dropdownItem:hover {
-    background-color: #f0f0f0;
+    background-color: #f5f5f5;
 }
 
 .dropdownItemSelected:hover {
-    background-color: #d0f0ff;
+    background-color: #c8e6c9;
 }
 
 .currencyNameText {
@@ -233,7 +234,7 @@
     max-height: 200px;
     overflow-y: auto;
     background-color: white;
-    border: 1px solid #0056b3;
+    border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     margin-top: 5px;
@@ -252,15 +253,15 @@
 
 .yearDropdownItemSelected {
     font-weight: bold;
-    background-color: #e0f7ff;
+    background-color: #e8f5e9;
 }
 
 .yearDropdownItem:hover {
-    background-color: #f0f0f0;
+    background-color: #f5f5f5;
 }
 
 .yearDropdownItemSelected:hover {
-    background-color: #d0f0ff;
+    background-color: #c8e6c9;
 }
 
 .yearInput {
@@ -274,44 +275,84 @@
     text-align: right;
 }
 
+/* 🆕 إنبوت الصور - مربع بـ border أخضر */
 .fileTagsContainer {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
-    min-height: 44px;
-    padding-right: 10px;
-    padding-left: 5px;
+    gap: 10px;
+    min-height: 80px;
+    padding: 15px;
+    border: 2px solid #1abc9c;
+    border-radius: 4px;
+    background-color: #fff;
+    box-sizing: border-box;
 }
 
 .fileTag {
     display: inline-flex;
     align-items: center;
-    background-color: #e6f7ff;
-    color: #0050b3;
-    border-radius: 12px;
-    padding: 4px 8px;
-    margin: 4px;
-    font-size: 0.85rem;
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 0;
+    font-size: 0.9rem;
     font-weight: 500;
-    max-width: 150px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    gap: 8px;
+}
+
+.fileTag::after {
+    content: '×';
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff6b6b;
+    flex-shrink: 0;
+}
+
+.fileTag:hover::after {
+    color: #cc0000;
 }
 
 .filePlaceholder {
-    flex-grow: 1;
-    padding: 10px 5px;
-    color: #888;
+    flex-grow: 0;
+    padding: 0;
+    color: transparent;
     text-align: right;
+    font-size: 0;
 }
 
-.filePlaceholder[dir="ltr"] {
-    text-align: left;
+/* زر الإضافة - يمين دايماً */
+.addCertificateButton {
+    margin-left: auto;
+    padding: 8px 16px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+
+.addCertificateButton:hover {
+    background-color: #16a085;
+}
+
+.fileTagsContainer[dir="rtl"] .addCertificateButton {
+    margin-left: 0;
+    margin-right: auto;
 }
 
 .certificatePathText {
     margin-top: 5px;
     font-size: 12px;
-    color: green;
+    color: #1abc9c;
 }

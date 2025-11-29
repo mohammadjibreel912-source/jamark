@@ -1,11 +1,10 @@
 import { AppProvider } from "../context/AppContext";
 import { LanguageProvider } from "../context/LanguageContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import WelcomePage from "../components/WelcomePage";
+import Welcome from "../components/Welcome";
 import StepperPage from "../components/StepperPage";
-import RegistrationPage from "../components/RegistrationPage";
-import OTPVerificationPage from "../components/OTPVerificationPage";
-import LoginPage from "../components/LoginPage";
+import Registration from "../components/Registration";
+import Login from "../components/Login";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import CertificateUploadModal from "../components/CertificateUpload";
 import CertificateUpload from "../components/CertificateUpload";
@@ -15,6 +14,7 @@ import Certificates from "../components/Certificates";
 import DropzoneUploader from "../components/DropzoneUploader";
 import AddProductForm from "../components/AddProductForm";
 import ProductsTable from "../components/ProductsTable";
+import OTPVerification from "../components/OTPVerification";
 
 function App() {
   return (
@@ -23,11 +23,11 @@ function App() {
         <Router>
 
           <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/register" element={<RegistrationPage />} />
-            <Route path="/otp" element={<OTPVerificationPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/" element={<Welcome />} />
+            <Route path="/register" element={<Registration />} />
+            <Route path="/otp" element={<OTPVerification />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/welcome" element={<Welcome   />} />
             <Route path="/stepper" element={<StepperPage />} />
                         <Route path="/cer" element={<CertificateUpload />} />
                         <Route path="/address" element={<AddressForm />} />

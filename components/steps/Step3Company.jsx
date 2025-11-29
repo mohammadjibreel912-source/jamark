@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo, useEffect } from "react";
 import { LanguageContext } from "../../context/LanguageContext";
 import styles from "../../styles/Step3Company.module.css";
 
@@ -10,7 +10,6 @@ const SelectedTag = ({ activity, language }) => {
   const isRTL = language === "ar";
   return (
     <div
-      key={activity.id}
       className={styles.selectedTag} 
       dir={isRTL ? "rtl" : "ltr"}
     >
@@ -43,13 +42,44 @@ const Step3Company = ({
 
   const [isActivitiesModalOpen, setIsActivitiesModalOpen] = useState(false);
 
-  const handleOpenActivitiesModal = () => setIsActivitiesModalOpen(true);
-  const handleCloseActivitiesModal = () => setIsActivitiesModalOpen(false);
+  useEffect(() => {
+    console.log("Step3Company - activities:", activities);
+    console.log("Step3Company - companyActivities:", companyActivities);
+  }, [activities, companyActivities]);
 
-  const handleSaveActivities = (selectedList) => {
-    setCompanyActivities(selectedList);
-    handleCloseActivitiesModal();
+  const handleOpenActivitiesModal = () => {
+    console.log("Opening Activities Modal. Activities count:", activities?.length);
+    setIsActivitiesModalOpen(true);
   };
+
+  const handleCloseActivitiesModal = () => {
+    console.log("Closing Activities Modal");
+    setIsActivitiesModalOpen(false);
+  };
+
+  // 🆕 تصحيح: حفظ IDs فقط بدلاً من الكائنات الكاملة
+  const handleSaveActivities = (selectedActivityObjects) => {
+    console.log("Saving activities (objects):", selectedActivityObjects);
+    
+    // استخراج IDs من الكائنات المختارة
+    const activityIds = selectedActivityObjects.map(activity => activity.id);
+    console.log("Extracted IDs:", activityIds);
+    
+    // حفظ IDs فقط
+    setCompanyActivities(activityIds);
+    setIsActivitiesModalOpen(false);
+  };
+  
+  // Map activity IDs to full activity objects
+  const selectedActivityObjects = useMemo(() => {
+    if (!Array.isArray(companyActivities) || !Array.isArray(activities)) {
+      return [];
+    }
+    
+    return companyActivities
+      .map(id => activities.find(act => act.id === id))
+      .filter(Boolean);
+  }, [companyActivities, activities]);
   
   const ErrorMessage = ({ fieldName }) => {
     const message = fieldErrors[fieldName];
@@ -73,7 +103,7 @@ const Step3Company = ({
     isSelect,
     options
   ) => (
-    <div className={styles.formGroup}>
+    <div className={styles.formGroup} key={fieldName}>
       <label className={`${styles.labelBase} ${isRTL ? styles.rtlText : styles.ltrText}`}>
         <span className={styles.labelText}>{label}</span>
         <span className={styles.requiredStar}>*</span>
@@ -93,7 +123,7 @@ const Step3Company = ({
             {options && options.length > 0 ? (
               options.map((opt) => (
                 <option
-                  key={opt.id || opt.value}
+                  key={opt.id || opt.value || opt.name}
                   value={opt.id || opt.value || opt.name}
                 >
                   {isRTL
@@ -125,12 +155,13 @@ const Step3Company = ({
 
   const renderActivitiesField = () => {
     const label = translations?.step3?.companyActivities;
-    const selectedCount = companyActivities ? companyActivities.length : 0;
+    const selectedCount = selectedActivityObjects.length;
     const placeholderText = translations?.step3?.chooseActivity;
-    const errorClass = getErrorClass('companyActivities'); 
+    const errorClass = getErrorClass('companyActivities');
+    const isActivitiesLoading = !Array.isArray(activities) || activities.length === 0;
 
     return (
-      <div className={styles.formGroup}>
+      <div className={styles.formGroup} key="companyActivities">
         <label className={`${styles.labelBase} ${isRTL ? styles.rtlText : styles.ltrText}`}>
           <span className={styles.labelText}>{label}</span>
           <span className={styles.requiredStar}>*</span>
@@ -139,12 +170,13 @@ const Step3Company = ({
         <div
           className={`${styles.customMultiSelectContainer} ${errorClass}`} 
           onClick={handleOpenActivitiesModal}
+          style={{ cursor: isActivitiesLoading ? 'not-allowed' : 'pointer', opacity: isActivitiesLoading ? 0.6 : 1 }}
         >
           <div className={`${styles.tagsContainer} ${isRTL ? styles.rtlDirection : styles.ltrDirection}`}>
             {selectedCount > 0 ? (
-              companyActivities.map((activity) => (
+              selectedActivityObjects.map((activity, index) => (
                 <SelectedTag
-                  key={activity.id}
+                  key={activity.id ?? `activity-${index}`}
                   activity={activity}
                   language={language}
                 />
@@ -152,7 +184,7 @@ const Step3Company = ({
             ) : (
               <input
                 type="text"
-                value={placeholderText || translations?.step3?.chooseActivity}
+                value={isActivitiesLoading ? "جاري التحميل..." : (placeholderText || translations?.step3?.chooseActivity)}
                 readOnly
                 dir={isRTL ? "rtl" : "ltr"}
                 className={`${styles.placeholderInput} ${isRTL ? styles.rtlInput : styles.ltrInput}`}
@@ -169,6 +201,12 @@ const Step3Company = ({
           </div>
         </div>
         <ErrorMessage fieldName="companyActivities" />
+        
+        {isActivitiesLoading && (
+          <p style={{ color: '#ff9800', fontSize: '12px', marginTop: '5px' }}>
+            ⚠️ جاري تحميل الأنشطة ({activities?.length || 0})
+          </p>
+        )}
       </div>
     );
   };
@@ -192,7 +230,7 @@ const Step3Company = ({
           false
         )}
         
-        {renderActivitiesField()}
+        {renderActivitiesField()} 
         
         {renderField(
           'companyType', 
@@ -240,9 +278,10 @@ const Step3Company = ({
           title={translations?.step3?.selectActivitiesTitle || "Select Activities"}
         >
           <Activities
-            initialActivities={companyActivities}
+            initialActivities={selectedActivityObjects}
             onSave={handleSaveActivities}
             onClose={handleCloseActivitiesModal}
+            allActivities={activities}
           />
         </Modal>
       )}

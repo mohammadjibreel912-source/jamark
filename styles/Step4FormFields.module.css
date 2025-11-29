@@ -1,0 +1,70 @@
+.step4Fields {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* simple row wrapper - adapt to your existing grid if needed */
+.formRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Preview when address is saved */
+.addressPreview {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background-color: #e6f9ec; /* very light green bg */
+  border: 1px solid #b7f0bf; /* pale green border */
+  color: #0a7a2a; /* dark green text */
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* each part style */
+.addressPart {
+  display: inline-block;
+  color: #0a7a2a;
+}
+
+/* separator style */
+.addressSeparator {
+  color: #0a7a2a;
+  opacity: 0.8;
+}
+
+/* placeholder input shown when no address saved */
+.addressPlaceholder {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px dashed #cfcfcf;
+  background: #fff;
+  cursor: pointer;
+  color: #666;
+}
+
+/* RTL support */
+[dir="rtl"] .addressPreview {
+  direction: rtl;
+}
+
+/* small screens */
+@media (max-width: 768px) {
+  .addressPreview {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}

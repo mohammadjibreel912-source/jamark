@@ -418,3 +418,4 @@ const Activities = ({ initialActivities, onSave, onClose }) => {
 };
 
 export default Activities;
+ 

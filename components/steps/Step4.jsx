@@ -1,363 +1,290 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
-// Import Icons
-import calendarIcon from "../../src/assets/calendarIcon.png";
-import mapIcon from "../../src/assets/mapIcon.png";
-import uploadIcon from "../../src/assets/uploadIcon.png";
-import plusIcon from "../../src/assets/plusIcon.png";
-import downArrowIcon from "../../src/assets/downArrowIcon.png";
-import defaultFlagIcon from "../../src/assets/defaultFlagIcon.png";
-import styles from "../../styles/Step4.module.css";
-
-// Import Components (These paths should be correct based on your original file)
-import Modal from "../Modal";
-import AddressForm from "../AddressForm";
-import DropzoneUploader from "../DropzoneUploader";
-import MapSelector from "../MapSelector";
-import CertificateUpload from "../CertificateUpload";
-
-import { LookupsService } from "../../services/LookupsService";
+import Step4FormFields from "./Step4FormFields"; 
+// Import Components
+import Modal from "../Modal"; 
+import AddressForm from "../AddressForm"; 
+import DropzoneUploader from "../DropzoneUploader"; 
+import MapSelector from "../MapSelector"; 
+import CertificateUpload from "../CertificateUpload"; 
+// Import dependencies
+import { LookupsService } from "../../services/LookupsService"; 
 import { LanguageContext } from "../../context/LanguageContext";
+import styles from "../../styles/Step4.module.css"; 
 
-const API_BASE_URL = "http://165.227.20.222/api/Upload";
-const REGISTRATION_CERT_URL = `${API_BASE_URL}/upload-registration-certificate`;
-const SPECIALTY_CERT_URL = `${API_BASE_URL}/upload-certification`;
-const BASE_URL = "https://corplatform.sfo3.digitaloceanspaces.com/";
-
-const CurrencyDropdown = ({ currencies, selectedCode, onSelect, language }) => {
-    const getCurrencyName = (cur) => {
-        if (language === "ar" && cur.nameAr) return cur.nameAr;
-        if (cur.name) return cur.name;
-        return cur.code;
-    };
-
-    return (
-        <div 
-            className={styles.dropdownList}
-            style={{ 
-                [language === "ar" ? "right" : "left"]: 0,
-            }}
-        >
-            {currencies.map((cur) => (
-                <div
-                    key={cur.code}
-                    onClick={() => onSelect(cur.code)}
-                    className={`${styles.dropdownItem} ${cur.code === selectedCode ? styles.dropdownItemSelected : ""}`}
-                    onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                            cur.code === selectedCode ? "#d0f0ff" : "#f0f0f0")
-                    }
-                    onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                            cur.code === selectedCode ? "#e0f7ff" : "white")
-                    }
-                >
-                    <span className={styles.currencyCodeText}>{cur.code}</span>
-                    <span
-                        className={styles.currencyNameText}
-                        dir={language} 
-                    >
-                        ({getCurrencyName(cur)})
-                    </span>
-                </div>
-            ))}
-        </div>
-    );
-};
-
-// --- 2. Google Map Loader Wrapper ---
+// 🛑 GoogleMapLoader remains here as it manages the map script loading
 function GoogleMapLoader({ children, googleMapsApiKey, libraries }) {
+    const mapApiKey = googleMapsApiKey || import.meta.env.VITE_REACT_APP_GOOGLE_MAPS_API_KEY;
+
     const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey,
-        libraries,
+        googleMapsApiKey: mapApiKey,
+        libraries: libraries || ["places"],
         language: "ar",
     });
 
     if (loadError) {
-        return <div>فشل تحميل الخريطة. الرجاء التحقق من مفتاح API.</div>;
+        return (
+            <div style={{ padding: "20px", color: "red", textAlign: "center", fontSize: "16px" }}>
+                فشل تحميل الخريطة. الرجاء التحقق من مفتاح API.
+            </div>
+        );
     }
 
     if (!isLoaded) {
-        return <div>جاري تحميل الخريطة...</div>;
+        return (
+            <div style={{ padding: "20px", textAlign: "center", fontSize: "16px", color: "#666" }}>
+                جاري تحميل الخريطة...
+            </div>
+        );
     }
 
     return children;
 }
 
-// --- 3. Component for Custom Year Picker Dropdown ---
-const YearDropdown = ({ selectedYear, onSelect, language }) => {
-    const currentYear = new Date().getFullYear();
-    const startYear = 1900;
-    const years = [];
+// Global constants & conceptual API paths
+const API_BASE_PATH = "/api/Upload";
+const REGISTRATION_CERT_URL = `${API_BASE_PATH}/upload-registration-certificate`;
+const SPECIALTY_CERT_URL = `${API_BASE_PATH}/upload-certification`;
 
-    for (let year = currentYear; year >= startYear; year--) {
-        years.push(year);
-    }
-
-    return (
-        <div
-            className={styles.yearDropdownList}
-            style={{
-                [language === "ar" ? "right" : "left"]: 0,
-            }}
-        >
-            {years.map((year) => (
-                <div
-                    key={year}
-                    onClick={() => onSelect(year)}
-                    className={`${styles.yearDropdownItem} ${year === selectedYear ? styles.yearDropdownItemSelected : ""}`}
-                    onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                            year === selectedYear ? "#d0f0ff" : "#f0f0f0")
-                    }
-                    onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                            year === selectedYear ? "#e0f7ff" : "white")
-                    }
-                >
-                    {year}
-                </div>
-            ))}
-        </div>
-    );
+// 🛑 Conceptual Deletion API path/function
+const deleteFileFromApi = async ({ id, filePath }) => {
+    console.log(`[API Call]: Deleting file with ID: ${id} and Path: ${filePath}`);
+    return true;
 };
 
-// --- 4. Main Component Step4 (with onNext and googleMapsApiKey props) ---
-const Step4 = ({ step, isFactory = false, onNext, googleMapsApiKey }) => { // MODIFIED: Added props
+const Step4 = ({ 
+    isFactory = false, 
+    onNext, 
+    googleMapsApiKey, 
+    
+    // PROPS: Step 4 Fields (values and setters)
+    addressInfo, setAddressInfo, 
+    establishmentLocation, setEstablishmentLocation, 
+    foundingYear, setFoundingYear, 
+    capital, setCapital, 
+    notes, setNotes, 
+    
+    // PROPS: Certificate Paths (values and setters)
+    registrationCertificate, setRegistrationCertificate, 
+    additionalCertificates, setAdditionalCertificates, // Array of {id, path, name} objects
+    
+    fieldErrors // Errors passed from parent StepperPage
+}) => { 
     const { translations, language } = useContext(LanguageContext);
     const t = translations.step4 || {};
 
-    const dropdownRef = useRef(null);
-    const yearDropdownRef = useRef(null);
-
     const [currencies, setCurrencies] = useState([]);
-    
-    // Modal States
+    const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("JOD");
+
+    // Modal State
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
     const [isUploaderModalOpen, setIsUploaderModalOpen] = useState(false);
     const [isManagerModalOpen, setIsManagerModalOpen] = useState(false); 
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
     
-    // File State for display and management BEFORE final upload
-    const [uploadedCertificates, setUploadedCertificates] = useState([]); 
-
+    // Local state to hold File objects for display/management *before* upload
+    const [regCertificateFile, setRegCertificateFile] = useState(null); 
+    
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
 
-    const [formData, setFormData] = useState({
-        addressInfo: null,
-        establishmentLocation: null,
-        certificate: null,
-        certificatePath: null,
-        specialtyCertificatesPaths: [],
-        foundationYear: new Date().getFullYear(),
-        capital: 10000,
-        currency: "JOD",
-        notes: "",
-    });
-
-    // Validation State
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({}); // Local errors for validation feedback
 
     const primaryTermEn = isFactory ? "Factory" : "Company";
     const primaryTermAr = isFactory ? "المصنع" : "الشركة";
 
-    const selectedCurrency = currencies.find((c) => c.code === formData.currency);
+    // --- Utility to get file name from path for display ---
+    const getFileNameFromPath = (path) => {
+        if (!path) return null;
+        const parts = path.split('/');
+        return parts[parts.length - 1];
+    };
 
     // --- Validation Function ---
     const validateForm = () => {
         const newErrors = {};
         let isValid = true;
-
-        if (!formData.addressInfo) {
+        
+        if (!addressInfo || Object.keys(addressInfo).length === 0) { 
             newErrors.addressInfo = t.requiredAddress || `${primaryTermEn} address is required.`;
             isValid = false;
         }
-
-        if (!formData.establishmentLocation) {
+        if (!establishmentLocation) {
             newErrors.establishmentLocation = t.requiredLocation || `${primaryTermEn} location is required.`;
             isValid = false;
         }
-
-        if (!formData.certificatePath) {
-            newErrors.certificatePath = t.requiredRegistrationCert || "Registration Certificate is required.";
+        if (!registrationCertificate) { 
+            newErrors.certificateFile = t.requiredRegistrationCert || "Registration Certificate upload is required.";
             isValid = false;
         }
-
-        // MODIFIED: Check specialty certs length
-        if (uploadedCertificates.length === 0) {
+        
+        if (!additionalCertificates || additionalCertificates.length === 0) {
             newErrors.specialtyCertificates = t.requiredSpecialtyCert || "At least one specialty certificate is required.";
             isValid = false;
         }
-
-        if (formData.foundationYear < 1900 || formData.foundationYear > new Date().getFullYear()) {
-             newErrors.foundationYear = t.invalidYear || "Invalid foundation year.";
-             isValid = false;
-        }
-
-        if (formData.capital <= 0 || !formData.capital) {
+        if (!capital || capital <= 0) {
             newErrors.capital = t.requiredCapital || "Capital must be a positive number.";
             isValid = false;
         }
-
+        if (!foundingYear || foundingYear < 1900 || foundingYear > new Date().getFullYear()) {
+            newErrors.foundationYear = t.invalidYear || "Invalid foundation year.";
+            isValid = false;
+        }
+        
         setErrors(newErrors);
         return isValid;
     };
 
-
-    // --- Effects for Closing Dropdowns on Outside Click ---
+    // --- Effects & Lookups ---
     useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false);
-            }
+        if (registrationCertificate && !regCertificateFile) {
+            setRegCertificateFile({ name: getFileNameFromPath(registrationCertificate), path: registrationCertificate });
         }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [dropdownRef]);
-
-    useEffect(() => {
-        function handleYearClickOutside(event) {
-            if (
-                yearDropdownRef.current &&
-                !yearDropdownRef.current.contains(event.target)
-            ) {
-                setIsYearDropdownOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleYearClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleYearClickOutside);
-        };
-    }, [yearDropdownRef]);
-
-    // --- Effect for Fetching Currencies ---
-    useEffect(() => {
+        
         const fetchCurrencies = async () => {
             try {
                 const currencyList = await LookupsService.getCurrencies();
-                setCurrencies(currencyList || []);
-                
-                if (currencyList && currencyList.length > 0) {
-                   const defaultCurrency = currencyList.find(c => c.code === "JOD") ? "JOD" : currencyList[0].code;
-                   setFormData((prev) => ({ ...prev, currency: defaultCurrency })); 
-                }
+                const baseUrl = import.meta.env.VITE_ASSETS_BASE_URL || import.meta.env.BASE_URL || "";
+                const normalizeIcon = (icon) => {
+                    if (!icon) return "";
+                    if (icon.startsWith("http") || icon.startsWith("//")) return icon;
+                    if (icon.startsWith("/")) {
+                        const prefix = baseUrl.replace(/\/$/, "");
+                        return `${prefix}${icon}`;
+                    }
+                    return `${baseUrl}${icon}`;
+                };
+                const mapped = (currencyList || []).map(c => ({
+                    ...c,
+                    icon: normalizeIcon(c.icon || c.flag || "")
+                }));
+                setCurrencies(mapped);
             } catch (err) {
                 console.error("Error fetching currencies:", err);
             }
         };
         fetchCurrencies();
-    }, [step]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [registrationCertificate]);
 
-    // --- Input Change Handler ---
+    // Persistence effect
+    useEffect(() => {
+        const dataToPersist = {
+            addressInfo,
+            establishmentLocation,
+            foundingYear,
+            capital,
+            notes,
+            registrationCertificate,
+            additionalCertificates,
+        };
+        try {
+            localStorage.setItem("registrationFormData", JSON.stringify(dataToPersist));
+        } catch (e) {
+            console.error("Could not save to localStorage:", e);
+        }
+    }, [addressInfo, establishmentLocation, foundingYear, capital, notes, registrationCertificate, additionalCertificates]);
+
+    // Input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const numericValue = ["capital", "foundationYear"].includes(name) ? Number(value) : value;
+        if (name === "capital") setCapital(Number(value));
+        else if (name === "notes") setNotes(value);
+        else if (name === "foundingYear") setFoundingYear(Number(value));
 
-        setFormData((prev) => ({ ...prev, [name]: numericValue }));
-        
-        // Clear error on change
-        if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: null }));
-        }
+        if (errors[name]) setErrors(prev => ({ ...prev, [name]: null }));
     };
 
-    // --- Year Dropdown Handlers ---
-    const handleYearIconClick = () => {
-        setIsYearDropdownOpen((prev) => !prev);
-        if (isDropdownOpen) setIsDropdownOpen(false);
-    };
-
-    const handleSelectYear = (year) => {
-        setFormData((prev) => ({ ...prev, foundationYear: year }));
-        setErrors(prev => ({ ...prev, foundationYear: null }));
-        setIsYearDropdownOpen(false);
-    };
-
-    // --- Modal/Dropdown Handlers ---
+    // Modals / dropdowns
     const handleOpenAddressModal = () => setIsAddressModalOpen(true);
     const handleCloseAddressModal = () => setIsAddressModalOpen(false);
-
-    const handleDeleteCertificate = (fileToRemove) => {
-        setUploadedCertificates((prev) => prev.filter(file => file !== fileToRemove));
-        
-        if (uploadedCertificates.length === 1) {
-             setErrors(prev => ({ ...prev, specialtyCertificates: t.requiredSpecialtyCert || "At least one specialty certificate is required." }));
-        }
-    };
-
-    const handleOpenUploaderModal = () => {
-        setIsManagerModalOpen(false);
-        setIsUploaderModalOpen(true);
-    }; 
-    
-    const handleCloseUploaderModal = () => setIsUploaderModalOpen(false);
-
-    const handleOpenManagerModal = () => {
-        // Open manager directly if files exist, otherwise open uploader
-        if (uploadedCertificates.length > 0) {
-            setIsManagerModalOpen(true);
-        } else {
-            handleOpenUploaderModal();
-        }
-    };
-    const handleCloseManagerModal = () => setIsManagerModalOpen(false);
-
-
     const handleOpenMapModal = () => setIsMapModalOpen(true);
     const handleCloseMapModal = () => setIsMapModalOpen(false);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen((prev) => !prev);
-        if (isYearDropdownOpen) setIsYearDropdownOpen(false);
-    };
-
-    const handleSelectCurrency = (currencyCode) => {
-        setFormData((prev) => ({ ...prev, currency: currencyCode }));
-        setIsDropdownOpen(false);
-    };
-
     const handleSaveAddress = (addressData) => {
-        setFormData((prev) => ({ ...prev, addressInfo: addressData }));
+        if (!addressData || Object.keys(addressData).length === 0) return;
+        setAddressInfo(addressData); 
         setErrors(prev => ({ ...prev, addressInfo: null }));
         handleCloseAddressModal();
     };
 
     const handleSaveLocation = (locationData) => {
-        setFormData((prev) => ({ ...prev, establishmentLocation: locationData }));
+        setEstablishmentLocation(locationData); 
         setErrors(prev => ({ ...prev, establishmentLocation: null }));
         handleCloseMapModal();
     };
+    
+    const handleYearIconClick = () => {
+        setIsYearDropdownOpen(prev => !prev);
+        if (isDropdownOpen) setIsDropdownOpen(false);
+    };
 
-    // -----------------------------------------------------------------
-    // Upload Handlers (Kept in Step4.jsx and enhanced)
-    // -----------------------------------------------------------------
+    const handleSelectYear = (year) => {
+        setFoundingYear(year); 
+        setErrors(prev => ({ ...prev, foundationYear: null }));
+        setIsYearDropdownOpen(false);
+    };
+    
+    const toggleDropdown = () => {
+        setIsDropdownOpen(prev => !prev);
+        if (isYearDropdownOpen) setIsYearDropdownOpen(false);
+    };
 
+    const handleSelectCurrency = (currencyCode) => {
+        setSelectedCurrencyCode(currencyCode);
+        setIsDropdownOpen(false);
+    };
+
+    // Certificate handlers (unchanged)
+    const handleDeleteCertificate = async (id, path) => {
+        try {
+            await deleteFileFromApi({ id, filePath: path });
+            const updatedCerts = (additionalCertificates || []).filter(cert => cert.id !== id);
+            setAdditionalCertificates(updatedCerts);
+            try {
+                const dataToPersist = {
+                    addressInfo,
+                    establishmentLocation,
+                    foundingYear,
+                    capital,
+                    notes,
+                    registrationCertificate,
+                    additionalCertificates: updatedCerts,
+                };
+                localStorage.setItem("registrationFormData", JSON.stringify(dataToPersist));
+            } catch (e) {
+                console.error("Could not save to localStorage:", e);
+            }
+            if (updatedCerts.length === 0) {
+                setErrors(prevErr => ({ ...prevErr, specialtyCertificates: t.requiredSpecialtyCert || "At least one specialty certificate is required." }));
+            }
+        } catch (error) {
+            console.error("Failed to delete certificate on server:", error);
+        }
+    };
+
+    const handleOpenUploaderModal = () => { setIsManagerModalOpen(false); setIsUploaderModalOpen(true); };
+    const handleCloseUploaderModal = () => { setIsUploaderModalOpen(false); if (additionalCertificates && additionalCertificates.length > 0) setIsManagerModalOpen(true); };
+    const handleOpenManagerModal = () => { setIsManagerModalOpen(false); setIsUploaderModalOpen(true); };
+    const handleCloseManagerModal = () => setIsManagerModalOpen(false);
+
+    // Upload helpers (unchanged)
     const uploadFile = async (file, url) => {
         if (!file) return null;
-
         const formData = new FormData();
         formData.append("file", file);
-
         try {
-            const response = await fetch(url, {
-                method: "POST",
-                body: formData,
-            });
-
+            const response = await fetch(url, { method: "POST", body: formData });
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(
-                    `HTTP error! status: ${response.status}. Details: ${errorText}`
-                );
+                throw new Error(`HTTP error! status: ${response.status}. Details: ${errorText}`);
             }
-
             const result = await response.json();
             const filePath = result.filePath || result.path || result;
-            console.log(`Upload Success: ${file.name}. Path returned:`, filePath);
-
+            if (url === SPECIALTY_CERT_URL) {
+                const fileId = result.fileId || `temp-${Date.now() + Math.random()}`; 
+                return { id: fileId, path: filePath, name: file.name };
+            }
             return filePath;
         } catch (error) {
             console.error(`Upload Failed for ${file.name} to ${url}:`, error);
@@ -365,430 +292,126 @@ const Step4 = ({ step, isFactory = false, onNext, googleMapsApiKey }) => { // MO
         }
     };
 
-
-    // 1. Handle Registration Certificate Upload
-    const handleUploadRegistrationCertificate = async (e) => {
-        const file = e.target.files.length > 0 ? e.target.files[0] : null;
-
-        if (file) {
-            setFormData((prev) => ({ ...prev, certificate: file })); 
-            const path = await uploadFile(file, REGISTRATION_CERT_URL);
-
-            if (path) {
-                setFormData((prev) => ({ ...prev, certificatePath: path }));
-                setErrors(prev => ({ ...prev, certificatePath: null }));
-            } else {
-                setFormData((prev) => ({
-                    ...prev,
-                    certificate: null,
-                    certificatePath: null,
-                }));
-                 setErrors(prev => ({ ...prev, certificatePath: "Failed to upload certificate." }));
-            }
-        } else {
-            setFormData((prev) => ({
-                ...prev,
-                certificate: null,
-                certificatePath: null,
-            }));
-            setErrors(prev => ({ ...prev, certificatePath: t.requiredRegistrationCert || "Registration Certificate is required." }));
+    const handleImmediateSwitchToManager = async (newFiles) => {
+        const uploadPromises = newFiles.map((file) => uploadFile(file, SPECIALTY_CERT_URL));
+        const newUploadedCerts = (await Promise.all(uploadPromises)).filter((cert) => cert !== null);
+        const updatedCertificates = [...(additionalCertificates || []), ...newUploadedCerts];
+        setAdditionalCertificates(updatedCertificates);
+        try {
+            const dataToPersist = { addressInfo, establishmentLocation, foundingYear, capital, notes, registrationCertificate, additionalCertificates: updatedCertificates };
+            localStorage.setItem("registrationFormData", JSON.stringify(dataToPersist));
+        } catch (e) {
+            console.error("Could not save certificates to localStorage:", e);
         }
-    };
-
-    // 2. Handle Immediate Switch to Manager (after Dropzone selection)
-    const handleImmediateSwitchToManager = (newFiles) => {
-        setUploadedCertificates((prev) => [...prev, ...newFiles]);
         setErrors(prev => ({ ...prev, specialtyCertificates: null }));
-
-        setIsUploaderModalOpen(false);
+        setIsUploaderModalOpen(false); 
         setIsManagerModalOpen(true);
     };
 
-    // 3. Final Upload of all Specialty Certificates
-    const handleFinalUploadAndSave = async () => {
-        const uploadPromises = uploadedCertificates.map((file) =>
-             uploadFile(file, SPECIALTY_CERT_URL)
-        );
-
-        const uploadedPaths = (await Promise.all(uploadPromises)).filter(
-            (path) => path !== null
-        );
-
-        setFormData((prev) => ({
-            ...prev,
-            specialtyCertificatesPaths: uploadedPaths,
-        }));
-        
-        setIsManagerModalOpen(false);
-        console.log("Final Specialty Certificates Paths saved.");
-    }
-
-    // Example function to call validation on next step action
-    const handleNextStep = () => {
-        if (validateForm()) {
-            console.log("Form is valid. Proceeding to next step with data:", formData);
-            if (onNext) {
-                onNext(formData);
+    const handleUploadRegistrationCertificate = async (e) => {
+        const file = e.target.files.length > 0 ? e.target.files[0] : null;
+        if (file) {
+            setRegCertificateFile(file); 
+            const path = await uploadFile(file, REGISTRATION_CERT_URL); 
+            if (path) {
+                setRegistrationCertificate(path); 
+                setErrors(prev => ({ ...prev, certificateFile: null })); 
+                try {
+                    const dataToPersist = { addressInfo, establishmentLocation, foundingYear, capital, notes, registrationCertificate: path, additionalCertificates };
+                    localStorage.setItem("registrationFormData", JSON.stringify(dataToPersist));
+                } catch (e) {
+                    console.error("Could not save to localStorage:", e);
+                }
+            } else {
+                setRegistrationCertificate(""); 
+                setRegCertificateFile(null);
+                setErrors(prev => ({ ...prev, certificateFile: "Failed to upload certificate." }));
             }
         } else {
-            console.log("Form validation failed. Errors:", errors);
+            setRegistrationCertificate(""); 
+            setRegCertificateFile(null);
+            setErrors(prev => ({ ...prev, certificateFile: t.requiredRegistrationCert || "Registration Certificate is required." }));
         }
     };
 
-    // -----------------------------------------------------------------
-    // DYNAMIC LABELS
-    // -----------------------------------------------------------------
-    const addressLabel =
-        language === "ar" ? `عنوان ${primaryTermAr}` : `${primaryTermEn} Address`;
+    const handleFinalUploadAndSave = () => { setIsManagerModalOpen(false); };
 
-    const locationLabel =
-        language === "ar" ? `موقع ${primaryTermAr}` : `${primaryTermEn} Location`;
+    const handleLocalValidationAndNext = () => {
+        if (validateForm()) { if (onNext) onNext(); } else { console.log("Validation failed in Step 4."); }
+    };
 
-    const titleText =
-        language === "ar"
-            ? `توثيق  ${primaryTermAr}`
-            : `${primaryTermEn} Address & Documentation Details`;
+    const titleText = language === "ar" ? `توثيق  ${primaryTermAr}` : `${primaryTermEn} Address & Documentation Details`;
 
-            
- const certificateRegistrationLabel =
-    language === "ar"
-        ? `${t.certificate || "شهادة"} ${t.registration || "تسجيل"} ${primaryTermAr}` // النتيجة: شهادة تسجيل المصنع
-        : `${primaryTermEn} ${welcome.companyDocs[1]} ${welcome.companyDocs[1]}`; // النتيجة: Factory Registration Certificate
+    // compute baseUrl for icons to pass to the child
+    const baseUrl = import.meta.env.VITE_ASSETS_BASE_URL || import.meta.env.BASE_URL || "";
 
     return (
         <div className={styles.factoryFormContainer} style={{ direction: language === "ar" ? "rtl" : "ltr" }}>
             <h2 className={styles.formTitle}>{titleText}</h2>
 
-            <div className={styles.formContentArea}> 
-                {/* 1. Address (Factory/Company) */}
-                <div className={styles.formField}>
-                    <label>
-                        {addressLabel} <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div
-                        className={`${styles.inputWithIconContainer} ${
-                            formData.addressInfo ? styles.inputSuccess : (errors.addressInfo ? styles.inputError : '')
-                        }`}
-                    >
-                        <input
-                            type="text"
-                            name="addressDisplay"
-                            placeholder={
-                                t.addressFactoryPlaceholder || "Click plus to enter address"
-                            }
-                            value={
-                                formData.addressInfo
-                                    ? formData.addressInfo.summary || t.addressSaved || "Address Saved"
-                                    : ""
-                            }
-                            readOnly
-                        />
-                        <img
-                            alt="plusIcon"
-                            className={`${styles.inputIcon} ${styles.clickableIcon}`}
-                            src={plusIcon}
-                            onClick={handleOpenAddressModal}
-                        />
-                    </div>
-                    {errors.addressInfo && <span className={styles.errorText}>{errors.addressInfo}</span>}
-                </div>
+            <Step4FormFields
+                language={language}
+                t={t}
+                primaryTermAr={primaryTermAr}
+                primaryTermEn={primaryTermEn}
 
-                {/* 2. Location (Map Selector) */}
-                <div className={styles.formField}>
-                    <label>
-                        {locationLabel} <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div
-                        className={`${styles.inputWithIconContainer} ${
-                            formData.establishmentLocation ? styles.inputInfo : (errors.establishmentLocation ? styles.inputError : '')
-                        }`}
-                    >
-                        <input
-                            type="text"
-                            name="establishmentLocationDisplay"
-                            value={
-                                formData.establishmentLocation
-                                    ? formData.establishmentLocation.display || `${formData.establishmentLocation.lat}, ${formData.establishmentLocation.lng}`
-                                    : ""
-                            }
-                            readOnly
-                            placeholder={
-                                t.factoryLocationPlaceholder ||
-                                "Click map icon to select location"
-                            }
-                        />
-                        <img
-                            src={mapIcon}
-                            alt="map"
-                            className={`${styles.inputIcon} ${styles.clickableIcon}`}
-                            onClick={handleOpenMapModal}
-                        />
-                    </div>
-                    {errors.establishmentLocation && <span className={styles.errorText}>{errors.establishmentLocation}</span>}
-                </div>
+                // Values
+                addressInfo={addressInfo}
+                establishmentLocation={establishmentLocation}
+                foundingYear={foundingYear}
+                capital={capital}
+                notes={notes}
+                registrationCertificate={registrationCertificate}
+                regCertificateFile={regCertificateFile}
+                additionalCertificates={additionalCertificates}
+                currencies={currencies}
+                isDropdownOpen={isDropdownOpen}
+                isYearDropdownOpen={isYearDropdownOpen}
+                errors={errors}
 
-                {/* 3. Registration Certificate (Single File + Direct Upload) */}
-                <div className={styles.formField}>
-               <label>
-        {certificateRegistrationLabel} 
-        <span style={{ color: "red" }}>*</span>
-    </label>
-                    <div
-                        className={`${styles.inputWithIconContainer} ${errors.certificatePath ? styles.inputError : ''}`}
-                    >
-                        <img alt="upload" className={styles.inputIcon} src={uploadIcon} />
+                // Handlers
+                onOpenAddressModal={handleOpenAddressModal}
+                onOpenMapModal={handleOpenMapModal}
+                onUploadRegistrationCertificate={handleUploadRegistrationCertificate}
+                onOpenManagerModal={handleOpenManagerModal}
+                onHandleChange={handleChange}
+                onSelectYear={handleSelectYear}
+                onHandleYearIconClick={handleYearIconClick}
+                onToggleDropdown={toggleDropdown}
+                onSelectCurrency={handleSelectCurrency}
+                onDeleteCertificate={handleDeleteCertificate}
 
-                        <div
-                            onClick={() =>
-                                document.getElementById("reg-certificate-upload").click()
-                            }
-                            style={{ 
-                                flexGrow: 1, 
-                                padding: "10px 0", 
-                                color: formData.certificate ? "#000" : "#888",
-                                cursor: "pointer",
-                                height: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                direction: language === "ar" ? "rtl" : "ltr",
-                                justifyContent: language === "ar" ? "flex-end" : "flex-start",
-                                paddingLeft: language === "ar" ? "10px" : "0",
-                                paddingRight: language === "en" ? "10px" : "0",
-                            }}
-                        >
-                            {formData.certificate
-                                ? formData.certificate.name
-                                : t.uploadFilePlaceholder || "Choose a file..."}
-                        </div>
+                // additional props
+                selectedCurrencyCode={selectedCurrencyCode}
+                baseUrl={baseUrl}
+            />
 
-                        <input
-                            id="reg-certificate-upload"
-                            type="file"
-                            style={{ display: "none" }}
-                            onChange={handleUploadRegistrationCertificate}
-                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                        />
-                    </div>
-                    {formData.certificatePath && (
-                        <p className={styles.certificatePathText} dir={language}>
-                            {t.uploadedPath || "Path"}: {formData.certificatePath}
-                        </p>
-                    )}
-                    {errors.certificatePath && <span className={styles.errorText}>{errors.certificatePath}</span>}
-                </div>
-
-                {/* 4. Specialty Certificates (Multiple Upload via Modal) */}
-                <div className={styles.formField}>
-                    <label>
-                        {t.specialtyCertificates || "Specialty Certificates"}{" "}
-                        <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div
-                        className={`${styles.inputWithIconContainer} ${styles.fileTagsContainer} ${
-                            uploadedCertificates.length > 0 ? styles.inputInfo : (errors.specialtyCertificates ? styles.inputError : '')
-                        }`}
-                        dir={language} 
-                        onClick={handleOpenManagerModal} 
-                    >
-                        {/* Logic to display file names as "tags" */}
-                        {uploadedCertificates.length > 0 ? (
-                            uploadedCertificates.map((file, index) => (
-                                <span key={index} className={styles.fileTag}>
-                                    {file.name}
-                                </span>
-                            ))
-                        ) : (
-                            // Placeholder text when no files are present
-                            <div className={styles.filePlaceholder}>
-                                {t.uploadMultipleFiles || "Manage files by clicking the plus icon"}
-                            </div>
-                        )}
-                        {/* Plus icon always stays at the end */}
-                        <img
-                            alt="plusIcon"
-                            className={`${styles.inputIcon} ${styles.clickableIcon}`}
-                            src={plusIcon}
-                            style={{ width: "24px", height: "24px", flexShrink: 0 }}
-                        />
-                    </div>
-                    {errors.specialtyCertificates && <span className={styles.errorText}>{errors.specialtyCertificates}</span>}
-                </div>
-
-
-                {/* 5. Foundation Year (Custom Year Picker) */}
-                <div className={styles.formField}>
-                    <label>
-                        {t.foundationYear || "Foundation Year"}{" "}
-                        <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div
-                        className={`${styles.inputWithIconContainer} ${errors.foundationYear ? styles.inputError : ''}`}
-                        ref={yearDropdownRef}
-                        style={{ position: "relative" }}
-                    >
-                        <img
-                            src={calendarIcon}
-                            alt="calendar"
-                            className={`${styles.inputIcon} ${styles.clickableIcon}`}
-                            onClick={handleYearIconClick}
-                        />
-
-                        <input
-                            type="number"
-                            name="foundationYear"
-                            value={formData.foundationYear}
-                            onChange={handleChange}
-                            placeholder="YYYY"
-                            className={styles.yearInput}
-                            dir={language}
-                        />
-
-                        {isYearDropdownOpen && (
-                            <YearDropdown
-                                selectedYear={formData.foundationYear}
-                                onSelect={handleSelectYear}
-                                language={language}
-                            />
-                        )}
-                    </div>
-                     {errors.foundationYear && <span className={styles.errorText}>{errors.foundationYear}</span>}
-                </div>
-
-                {/* 6. Capital + Currency (Custom Flag Dropdown) */}
-                <div className={styles.formField}>
-                    <label>
-                        {t.capital || "Capital"} <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <div className={styles.capitalCurrencyContainer}>
-                        {/* 1. Capital Input */}
-                        <input
-                            type="number"
-                            name="capital"
-                            value={formData.capital}
-                            onChange={handleChange}
-                            placeholder={t.capitalPlaceholder || "Enter Amount"}
-                            className={`${styles.capitalInput} ${errors.capital ? styles.inputError : ''}`}
-                            style={{ 
-                                borderRadius: language === "ar" ? "0 4px 4px 0" : "4px 0 0 4px",
-                                borderLeft: language === "ar" ? "none" : "1px solid #ccc",
-                                borderRight: language === "en" ? "none" : "1px solid #ccc",
-                            }}
-                            dir={language}
-                        />
-
-                        {/* 2. Custom Currency Dropdown Container */}
-                        <div
-                            className={styles.currencyCustomSelectWrapper}
-                            ref={dropdownRef}
-                        >
-                            <div
-                                onClick={toggleDropdown}
-                                className={styles.currencyDisplayContainer}
-                                style={{
-                                    borderRadius:
-                                        language === "ar" ? "4px 0 0 4px" : "0 4px 4px 0",
-                                    borderLeft: language === "ar" ? "1px solid #ccc" : "none",
-                                    borderRight: language === "en" ? "1px solid #ccc" : "none",
-                                }}
-                                dir={language}
-                            >
-                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                    <img
-                                        src={
-                                            selectedCurrency
-                                                ? `${BASE_URL}${selectedCurrency.icon}`
-                                                : defaultFlagIcon
-                                        }
-                                        alt={selectedCurrency ? selectedCurrency.code : "Currency"}
-                                        className={styles.currencyIcon}
-                                    />
-                                    <span className={styles.currencyCodeText}>
-                                        {formData.currency || "USD"}
-                                    </span>
-                                </div>
-                                <img
-                                    src={downArrowIcon}
-                                    alt="Arrow"
-                                    className={styles.arrowIcon}
-                                    style={{
-                                        transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0)",
-                                    }}
-                                />
-                            </div>
-
-                            {/* The INLINE Dropdown List */}
-                            {isDropdownOpen && (
-                                <CurrencyDropdown
-                                    currencies={currencies}
-                                    selectedCode={formData.currency}
-                                    onSelect={handleSelectCurrency}
-                                    language={language}
-                                />
-                            )}
-                        </div>
-                    </div>
-                    {errors.capital && <span className={styles.errorText}>{errors.capital}</span>}
-                </div>
-
-                {/* 7. Notes */}
-                <div className={styles.formField}>
-                    <label>{t.notes || "Notes"}</label>
-                    <textarea
-                        name="notes"
-                        placeholder={t.notesPlaceholder || "Enter any relevant comments..."}
-                        value={formData.notes}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        dir={language}
-                    />
-                </div>
-            </div>
-
-            {/* --- Modals --- */}
+          
             {isAddressModalOpen && (
-                <Modal onClose={handleCloseAddressModal} title={t.addressModalTitle || "Enter Address"}>
-                    <AddressForm onSave={handleSaveAddress} initialData={formData.addressInfo} />
+                <Modal isOpen={isAddressModalOpen} onClose={handleCloseAddressModal} title={t.addressModalTitle || "Enter Establishment Address"}>
+                    <AddressForm onSave={handleSaveAddress} initialData={addressInfo} translations={translations.addressModal} language={language} />
                 </Modal>
             )}
 
-            {isMapModalOpen && googleMapsApiKey && ( 
-                 <GoogleMapLoader googleMapsApiKey={googleMapsApiKey} libraries={["places"]}>
-                     <Modal onClose={handleCloseMapModal} title={t.mapModalTitle || "Select Location on Map"}>
-                         <MapSelector onSave={handleSaveLocation} initialData={formData.establishmentLocation} />
-                     </Modal>
-                 </GoogleMapLoader>
-            )}
-            
-            {/* Fallback if no API key is provided */}
-            {isMapModalOpen && !googleMapsApiKey && (
-                 <Modal onClose={handleCloseMapModal} title={t.mapModalTitle || "Select Location on Map"}>
-                     <div>Error: Google Maps API key is missing or invalid.</div>
-                 </Modal>
+            {isMapModalOpen && (
+                <Modal isOpen={isMapModalOpen} onClose={handleCloseMapModal} title={t.mapModalTitle || "Select Establishment Location"}>
+                    <GoogleMapLoader googleMapsApiKey={googleMapsApiKey} libraries={["places"]}>
+                        <MapSelector onSave={handleSaveLocation} initialLocation={establishmentLocation} translations={translations.mapModal} language={language} />
+                    </GoogleMapLoader>
+                </Modal>
             )}
 
             {isUploaderModalOpen && (
-                <Modal onClose={handleCloseUploaderModal} title={t.uploaderModalTitle || "Upload Certificates"}>
-                    <DropzoneUploader 
-                        onUploadComplete={handleImmediateSwitchToManager} 
-                        onClose={handleCloseUploaderModal} 
-                        multiple={true} 
-                    />
+                <Modal isOpen={isUploaderModalOpen} onClose={handleCloseUploaderModal} title={t.uploaderModalTitle || "Upload Specialty Certificates"}>
+                    <DropzoneUploader onFilesAdded={handleImmediateSwitchToManager} onClose={handleCloseUploaderModal} />
                 </Modal>
             )}
-            
-            {/* The Certificate Management Modal (CertificateUpload Component) */}
+
             {isManagerModalOpen && (
-                <Modal onClose={handleCloseManagerModal} title={t.managerModalTitle || "Manage Specialty Certificates"}>
-                    <CertificateUpload 
-                        files={uploadedCertificates} 
-                        onDelete={handleDeleteCertificate}
-                        onUploadMore={handleOpenUploaderModal} 
-                        onSave={handleFinalUploadAndSave} 
-                    />
+                <Modal isOpen={isManagerModalOpen} onClose={handleCloseManagerModal} title={t.managerModalTitle || "Manage Specialty Certificates"}>
+                    <CertificateUpload savedPaths={additionalCertificates || []} onDeleteFile={handleDeleteCertificate} onOpenUploader={handleOpenUploaderModal} onSave={handleFinalUploadAndSave} onClose={handleCloseManagerModal} />
                 </Modal>
             )}
-            
-            
         </div>
     );
 };
